@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
-    notification_service as notification,
+    internal_message_service as internal_message, notification_service as notification,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
 use crate::state::AppState;
@@ -20,6 +20,11 @@ use shop_proto::proto::payment::service::v1::{
     payment_channel_config_service_server::PaymentChannelConfigServiceServer,
     payment_refund_service_server::PaymentRefundServiceServer,
     payment_transaction_service_server::PaymentTransactionServiceServer,
+};
+use shop_proto::proto::internal_message::service::v1::{
+    internal_message_category_service_server::InternalMessageCategoryServiceServer,
+    internal_message_recipient_service_server::InternalMessageRecipientServiceServer,
+    internal_message_service_server::InternalMessageServiceServer,
 };
 use shop_proto::proto::notification::service::v1::{
     notification_channel_service_server::NotificationChannelServiceServer,
@@ -188,6 +193,21 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         ))
         .add_service(PermissionAuditLogServiceServer::new(
             audit::PermissionAuditLogService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(InternalMessageServiceServer::new(
+            internal_message::InternalMessageService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(InternalMessageRecipientServiceServer::new(
+            internal_message::InternalMessageRecipientService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(InternalMessageCategoryServiceServer::new(
+            internal_message::InternalMessageCategoryService {
                 state: std::sync::Arc::clone(&state),
             },
         ))

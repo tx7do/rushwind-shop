@@ -734,3 +734,60 @@ CREATE TABLE IF NOT EXISTS public.sys_permission_audit_logs (
     payload jsonb NULL,
     CONSTRAINT sys_permission_audit_logs_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_internal_messages (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    title varchar(255) NOT NULL,
+    content text NULL,
+    status varchar(20) NOT NULL DEFAULT 'DRAFT',
+    sender_id bigint NULL,
+    sender_name varchar(191) NULL,
+    category_id bigint NULL,
+    CONSTRAINT mall_internal_messages_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_internal_message_recipients (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    message_id bigint NOT NULL,
+    recipient_user_id bigint NOT NULL,
+    status varchar(20) NOT NULL DEFAULT 'SENT',
+    received_at timestamptz NULL,
+    read_at timestamptz NULL,
+    title varchar(255) NULL,
+    content text NULL,
+    CONSTRAINT mall_internal_message_recipients_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_im_recipients_user
+    ON public.mall_internal_message_recipients (recipient_user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_internal_message_categories (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(100) NOT NULL,
+    code varchar(100) NOT NULL,
+    icon_url varchar(500) NULL,
+    sort_order int NULL DEFAULT 0,
+    is_enabled boolean NULL DEFAULT true,
+    CONSTRAINT mall_internal_message_categories_pkey PRIMARY KEY (id)
+);

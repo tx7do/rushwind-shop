@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use crate::service::{
-    self, access_key_service as access_key, api_service as api, audit_service as audit, authentication_service as authentication,
+    self, access_key_service as access_key, ai_crud_service as ai_crud, api_service as api, audit_service as audit, authentication_service as authentication,
     brand_service as brand, cart_service as cart, category_service as category,
     comment_service as comment, config_service as config, coupon_service as coupon,
     file_service as file, file_transfer_service as file_transfer, oss_service as oss, dict_entry_service as dict_entry,
@@ -43,6 +43,12 @@ use shop_proto::proto::identity::service::v1::{
 };
 use shop_proto::proto::access_key::service::v1::access_key_service_server::AccessKeyServiceServer;
 use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
+use shop_proto::proto::ai::service::v1::{
+    ai_conversation_service_server::AiConversationServiceServer,
+    ai_message_service_server::AiMessageServiceServer,
+    ai_provider_service_server::AiProviderServiceServer,
+    ai_usage_log_service_server::AiUsageLogServiceServer,
+};
 use shop_proto::proto::script::service::v1::{
     script_log_service_server::ScriptLogServiceServer, script_service_server::ScriptServiceServer,
 };
@@ -177,6 +183,18 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(ScriptServiceServer::new(script::ScriptService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiProviderServiceServer::new(ai_crud::AiProviderService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiConversationServiceServer::new(ai_crud::AiConversationService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiMessageServiceServer::new(ai_crud::AiMessageService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiUsageLogServiceServer::new(ai_crud::AiUsageLogService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(ScriptLogServiceServer::new(script::ScriptLogService {

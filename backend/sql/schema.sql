@@ -1611,3 +1611,92 @@ CREATE TABLE IF NOT EXISTS public.sys_script_logs (
 );
 
 CREATE INDEX IF NOT EXISTS idx_script_logs_script ON public.sys_script_logs (script_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_providers (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    remark varchar(500) NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(100) NULL,
+    model_type varchar(20) NULL DEFAULT 'LOCAL',
+    model_name varchar(200) NULL,
+    base_url varchar(500) NULL,
+    organization varchar(200) NULL,
+    api_key text NULL,
+    api_key_hint varchar(100) NULL,
+    local_host varchar(200) NULL,
+    local_port int NULL,
+    timeout_seconds int NULL,
+    system_prompt text NULL,
+    is_default boolean NULL DEFAULT false,
+    is_enabled boolean NULL DEFAULT true,
+    CONSTRAINT sys_ai_providers_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_conversations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    title varchar(200) NULL,
+    provider_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    last_message_at timestamptz NULL,
+    CONSTRAINT sys_ai_conversations_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_conversations_user ON public.sys_ai_conversations (tenant_id, user_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_messages (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    conversation_id bigint NULL,
+    role varchar(20) NULL DEFAULT 'USER',
+    content text NULL,
+    model_name varchar(200) NULL,
+    prompt_tokens bigint NULL,
+    completion_tokens bigint NULL,
+    duration_ms bigint NULL,
+    error_message text NULL,
+    user_id bigint NULL,
+    CONSTRAINT sys_ai_messages_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_messages_conversation ON public.sys_ai_messages (conversation_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_usage_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    provider_id bigint NULL,
+    conversation_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    model_name varchar(200) NULL,
+    prompt_tokens bigint NULL,
+    completion_tokens bigint NULL,
+    total_tokens bigint NULL,
+    duration_ms bigint NULL,
+    CONSTRAINT sys_ai_usage_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_usage_logs_tenant_time ON public.sys_ai_usage_logs (tenant_id, created_at);

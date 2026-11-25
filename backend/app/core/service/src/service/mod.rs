@@ -4,6 +4,7 @@
 //! same way and land their logic module by module.
 
 pub mod access_key_service;
+pub mod ai_crud_service;
 pub mod api_service;
 pub mod audit_service;
 pub mod authentication_service;

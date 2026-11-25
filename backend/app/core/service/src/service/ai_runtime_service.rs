@@ -24,14 +24,14 @@ const RUNTIME_GAP: &str = "ai runtime (provider calls) not yet implemented";
 
 /// One resolved provider: the endpoint the OpenAI wire rides, the
 /// model name, the optional bearer key, and the timeout.
-struct ResolvedProvider {
-    endpoint: String,
-    api_key: Option<String>,
-    model: String,
-    timeout: std::time::Duration,
+pub(crate) struct ResolvedProvider {
+    pub(crate) endpoint: String,
+    pub(crate) api_key: Option<String>,
+    pub(crate) model: String,
+    pub(crate) timeout: std::time::Duration,
 }
 
-async fn resolve_provider(
+pub(crate) async fn resolve_provider(
     state: &AppState,
     provider_id: Option<i64>,
 ) -> Result<ResolvedProvider, Status> {
@@ -83,7 +83,7 @@ async fn resolve_provider(
 
 /// The chat-completions call — the non-streaming shape. Returns the
 /// text plus the token snapshots the ledgers carry.
-async fn chat_completion(
+pub(crate) async fn chat_completion(
     provider: &ResolvedProvider,
     system: Option<&str>,
     prompt: &str,

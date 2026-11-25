@@ -38,3 +38,4 @@ dist/
 # buf 生成产物（api/gen 由 buf generate 产生，Rust 侧不消费）
 backend/api/gen/
 backend/l.json
+COMMIT_MSG.tmp

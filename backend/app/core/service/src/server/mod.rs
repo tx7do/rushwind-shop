@@ -4,10 +4,12 @@
 
 use std::sync::Arc;
 
-use crate::service::{self, authentication_service as authentication, brand_service as brand};
+use crate::service::{self, authentication_service as authentication, brand_service as brand, category_service as category};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
-use shop_proto::proto::catalog::service::v1::brand_service_server::BrandServiceServer;
+use shop_proto::proto::catalog::service::v1::{
+    brand_service_server::BrandServiceServer, category_service_server::CategoryServiceServer,
+};
 
 /// The served domain services — one `add_service` per landed module;
 /// everything still absent answers Unimplemented by construction (the
@@ -18,5 +20,8 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         },
     ))
-    .add_service(BrandServiceServer::new(brand::BrandService { state }))
+    .add_service(BrandServiceServer::new(brand::BrandService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(CategoryServiceServer::new(category::CategoryService { state }))
 }

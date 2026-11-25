@@ -2,3 +2,4 @@
 //! the reference's `internal/data`.
 
 pub mod brand_repo;
+pub mod category_repo;

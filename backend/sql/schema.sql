@@ -62,3 +62,42 @@ CREATE TABLE IF NOT EXISTS public.sys_users (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_sys_users_username
     ON public.sys_users (username);
+
+CREATE TABLE IF NOT EXISTS public.mall_categories (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sort_order integer NULL,
+    path character varying(191) NULL,
+    depth integer NULL,
+    image_url character varying(500) NULL,
+    parent_id bigint NULL,
+    CONSTRAINT mall_categories_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_category_translations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    category_id bigint NOT NULL,
+    language_code varchar(20) NOT NULL,
+    name varchar(255) NOT NULL,
+    slug varchar(255) NULL,
+    description text NULL,
+    full_path varchar(500) NULL,
+    CONSTRAINT mall_category_translations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_category_translations_category
+        FOREIGN KEY (category_id)
+        REFERENCES public.mall_categories (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_category_translations_cat_language
+    ON public.mall_category_translations (category_id, language_code);

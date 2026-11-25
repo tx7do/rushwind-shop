@@ -62,6 +62,7 @@ pub async fn tables_present(db: &DatabaseConnection) -> Result<bool, sea_orm::Db
         "sys_org_units",
         "sys_positions",
         "sys_tasks",
+        "mall_tax_rates",
         "sys_tenants",
         "mall_wishlist",
         "mall_groupon_activities",

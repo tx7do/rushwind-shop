@@ -1120,3 +1120,19 @@ CREATE TABLE IF NOT EXISTS public.sys_monitor_alert_rules (
     last_alerted_at timestamptz NULL,
     CONSTRAINT sys_monitor_alert_rules_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_tax_rates (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    region varchar(100) NOT NULL,
+    tax_rate integer NOT NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_tax_rates_pkey PRIMARY KEY (id)
+);

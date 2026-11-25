@@ -46,6 +46,7 @@ pub mod sys_policy_evaluation_logs;
 pub mod sys_org_units;
 pub mod sys_positions;
 pub mod tasks;
+pub mod tax_rates;
 pub mod sys_tenants;
 pub mod wishlists;
 pub mod groupon_groups;

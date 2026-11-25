@@ -35,6 +35,7 @@ pub mod payment_service;
 pub mod product_service;
 pub mod server_monitor_service;
 pub mod shipping_service;
+pub mod tax_service;
 pub mod task_service;
 pub mod wishlist_service;
 pub mod sku_service;

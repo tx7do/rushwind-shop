@@ -14,10 +14,11 @@ use crate::service::{self, authentication_service as authentication, audit_servi
     server_monitor_service as server_monitor, tenant_service as tenant,
     online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
-    shipping_service as shipping, sku_service as sku, task_service as task,
+    shipping_service as shipping, sku_service as sku, tax_service as tax, task_service as task,
     wishlist_service as wishlist};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::tax::service::v1::tax_rate_service_server::TaxRateServiceServer;
 use shop_proto::proto::task::service::v1::task_service_server::TaskServiceServer;
 use shop_proto::proto::wishlist::service::v1::wishlist_service_server::WishlistServiceServer;
 use shop_proto::proto::shipping::service::v1::{
@@ -172,6 +173,9 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(TaskServiceServer::new(task::TaskService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(TaxRateServiceServer::new(tax::TaxRateService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(InteractionServiceServer::new(interaction::InteractionService {

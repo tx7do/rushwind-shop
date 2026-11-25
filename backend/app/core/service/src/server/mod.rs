@@ -4,7 +4,8 @@
 
 use std::sync::Arc;
 
-use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category};
+use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
+    product_service as product};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
 use shop_proto::proto::cart::service::v1::{
@@ -12,6 +13,7 @@ use shop_proto::proto::cart::service::v1::{
 };
 use shop_proto::proto::catalog::service::v1::{
     brand_service_server::BrandServiceServer, category_service_server::CategoryServiceServer,
+    product_service_server::ProductServiceServer,
 };
 
 /// The served domain services — one `add_service` per landed module;
@@ -32,5 +34,10 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(CartServiceServer::new(cart::CartService {
             state: std::sync::Arc::clone(&state),
         }))
-        .add_service(CartItemServiceServer::new(cart::CartItemService { state }))
+        .add_service(CartItemServiceServer::new(cart::CartItemService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(ProductServiceServer::new(product::ProductService {
+            state: std::sync::Arc::clone(&state),
+        }))
 }

@@ -1,23 +1,20 @@
-feat(cart): the cart domain joins — the first storefront write face, ownership stamped from the forwarded operator
+feat(catalog-product): the product domain joins — 14 RPCs with the storefront search face
 
-Two services in one domain: CartService (the user's cart row — one
-live row per user, a create idempotent against the existing one) and
-CartItemService (the items — same-sku merge on repeat adds, quantity
-bumps instead of duplicate rows). The golden DDL gains mall_carts
-(unique per user_id) and mall_cart_items (cart cascade, indexed by
-cart).
+The biggest catalog domain: the main table (status as the stored
+PRODUCT_STATUS_* spelling, the category/brand links, the image), the
+translation table (short/long descriptions), the 12 standard CRUD
+RPCs, and the two anonymous search RPCs the storefront whitelist
+carries — SearchProducts (an ILIKE over the requested language's
+translation names joined to ACTIVE-status main rows, paged off the
+request's own page/page_size with the server cap 50) and
+SearchProductSuggestions (the same face capped at five). The status
+enum maps both ways between the proto ProductStatus values and the
+stored spellings the reference's demo data pins.
 
-The item write face derives ownership from the forwarded x-user-id
-metadata alone — the contract's CartItem carries no user field, so
-the BFF's operator stamp IS the identity, and a bare call answers
-BAD_REQUEST. The cart row materializes on demand (cart_for_user).
+The proxy side needed nothing (Product was already grounded as pass);
+the bootstrap gate grew the two product tables.
 
-The app BFF's CoreTokenChecker now dials ValidateToken with its own
-client type: the app face's tokens are minted into the ct=1 store,
-and the checker was validating them against the ct=0 store — every
-app-side gated call answered "access token expired". Each BFF pins
-its own client in the session stage.
-
-verified: app login (ct=1) mints an app store; add-to-cart answers
-200 and the item lands (sku 1012, quantity 2); the repeat add merges
-(quantity 4); the cart list reads back the full row
+verified: admin login + product create (status/category/brand/
+bilingual translation), the anonymous product-search hitting the new
+row (productId/name/imageUrl carried), the suggestions face, and the
+storefront detail GET answering 200

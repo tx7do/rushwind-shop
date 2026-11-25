@@ -139,3 +139,42 @@ CREATE TABLE IF NOT EXISTS public.mall_cart_items (
 
 CREATE INDEX IF NOT EXISTS idx_cart_items_cart
     ON public.mall_cart_items (cart_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_products (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sort_order integer NULL,
+    status varchar(40) NULL DEFAULT 'PRODUCT_STATUS_ACTIVE',
+    category_id bigint NULL,
+    brand_id bigint NULL,
+    image_url character varying(500) NULL,
+    CONSTRAINT mall_products_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_product_translations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    product_id bigint NOT NULL,
+    language_code varchar(20) NOT NULL,
+    name varchar(255) NOT NULL,
+    slug varchar(255) NULL,
+    short_description text NULL,
+    long_description text NULL,
+    CONSTRAINT mall_product_translations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_product_translations_product
+        FOREIGN KEY (product_id)
+        REFERENCES public.mall_products (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_product_translations_product_language
+    ON public.mall_product_translations (product_id, language_code);

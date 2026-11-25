@@ -10,6 +10,7 @@ pub mod permission_audit_logs;
 pub mod comments;
 pub mod interaction_counters;
 pub mod internal_message_categories;
+pub mod invoices;
 pub mod internal_message_recipients;
 pub mod internal_messages;
 pub mod notification_channels;

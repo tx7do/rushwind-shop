@@ -1136,3 +1136,28 @@ CREATE TABLE IF NOT EXISTS public.mall_tax_rates (
     status varchar(20) NOT NULL DEFAULT 'ACTIVE',
     CONSTRAINT mall_tax_rates_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_invoices (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    order_id bigint NOT NULL,
+    user_id bigint NULL,
+    invoice_number varchar(100) NULL,
+    invoice_type varchar(30) NOT NULL DEFAULT 'VAT_GENERAL',
+    status varchar(20) NOT NULL DEFAULT 'PENDING',
+    buyer_name varchar(191) NULL,
+    buyer_tax_id varchar(100) NULL,
+    buyer_address text NULL,
+    buyer_phone varchar(30) NULL,
+    amount bigint NOT NULL DEFAULT 0,
+    CONSTRAINT mall_invoices_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_invoices_order ON public.mall_invoices (order_id);

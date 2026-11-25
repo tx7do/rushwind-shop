@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
-    internal_message_service as internal_message, monitor_alert_service as monitor, notification_service as notification,
+    internal_message_service as internal_message, invoice_service as invoice, monitor_alert_service as monitor, notification_service as notification,
     api_service as api, menu_service as menu, org_unit_service as org_unit,
     permission_group_service as perm_group, permission_service as perm_svc,
     policy_evaluation_log_service as policy_log, position_service as position,
@@ -46,6 +46,7 @@ use shop_proto::proto::permission::service::v1::{
     policy_evaluation_log_service_server::PolicyEvaluationLogServiceServer,
     role_service_server::RoleServiceServer,
 };
+use shop_proto::proto::invoice::service::v1::invoice_service_server::InvoiceServiceServer;
 use shop_proto::proto::notification::service::v1::{
     notification_channel_service_server::NotificationChannelServiceServer,
     notification_preference_service_server::NotificationPreferenceServiceServer,
@@ -290,4 +291,7 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
                 state: std::sync::Arc::clone(&state),
             },
         ))
+        .add_service(InvoiceServiceServer::new(invoice::InvoiceService {
+            state: std::sync::Arc::clone(&state),
+        }))
 }

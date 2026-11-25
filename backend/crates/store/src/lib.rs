@@ -49,6 +49,7 @@ pub async fn tables_present(db: &DatabaseConnection) -> Result<bool, sea_orm::Db
         "sys_permission_audit_logs",
         "mall_comments",
         "mall_interaction_likes",
+        "mall_invoices",
         "mall_internal_message_categories",
         "mall_internal_message_recipients",
         "mall_internal_messages",

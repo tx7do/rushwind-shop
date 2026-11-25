@@ -25,6 +25,7 @@ pub mod coupon_service;
 pub mod category_service;
 pub mod groupon_service;
 pub mod identity_service;
+pub mod invoice_service;
 pub mod internal_message_service;
 pub mod interaction_service;
 pub mod notification_service;

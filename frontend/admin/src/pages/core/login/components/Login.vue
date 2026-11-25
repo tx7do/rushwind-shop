@@ -150,7 +150,11 @@ async function refreshCaptcha() {
   try {
     const resp = await authStore.getCaptcha();
     captchaId.value = resp?.captchaId ?? "";
-    captchaImage.value = resp?.imageBase64 ?? "";
+    // The core answers the raw base64 of the SVG — the img src needs
+    // the data-URI wrapper to render.
+    captchaImage.value = resp?.imageBase64
+      ? `data:image/svg+xml;base64,${resp.imageBase64}`
+      : "";
   } catch {
     // 验证码获取失败不阻断页面
   }

@@ -30,6 +30,17 @@ impl ClientKind {
     }
 }
 
+/// One live session read out of the Redis whitelist.
+#[derive(Debug, Clone)]
+pub struct SessionInfo {
+    pub client: ClientKind,
+    pub user_id: i64,
+    pub jti: String,
+    pub username: String,
+    pub tenant_id: i64,
+    pub login_at: i64,
+}
+
 pub struct TokenStore {
     conn: ConnectionManager,
     client: ClientKind,
@@ -226,6 +237,57 @@ impl TokenStore {
             }
         }
         Ok(None)
+    }
+
+    /// The session read-out: every live access row of the client, one
+    /// info struct per row (the fields parse off the key and the JWT's
+    /// unverified claims — the token's own payload carries sub/iat/tid).
+    pub async fn list_sessions(
+        &self,
+        unverified: impl Fn(&str) -> Option<(String, i64, i64, i64)>,
+    ) -> Result<Vec<SessionInfo>, String> {
+        let mut conn = self.conn.clone();
+        let pattern = format!("rws:at:{}:*", self.client.as_u32());
+        let keys: Vec<String> = redis::cmd("KEYS")
+            .arg(&pattern)
+            .query_async(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+        if keys.is_empty() {
+            return Ok(Vec::new());
+        }
+        let values: Vec<String> = redis::cmd("MGET")
+            .arg(&keys)
+            .query_async(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+        let mut sessions = Vec::new();
+        for (key, token) in keys.into_iter().zip(values.into_iter()) {
+            // rws:at:{ct}:{uid}:{jti}
+            let parts: Vec<&str> = key.split(':').collect();
+            if parts.len() != 5 {
+                continue;
+            }
+            let uid = parts[3].parse::<i64>().unwrap_or(0);
+            let jti = parts[4].to_string();
+            let (username, tenant_id, login_at, _exp) = unverified(&token).unwrap_or_default();
+            sessions.push(SessionInfo {
+                client: self.client,
+                user_id: uid,
+                jti,
+                username,
+                tenant_id,
+                login_at,
+            });
+        }
+        Ok(sessions)
+    }
+
+    /// The admin/user revocation of one session (both halves + the
+    /// blacklist so the presented token dies even mid-request).
+    pub async fn revoke_session_global(&self, uid: i64, jti: &str) -> Result<(), String> {
+        self.revoke_by_jti(uid, jti).await?;
+        self.block_token(jti, 24 * 3600).await
     }
 
     /// The refresh credential: 256 bits of CSPRNG, hex — compared

@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
-    internal_message_service as internal_message, notification_service as notification,
+    internal_message_service as internal_message, notification_service as notification, online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
 use crate::state::AppState;
@@ -33,6 +33,7 @@ use shop_proto::proto::notification::service::v1::{
     notification_service_server::NotificationServiceServer,
     notification_template_service_server::NotificationTemplateServiceServer,
 };
+use shop_proto::proto::online_session::service::v1::online_session_service_server::OnlineSessionServiceServer;
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
 };
@@ -174,6 +175,11 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         }))
         .add_service(NotificationPreferenceServiceServer::new(
             notification::NotificationPreferenceService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(OnlineSessionServiceServer::new(
+            online_session::OnlineSessionService {
                 state: std::sync::Arc::clone(&state),
             },
         ))

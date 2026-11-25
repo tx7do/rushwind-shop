@@ -11,6 +11,7 @@ use crate::state::AppState;
 use shop_proto::proto::admin::service::v1::{
     InitialContextResponse, ListPermissionCodeResponse, ListRouteResponse,
 };
+use shop_proto::proto::permission::service::v1::{MenuMeta, MenuRouteItem};
 
 /// The caller's operator id off the forwarded claims (the BFF's auth
 /// gate stamps it before this face runs).
@@ -60,21 +61,68 @@ async fn role_codes_of(
 }
 
 /// The navigation routes — the menu ledger this deployment carries is
-/// empty (the shell renders its static route table), so this answers
-/// empty until the menu seed lands.
+/// reads the sys_menus ledger (status ON, tenant 0) and rebuilds the
+/// two-level route tree by parent_id: group rows become parents with
+/// their child routes nested; the meta JSON (title/icon/order/
+/// authority) maps onto MenuMeta.
 async fn navigation_items(
-) -> Result<Vec<shop_proto::proto::permission::service::v1::MenuRouteItem>, StatusError> {
-    Ok(Vec::new())
+    state: &std::sync::Arc<AppState>,
+) -> Result<Vec<MenuRouteItem>, StatusError> {
+    use shop_proto::proto::pagination::PagingRequest;
+    use shop_proto::proto::permission::service::v1::menu_service_client::MenuServiceClient;
+    let mut core = MenuServiceClient::new(state.core_channel.clone());
+    let resp = core
+        .list(tonic::Request::new(PagingRequest {
+            page: Some(1),
+            page_size: Some(200),
+            no_paging: Some(true),
+            ..Default::default()
+        }))
+        .await
+        .map_err(crate::services::map_status)?
+        .into_inner();
+    // Two-level rebuild by parent_id: group rows (no parent) become
+    // parents, leaf rows nest under their group.
+    let mut parents: Vec<MenuRouteItem> = Vec::new();
+    let mut child_map: std::collections::HashMap<i64, Vec<MenuRouteItem>> = Default::default();
+    for m in &resp.items {
+        let item = MenuRouteItem {
+            path: m.path.clone(),
+            redirect: m.redirect.clone(),
+            name: m.name.clone(),
+            component: m.component.clone(),
+            meta: m.meta.clone(),
+            ..Default::default()
+        };
+        match m.parent_id {
+            Some(pid) => child_map.entry(pid).or_default().push(item),
+            None => parents.push(item),
+        }
+    }
+    for parent in &mut parents {
+        if let Some(path) = parent.path.as_deref() {
+            if let Some(children) = resp
+                .items
+                .iter()
+                .find(|m| m.path.as_deref() == Some(path))
+                .and_then(|m| m.id)
+                .and_then(|pid| child_map.get(&pid))
+            {
+                parent.children = children.clone();
+            }
+        }
+    }
+    Ok(parents)
 }
 
 /// The navigation routes.
 pub async fn get_navigation(
-    _state: &std::sync::Arc<AppState>,
+    state: &std::sync::Arc<AppState>,
     _ctx: &rushwind_http_binding::ctx::RequestContext,
     _msg: pbjson_types::Empty,
 ) -> Result<ListRouteResponse, StatusError> {
     Ok(ListRouteResponse {
-        items: navigation_items().await?,
+        items: navigation_items(state).await?,
     })
 }
 
@@ -97,7 +145,7 @@ pub async fn get_initial_context(
     ctx: &rushwind_http_binding::ctx::RequestContext,
     _msg: pbjson_types::Empty,
 ) -> Result<InitialContextResponse, StatusError> {
-    let menus = navigation_items().await?;
+    let menus = navigation_items(state).await?;
     let permissions = role_codes_of(state, operator_user_id(ctx)).await?;
     Ok(InitialContextResponse {
         menus,

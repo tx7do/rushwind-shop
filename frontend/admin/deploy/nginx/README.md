@@ -4,8 +4,8 @@ API/SSE 不开独立域名，全部经各自主域名的 nginx 反代转发：
 
 | 域名 | 前端产物 | API 路径 | SSE 路径 |
 |---|---|---|---|
-| `shop.gowind.cloud` | Nuxt SSG `.output/public` | `/app/v1/` → 127.0.0.1:10700 | `/events` → 127.0.0.1:10701 |
-| `admin.shop.gowind.cloud` | Vite `dist` | `/admin/v1/` → 127.0.0.1:10600 | `/events` → 127.0.0.1:10601 |
+| `shop.rushwind.cloud` | Nuxt SSG `.output/public` | `/app/v1/` → 127.0.0.1:10700 | `/events` → 127.0.0.1:10701 |
+| `admin.shop.rushwind.cloud` | Vite `dist` | `/admin/v1/` → 127.0.0.1:10600 | `/events` → 127.0.0.1:10601 |
 
 两个 conf 均为 **HTTPS 终态**（DNS 已通，certbot 已签发）：443 段与 80→443
 重定向段带 `# managed by Certbot` 标记原样保留，不影响续期。
@@ -29,21 +29,21 @@ app `NUXT_PUBLIC_API_BASE_URL=/`（不能空，nuxt.config 的 `||` 回退会兜
 
 ## 2. 上传与启用
 
-root 按服务器实际路径（conf 默认 `/var/www/go-wind-shop/{app,admin}`）：
+root 按服务器实际路径（conf 默认 `/var/www/rushwind-shop/{app,admin}`）：
 
 ```bash
-rsync -a frontend/app/.output/public/  <server>:/var/www/go-wind-shop/app/
-rsync -a frontend/admin/dist/          <server>:/var/www/go-wind-shop/admin/
+rsync -a frontend/app/.output/public/  <server>:/var/www/rushwind-shop/app/
+rsync -a frontend/admin/dist/          <server>:/var/www/rushwind-shop/admin/
 
 # 覆盖服务器上的同名旧 conf。若旧 conf 不在 conf.d 而在 sites-enabled 等处，
 # 就地替换那一份，避免同一 server_name 被加载两份。
-scp deploy/nginx/shop.gowind.cloud.conf       <server>:/etc/nginx/conf.d/
-scp deploy/nginx/admin.shop.gowind.cloud.conf <server>:/etc/nginx/conf.d/
+scp deploy/nginx/shop.rushwind.cloud.conf       <server>:/etc/nginx/conf.d/
+scp deploy/nginx/admin.shop.rushwind.cloud.conf <server>:/etc/nginx/conf.d/
 ssh <server> 'nginx -t && nginx -s reload'
 ```
 
 **证书路径核对**：`ls /etc/letsencrypt/live/`。admin 已实证是独立 lineage
-（`live/admin.shop.gowind.cloud/`）；若 shop 是两域合并签发的单一 lineage，
+（`live/admin.shop.rushwind.cloud/`）；若 shop 是两域合并签发的单一 lineage，
 把 shop conf 里的 `ssl_certificate*` 改成实际目录再 reload。
 
 ## 3. 要点
@@ -58,8 +58,8 @@ ssh <server> 'nginx -t && nginx -s reload'
 ## 4. 验证
 
 ```bash
-curl --noproxy '*' -s https://shop.gowind.cloud/app/v1/login -o /dev/null -w '%{http_code}\n'   # 405/400 即通（非 502/404）
-curl --noproxy '*' -sN https://shop.gowind.cloud/events?stream=x --max-time 3                    # 应有响应帧而非 502
-curl --noproxy '*' -sI https://admin.shop.gowind.cloud/ | head -1                                # 200
-curl --noproxy '*' -sI http://admin.shop.gowind.cloud/ | head -1                                 # 301 → https
+curl --noproxy '*' -s https://shop.rushwind.cloud/app/v1/login -o /dev/null -w '%{http_code}\n'   # 405/400 即通（非 502/404）
+curl --noproxy '*' -sN https://shop.rushwind.cloud/events?stream=x --max-time 3                    # 应有响应帧而非 502
+curl --noproxy '*' -sI https://admin.shop.rushwind.cloud/ | head -1                                # 200
+curl --noproxy '*' -sI http://admin.shop.rushwind.cloud/ | head -1                                 # 301 → https
 ```

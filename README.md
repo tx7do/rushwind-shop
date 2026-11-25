@@ -124,9 +124,8 @@ rushwind-shop/
 ├── frontend/              # 前端（复用 go-wind-shop）
 │   ├── admin/             # 管理后台（Vue 3 + Element Plus）
 │   └── app/               # 店铺前台（Nuxt 3）
-├── deploy/                # 部署编排
 ├── docs/                  # 文档与品牌资产
-└── scripts/               # 环境与运维脚本
+└── frontend/*/deploy/     # 各前端的 nginx 部署配置
 ```
 
 ## License

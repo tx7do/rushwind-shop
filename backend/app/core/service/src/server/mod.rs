@@ -5,21 +5,21 @@
 use std::sync::Arc;
 
 use crate::service::{
-    self, access_key_service as access_key, ai_agent_service as ai_agent, ai_crud_service as ai_crud,
-    ai_knowledge_service as ai_kb, ai_runtime_service as ai_runtime, api_service as api,
-    oauth_service as oauth, audit_service as audit, authentication_service as authentication,
+    self, access_key_service as access_key, ai_agent_service as ai_agent,
+    ai_crud_service as ai_crud, ai_knowledge_service as ai_kb, ai_runtime_service as ai_runtime,
+    api_service as api, audit_service as audit, authentication_service as authentication,
     brand_service as brand, cart_service as cart, category_service as category,
     comment_service as comment, config_service as config, coupon_service as coupon,
-    file_service as file, file_transfer_service as file_transfer, oss_service as oss, dict_entry_service as dict_entry,
-    dict_type_service as dict_type, groupon_service as groupon, identity_service as identity,
-    interaction_service as interaction, internal_message_service as internal_message,
-    invoice_service as invoice, language_service as language, login_policy_service as login_policy,
-    member_tier_service as member_tier,
-    menu_service as menu, mfa_service as mfa, monitor_alert_service as monitor,
-    notification_service as notification,
+    dict_entry_service as dict_entry, dict_type_service as dict_type, file_service as file,
+    file_transfer_service as file_transfer, groupon_service as groupon,
+    identity_service as identity, interaction_service as interaction,
+    internal_message_service as internal_message, invoice_service as invoice,
+    language_service as language, login_policy_service as login_policy,
+    member_tier_service as member_tier, menu_service as menu, mfa_service as mfa,
+    monitor_alert_service as monitor, notification_service as notification, oauth_service as oauth,
     online_session_service as online_session, order_service as order, org_unit_service as org_unit,
-    payment_service as payment, plan_service as plan, permission_group_service as perm_group,
-    permission_service as perm_svc, points_service as points,
+    oss_service as oss, payment_service as payment, permission_group_service as perm_group,
+    permission_service as perm_svc, plan_service as plan, points_service as points,
     policy_evaluation_log_service as policy_log, position_service as position,
     product_attribute_service as product_attribute,
     product_attribute_value_service as product_attribute_value, product_service as product,
@@ -30,24 +30,10 @@ use crate::service::{
     wishlist_service as wishlist,
 };
 use crate::state::AppState;
-use shop_proto::proto::address::service::v1::shipping_address_service_server::ShippingAddressServiceServer;
-use shop_proto::proto::audit::service::v1::{
-    api_audit_log_service_server::ApiAuditLogServiceServer,
-    data_access_audit_log_service_server::DataAccessAuditLogServiceServer,
-    login_audit_log_service_server::LoginAuditLogServiceServer,
-    operation_audit_log_service_server::OperationAuditLogServiceServer,
-    permission_audit_log_service_server::PermissionAuditLogServiceServer,
-};
-use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
-use shop_proto::proto::identity::service::v1::{
-    plan_module_service_server::PlanModuleServiceServer,
-    plan_quota_service_server::PlanQuotaServiceServer, plan_service_server::PlanServiceServer,
-};
 use shop_proto::proto::access_key::service::v1::access_key_service_server::AccessKeyServiceServer;
-use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
+use shop_proto::proto::address::service::v1::shipping_address_service_server::ShippingAddressServiceServer;
 use shop_proto::proto::ai::service::v1::{
-    ai_agent_service_server::AiAgentServiceServer,
-    ai_chat_service_server::AiChatServiceServer,
+    ai_agent_service_server::AiAgentServiceServer, ai_chat_service_server::AiChatServiceServer,
     ai_content_service_server::AiContentServiceServer,
     ai_conversation_service_server::AiConversationServiceServer,
     ai_knowledge_base_service_server::AiKnowledgeBaseServiceServer,
@@ -56,16 +42,17 @@ use shop_proto::proto::ai::service::v1::{
     ai_query_service_server::AiQueryServiceServer,
     ai_usage_log_service_server::AiUsageLogServiceServer,
 };
-use shop_proto::proto::authentication::service::v1::o_auth_service_server::OAuthServiceServer;
-use shop_proto::proto::script::service::v1::{
-    script_log_service_server::ScriptLogServiceServer, script_service_server::ScriptServiceServer,
+use shop_proto::proto::audit::service::v1::{
+    api_audit_log_service_server::ApiAuditLogServiceServer,
+    data_access_audit_log_service_server::DataAccessAuditLogServiceServer,
+    login_audit_log_service_server::LoginAuditLogServiceServer,
+    operation_audit_log_service_server::OperationAuditLogServiceServer,
+    permission_audit_log_service_server::PermissionAuditLogServiceServer,
 };
-use shop_proto::proto::storage::service::v1::{
-    file_service_server::FileServiceServer, file_transfer_service_server::FileTransferServiceServer,
-    oss_service_server::OssServiceServer,
-};
+use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
 use shop_proto::proto::authentication::service::v1::login_policy_service_server::LoginPolicyServiceServer;
 use shop_proto::proto::authentication::service::v1::mfa_service_server::MfaServiceServer;
+use shop_proto::proto::authentication::service::v1::o_auth_service_server::OAuthServiceServer;
 use shop_proto::proto::authentication::service::v1::user_credential_service_server::UserCredentialServiceServer;
 use shop_proto::proto::cart::service::v1::{
     cart_item_service_server::CartItemServiceServer, cart_service_server::CartServiceServer,
@@ -92,6 +79,7 @@ use shop_proto::proto::catalog::service::v1::{
     stock_op_log_service_server::StockOpLogServiceServer,
 };
 use shop_proto::proto::comment::service::v1::comment_service_server::CommentServiceServer;
+use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
 use shop_proto::proto::coupon::service::v1::{
     coupon_template_service_server::CouponTemplateServiceServer,
     user_coupon_service_server::UserCouponServiceServer,
@@ -104,6 +92,10 @@ use shop_proto::proto::dict::service::v1::{
 use shop_proto::proto::identity::service::v1::{
     org_unit_service_server::OrgUnitServiceServer, position_service_server::PositionServiceServer,
     tenant_service_server::TenantServiceServer,
+};
+use shop_proto::proto::identity::service::v1::{
+    plan_module_service_server::PlanModuleServiceServer,
+    plan_quota_service_server::PlanQuotaServiceServer, plan_service_server::PlanServiceServer,
 };
 use shop_proto::proto::identity::service::v1::{
     user_profile_service_server::UserProfileServiceServer, user_service_server::UserServiceServer,
@@ -143,10 +135,17 @@ use shop_proto::proto::permission::service::v1::{
     role_service_server::RoleServiceServer,
 };
 use shop_proto::proto::redis_cache::service::v1::redis_cache_monitor_service_server::RedisCacheMonitorServiceServer;
+use shop_proto::proto::script::service::v1::{
+    script_log_service_server::ScriptLogServiceServer, script_service_server::ScriptServiceServer,
+};
 use shop_proto::proto::server_monitor::service::v1::server_monitor_service_server::ServerMonitorServiceServer;
 use shop_proto::proto::shipping::service::v1::{
     shipment_service_server::ShipmentServiceServer,
     shipping_rate_service_server::ShippingRateServiceServer,
+};
+use shop_proto::proto::storage::service::v1::{
+    file_service_server::FileServiceServer,
+    file_transfer_service_server::FileTransferServiceServer, oss_service_server::OssServiceServer,
 };
 use shop_proto::proto::task::service::v1::task_service_server::TaskServiceServer;
 use shop_proto::proto::tax::service::v1::tax_rate_service_server::TaxRateServiceServer;
@@ -169,18 +168,23 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
     .add_service(MfaServiceServer::new(mfa::MfaService {
         state: std::sync::Arc::clone(&state),
     }))
-    .add_service(LoginPolicyServiceServer::new(login_policy::LoginPolicyService {
-        state: std::sync::Arc::clone(&state),
-    }))
+    .add_service(LoginPolicyServiceServer::new(
+        login_policy::LoginPolicyService {
+            state: std::sync::Arc::clone(&state),
+        },
+    ))
     .add_service(FileServiceServer::new(file::FileService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(OssServiceServer::new(oss::OssService {
         state: std::sync::Arc::clone(&state),
+        extra_engines: std::sync::Mutex::new(Default::default()),
     }))
-    .add_service(FileTransferServiceServer::new(file_transfer::FileTransferService {
-        state: std::sync::Arc::clone(&state),
-    }))
+    .add_service(FileTransferServiceServer::new(
+        file_transfer::FileTransferService {
+            state: std::sync::Arc::clone(&state),
+        },
+    ))
     .add_service(PlanServiceServer::new(plan::PlanService {
         state: std::sync::Arc::clone(&state),
     }))
@@ -196,9 +200,11 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
     .add_service(AiProviderServiceServer::new(ai_crud::AiProviderService {
         state: std::sync::Arc::clone(&state),
     }))
-    .add_service(AiConversationServiceServer::new(ai_crud::AiConversationService {
-        state: std::sync::Arc::clone(&state),
-    }))
+    .add_service(AiConversationServiceServer::new(
+        ai_crud::AiConversationService {
+            state: std::sync::Arc::clone(&state),
+        },
+    ))
     .add_service(AiMessageServiceServer::new(ai_crud::AiMessageService {
         state: std::sync::Arc::clone(&state),
     }))
@@ -208,9 +214,11 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
     .add_service(AiAgentServiceServer::new(ai_agent::AiAgentService {
         state: std::sync::Arc::clone(&state),
     }))
-    .add_service(AiKnowledgeBaseServiceServer::new(ai_kb::AiKnowledgeBaseService {
-        state: std::sync::Arc::clone(&state),
-    }))
+    .add_service(AiKnowledgeBaseServiceServer::new(
+        ai_kb::AiKnowledgeBaseService {
+            state: std::sync::Arc::clone(&state),
+        },
+    ))
     .add_service(AiChatServiceServer::new(ai_runtime::AiChatService {
         state: std::sync::Arc::clone(&state),
     }))

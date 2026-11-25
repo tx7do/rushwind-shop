@@ -1,8 +1,10 @@
 //! The OSS face (the reference's oss endpoints through the engine
 //! crate) — presigned upload/download grants, the object listing, and
-//! the delete, all through the config-selected ObjectStorage. The
-//! bucket rides the config's engine (the requests' bucket_name is
-//! advisory; the engine's own bucket wins — the single-bucket shape).
+//! the delete. The engine is the config-selected ObjectStorage for the
+//! default bucket; a request naming a DIFFERENT bucket gets an engine
+//! built for that bucket on demand (same endpoint/credentials), cached
+//! per service instance — real multi-bucket over the single-bucket
+//! config shape.
 
 use std::sync::Arc;
 
@@ -31,11 +33,61 @@ fn unique_object_name(extension: &str) -> String {
 
 pub struct OssService {
     pub state: Arc<AppState>,
+    /// Engines built on demand for non-default buckets (the config
+    /// engine lives in AppState.oss; this cache grows per requested
+    /// bucket name).
+    pub extra_engines:
+        std::sync::Mutex<std::collections::HashMap<String, Arc<dyn rushwind_oss::ObjectStorage>>>,
 }
 
 impl OssService {
-    fn engine(&self) -> Result<std::sync::Arc<dyn rushwind_oss::ObjectStorage>, Status> {
-        self.state.oss.clone().ok_or_else(oss_missing)
+    fn settings(&self) -> Result<&crate::config::OssSettings, Status> {
+        self.state.cfg.oss.as_ref().ok_or_else(oss_missing)
+    }
+
+    /// The engine for the request's bucket: the configured one for the
+    /// default/absent name, an on-demand cached engine otherwise.
+    async fn engine_for(
+        &self,
+        bucket: Option<&str>,
+    ) -> Result<(std::sync::Arc<dyn rushwind_oss::ObjectStorage>, String), Status> {
+        let settings = self.settings()?;
+        let requested = bucket
+            .filter(|b| !b.is_empty())
+            .unwrap_or(settings.bucket.as_str());
+        if requested == settings.bucket {
+            let engine = self.state.oss.clone().ok_or_else(oss_missing)?;
+            return Ok((engine, settings.bucket.clone()));
+        }
+        {
+            let cache = self.extra_engines.lock().expect("oss engine cache");
+            if let Some(engine) = cache.get(requested) {
+                return Ok((engine.clone(), requested.to_string()));
+            }
+        }
+        let engine = rushwind_oss_s3::S3Storage::new(rushwind_oss::StorageConfig {
+            endpoint: settings.endpoint.clone(),
+            region: settings.region.clone(),
+            access_key: settings.access_key.clone(),
+            secret_key: settings.secret_key.clone(),
+            token: None,
+            use_ssl: settings.use_ssl,
+            force_path_style: settings.force_path_style,
+            bucket: requested.to_string(),
+        })
+        .map_err(|e| Status::internal(format!("oss engine for bucket {requested}: {e:?}")))?;
+        // First-use bucket setup (best-effort, idempotent) — the same
+        // guarantee the default bucket gets at startup. The concrete
+        // S3Storage carries the setup helper; the trait does not.
+        if let Err(e) = engine.create_bucket().await {
+            tracing::warn!("oss bucket {requested} setup: {e:?} (continuing)");
+        }
+        let arc: Arc<dyn rushwind_oss::ObjectStorage> = Arc::new(engine);
+        self.extra_engines
+            .lock()
+            .expect("oss engine cache")
+            .insert(requested.to_string(), arc.clone());
+        Ok((arc, requested.to_string()))
     }
 }
 
@@ -51,7 +103,6 @@ impl storagev1::oss_service_server::OssService for OssService {
     ) -> Result<Response<storagev1::GetUploadPresignedUrlResponse>, Status> {
         use rushwind_oss::PresignMethod;
         let req = request.into_inner();
-        let bucket = self.state.cfg.oss.as_ref().map(|o| o.bucket.clone());
         let directory = req
             .file_directory
             .clone()
@@ -67,14 +118,14 @@ impl storagev1::oss_service_server::OssService for OssService {
         let expires = std::time::Duration::from_secs(
             req.expire_seconds.unwrap_or(600).clamp(1, 60 * 60 * 24) as u64,
         );
-        let engine = self.engine()?;
+        let (engine, bucket) = self.engine_for(req.bucket_name.as_deref()).await?;
         let upload_url = engine
             .presign(&key, PresignMethod::Put, expires)
             .map_err(|e| Status::internal(format!("presign: {e:?}")))?;
         Ok(Response::new(storagev1::GetUploadPresignedUrlResponse {
             upload_url,
             download_url: format!("/api/v1/storage/oss/download/{}", percent_encode(&key)),
-            bucket_name: bucket,
+            bucket_name: Some(bucket),
             object_name: key,
             form_data: Default::default(),
         }))
@@ -88,6 +139,7 @@ impl storagev1::oss_service_server::OssService for OssService {
     ) -> Result<Response<storagev1::GetDownloadInfoResponse>, Status> {
         use rushwind_oss::PresignMethod;
         let req = request.into_inner();
+        let mut req_bucket: Option<String> = None;
         let key = match req.selector {
             Some(storagev1::get_download_info_request::Selector::FileId(id)) => {
                 use sea_orm::EntityTrait;
@@ -143,7 +195,7 @@ impl storagev1::oss_service_server::OssService for OssService {
                 .unwrap_or(600)
                 .clamp(1, 60 * 60 * 24) as u64,
         );
-        let engine = self.engine()?;
+        let (engine, bucket) = self.engine_for(req_bucket.as_deref()).await?;
         let url = engine
             .presign(&key, PresignMethod::Get, expires)
             .map_err(|e| Status::internal(format!("presign: {e:?}")))?;
@@ -168,7 +220,7 @@ impl storagev1::oss_service_server::OssService for OssService {
         } else {
             format!("{prefix}/")
         };
-        let engine = self.engine()?;
+        let (engine, _bucket) = self.engine_for(req.bucket_name.as_deref()).await?;
         let objects = engine
             .list(&prefix, "", 1000)
             .await
@@ -186,7 +238,7 @@ impl storagev1::oss_service_server::OssService for OssService {
             .object_name
             .filter(|s| !s.is_empty())
             .ok_or_else(|| bad("objectName required"))?;
-        let engine = self.engine()?;
+        let (engine, _bucket) = self.engine_for(req.bucket_name.as_deref()).await?;
         engine
             .delete(&object_name)
             .await

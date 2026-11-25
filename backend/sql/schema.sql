@@ -1700,3 +1700,74 @@ CREATE TABLE IF NOT EXISTS public.sys_ai_usage_logs (
 );
 
 CREATE INDEX IF NOT EXISTS idx_ai_usage_logs_tenant_time ON public.sys_ai_usage_logs (tenant_id, created_at);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_agent_apps (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(200) NULL,
+    description varchar(500) NULL,
+    graph text NULL,
+    enabled boolean NULL DEFAULT false,
+    CONSTRAINT sys_ai_agent_apps_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_agent_runs (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    app_id bigint NULL,
+    status varchar(30) NULL DEFAULT 'RUNNING',
+    pending_node_id varchar(200) NULL,
+    resume_state text NULL,
+    input text NULL,
+    output text NULL,
+    error text NULL,
+    trace text NULL,
+    prompt_tokens bigint NULL,
+    completion_tokens bigint NULL,
+    total_tokens bigint NULL,
+    duration_ms bigint NULL,
+    CONSTRAINT sys_ai_agent_runs_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_runs_app ON public.sys_ai_agent_runs (app_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_knowledge_bases (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(200) NULL,
+    description varchar(500) NULL,
+    provider_id bigint NULL,
+    embedding_model varchar(200) NULL,
+    user_id bigint NULL,
+    CONSTRAINT sys_ai_knowledge_bases_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_ai_docs (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    base_id bigint NULL,
+    name varchar(200) NULL,
+    status varchar(20) NULL DEFAULT 'READY',
+    error_message text NULL,
+    user_id bigint NULL,
+    CONSTRAINT sys_ai_docs_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_docs_base ON public.sys_ai_docs (base_id);

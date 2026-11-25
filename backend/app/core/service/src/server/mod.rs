@@ -5,7 +5,9 @@
 use std::sync::Arc;
 
 use crate::service::{
-    self, access_key_service as access_key, ai_crud_service as ai_crud, api_service as api, audit_service as audit, authentication_service as authentication,
+    self, access_key_service as access_key, ai_agent_service as ai_agent, ai_crud_service as ai_crud,
+    ai_knowledge_service as ai_kb, ai_runtime_service as ai_runtime, api_service as api,
+    oauth_service as oauth, audit_service as audit, authentication_service as authentication,
     brand_service as brand, cart_service as cart, category_service as category,
     comment_service as comment, config_service as config, coupon_service as coupon,
     file_service as file, file_transfer_service as file_transfer, oss_service as oss, dict_entry_service as dict_entry,
@@ -44,11 +46,17 @@ use shop_proto::proto::identity::service::v1::{
 use shop_proto::proto::access_key::service::v1::access_key_service_server::AccessKeyServiceServer;
 use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
 use shop_proto::proto::ai::service::v1::{
+    ai_agent_service_server::AiAgentServiceServer,
+    ai_chat_service_server::AiChatServiceServer,
+    ai_content_service_server::AiContentServiceServer,
     ai_conversation_service_server::AiConversationServiceServer,
+    ai_knowledge_base_service_server::AiKnowledgeBaseServiceServer,
     ai_message_service_server::AiMessageServiceServer,
     ai_provider_service_server::AiProviderServiceServer,
+    ai_query_service_server::AiQueryServiceServer,
     ai_usage_log_service_server::AiUsageLogServiceServer,
 };
+use shop_proto::proto::authentication::service::v1::o_auth_service_server::OAuthServiceServer;
 use shop_proto::proto::script::service::v1::{
     script_log_service_server::ScriptLogServiceServer, script_service_server::ScriptServiceServer,
 };
@@ -195,6 +203,24 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(AiUsageLogServiceServer::new(ai_crud::AiUsageLogService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiAgentServiceServer::new(ai_agent::AiAgentService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiKnowledgeBaseServiceServer::new(ai_kb::AiKnowledgeBaseService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiChatServiceServer::new(ai_runtime::AiChatService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiQueryServiceServer::new(ai_runtime::AiQueryService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AiContentServiceServer::new(ai_runtime::AiContentService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(OAuthServiceServer::new(oauth::OAuthService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(ScriptLogServiceServer::new(script::ScriptLogService {

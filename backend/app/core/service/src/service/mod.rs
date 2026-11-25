@@ -4,7 +4,10 @@
 //! same way and land their logic module by module.
 
 pub mod access_key_service;
+pub mod ai_agent_service;
 pub mod ai_crud_service;
+pub mod ai_knowledge_service;
+pub mod ai_runtime_service;
 pub mod api_service;
 pub mod audit_service;
 pub mod authentication_service;
@@ -33,6 +36,7 @@ pub mod mfa_service;
 pub mod mfa_totp;
 pub mod monitor_alert_service;
 pub mod notification_service;
+pub mod oauth_service;
 pub mod online_session_service;
 pub mod oss_service;
 pub mod order_service;

@@ -93,6 +93,11 @@ pub fn bad(message: &str) -> tonic::Status {
     tonic::Status::invalid_argument(message.to_string())
 }
 
+/// A permission-denied Status.
+pub fn forbidden(message: &str) -> tonic::Status {
+    tonic::Status::permission_denied(message.to_string())
+}
+
 /// A not-found Status.
 pub fn not_found(message: &str) -> tonic::Status {
     tonic::Status::not_found(message.to_string())

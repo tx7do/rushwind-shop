@@ -10,6 +10,7 @@ pub mod position_service;
 pub mod constants;
 pub mod context;
 pub mod permission_sync;
+pub mod redis_cache_service;
 pub mod role_service;
 pub mod menu_service;
 pub mod api_service;

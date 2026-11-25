@@ -10,7 +10,8 @@ use crate::service::{self, authentication_service as authentication, audit_servi
     api_service as api, menu_service as menu, org_unit_service as org_unit,
     permission_group_service as perm_group, permission_service as perm_svc,
     policy_evaluation_log_service as policy_log, position_service as position,
-    role_service as role, tenant_service as tenant, online_session_service as online_session,
+    redis_cache_service as redis_cache, role_service as role, tenant_service as tenant,
+    online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, task_service as task,
     wishlist_service as wishlist};
@@ -51,6 +52,7 @@ use shop_proto::proto::notification::service::v1::{
     notification_template_service_server::NotificationTemplateServiceServer,
 };
 use shop_proto::proto::monitor_alert::service::v1::monitor_alert_service_server::MonitorAlertServiceServer;
+use shop_proto::proto::redis_cache::service::v1::redis_cache_monitor_service_server::RedisCacheMonitorServiceServer;
 use shop_proto::proto::online_session::service::v1::online_session_service_server::OnlineSessionServiceServer;
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
@@ -219,6 +221,11 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(MonitorAlertServiceServer::new(monitor::MonitorAlertService {
             state: std::sync::Arc::clone(&state),
         }))
+        .add_service(RedisCacheMonitorServiceServer::new(
+            redis_cache::RedisCacheMonitorService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
         .add_service(MenuServiceServer::new(menu::MenuService {
             state: std::sync::Arc::clone(&state),
         }))

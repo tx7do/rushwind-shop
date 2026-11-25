@@ -8,9 +8,11 @@ use crate::service::{self, authentication_service as authentication, audit_servi
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
     internal_message_service as internal_message, notification_service as notification, online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
-    shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
+    shipping_service as shipping, sku_service as sku, task_service as task,
+    wishlist_service as wishlist};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::task::service::v1::task_service_server::TaskServiceServer;
 use shop_proto::proto::wishlist::service::v1::wishlist_service_server::WishlistServiceServer;
 use shop_proto::proto::shipping::service::v1::{
     shipment_service_server::ShipmentServiceServer,
@@ -147,6 +149,9 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(CommentServiceServer::new(comment::CommentService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(TaskServiceServer::new(task::TaskService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(InteractionServiceServer::new(interaction::InteractionService {

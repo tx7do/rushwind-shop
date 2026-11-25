@@ -791,3 +791,22 @@ CREATE TABLE IF NOT EXISTS public.mall_internal_message_categories (
     is_enabled boolean NULL DEFAULT true,
     CONSTRAINT mall_internal_message_categories_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.sys_tasks (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    type varchar(40) NOT NULL DEFAULT 'PERIODIC',
+    type_name varchar(100) NOT NULL,
+    payload text NULL,
+    cron_spec varchar(100) NULL,
+    options jsonb NULL,
+    enable boolean NULL DEFAULT true,
+    remark text NULL,
+    CONSTRAINT sys_tasks_pkey PRIMARY KEY (id)
+);

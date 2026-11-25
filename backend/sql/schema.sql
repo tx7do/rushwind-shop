@@ -1262,3 +1262,71 @@ CREATE TABLE IF NOT EXISTS public.mall_stock_op_logs (
     remark text NULL,
     CONSTRAINT mall_stock_op_logs_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_product_attributes (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sort_order integer NULL DEFAULT 0,
+    CONSTRAINT mall_product_attributes_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_product_attribute_translations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    attribute_id bigint NOT NULL,
+    language_code varchar(20) NOT NULL,
+    name varchar(255) NOT NULL,
+    CONSTRAINT mall_product_attribute_translations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_pa_translations_attribute
+        FOREIGN KEY (attribute_id)
+        REFERENCES public.mall_product_attributes (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pa_translations_attr_language
+    ON public.mall_product_attribute_translations (attribute_id, language_code);
+
+CREATE TABLE IF NOT EXISTS public.mall_product_attribute_values (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sort_order integer NULL DEFAULT 0,
+    attribute_id bigint NOT NULL,
+    CONSTRAINT mall_product_attribute_values_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_pa_values_attribute
+        FOREIGN KEY (attribute_id)
+        REFERENCES public.mall_product_attributes (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_product_attribute_value_translations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    value_id bigint NOT NULL,
+    language_code varchar(20) NOT NULL,
+    display_name varchar(255) NOT NULL,
+    CONSTRAINT mall_product_attribute_value_translations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_pav_translations_value
+        FOREIGN KEY (value_id)
+        REFERENCES public.mall_product_attribute_values (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pav_translations_value_language
+    ON public.mall_product_attribute_value_translations (value_id, language_code);

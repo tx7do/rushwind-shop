@@ -5,6 +5,7 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
+    product_attribute_service as product_attribute, product_attribute_value_service as product_attribute_value,
     coupon_service as coupon, groupon_service as groupon, dict_entry_service as dict_entry, dict_type_service as dict_type,
     identity_service as identity, interaction_service as interaction,
     internal_message_service as internal_message, invoice_service as invoice, monitor_alert_service as monitor, notification_service as notification,
@@ -94,6 +95,10 @@ use shop_proto::proto::coupon::service::v1::{
     user_coupon_service_server::UserCouponServiceServer,
 };
 use shop_proto::proto::comment::service::v1::comment_service_server::CommentServiceServer;
+use shop_proto::proto::catalog::service::v1::{
+    product_attribute_service_server::ProductAttributeServiceServer,
+    product_attribute_value_service_server::ProductAttributeValueServiceServer,
+};
 use shop_proto::proto::cart::service::v1::{
     cart_item_service_server::CartItemServiceServer, cart_service_server::CartServiceServer,
 };
@@ -124,6 +129,16 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(CartItemServiceServer::new(cart::CartItemService {
             state: std::sync::Arc::clone(&state),
         }))
+        .add_service(ProductAttributeServiceServer::new(
+            product_attribute::ProductAttributeService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(ProductAttributeValueServiceServer::new(
+            product_attribute_value::ProductAttributeValueService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
         .add_service(ProductServiceServer::new(product::ProductService {
             state: std::sync::Arc::clone(&state),
         }))

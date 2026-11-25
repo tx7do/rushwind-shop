@@ -36,6 +36,8 @@ pub mod monitor_alert_service;
 pub mod online_session_service;
 pub mod order_service;
 pub mod payment_service;
+pub mod product_attribute_service;
+pub mod product_attribute_value_service;
 pub mod product_service;
 pub mod server_monitor_service;
 pub mod promotion_service;

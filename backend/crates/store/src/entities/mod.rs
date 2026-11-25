@@ -61,6 +61,7 @@ pub mod sys_permission_menus;
 pub mod sys_permissions;
 pub mod sys_policy_evaluation_logs;
 pub mod sys_positions;
+pub mod sys_login_policies;
 pub mod sys_role_metadata;
 pub mod sys_role_permissions;
 pub mod sys_roles;

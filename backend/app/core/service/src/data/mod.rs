@@ -9,6 +9,7 @@ pub mod category_repo;
 pub mod dict_entry_repo;
 pub mod dict_type_repo;
 pub mod language_repo;
+pub mod login_policy_repo;
 pub mod menu_repo;
 pub mod mfa_challenge_cache;
 pub mod mfa_factor_repo;

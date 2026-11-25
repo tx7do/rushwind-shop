@@ -1444,3 +1444,20 @@ CREATE INDEX IF NOT EXISTS idx_sys_user_mfa_tenant_user_id
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_sys_user_mfa_tenant_uid_method
     ON public.sys_user_mfa_factors (tenant_id, user_id, method);
+
+CREATE TABLE IF NOT EXISTS public.sys_login_policies (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    target_id bigint NULL,
+    value varchar(255) NULL,
+    reason varchar(255) NULL,
+    type varchar(30) NULL DEFAULT 'BLACKLIST',
+    method varchar(30) NULL DEFAULT 'IP',
+    CONSTRAINT sys_login_policies_pkey PRIMARY KEY (id)
+);

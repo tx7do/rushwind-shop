@@ -10,7 +10,8 @@ use crate::service::{
     comment_service as comment, coupon_service as coupon, dict_entry_service as dict_entry,
     dict_type_service as dict_type, groupon_service as groupon, identity_service as identity,
     interaction_service as interaction, internal_message_service as internal_message,
-    invoice_service as invoice, language_service as language, member_tier_service as member_tier,
+    invoice_service as invoice, language_service as language, login_policy_service as login_policy,
+    member_tier_service as member_tier,
     menu_service as menu, mfa_service as mfa, monitor_alert_service as monitor,
     notification_service as notification,
     online_session_service as online_session, order_service as order, org_unit_service as org_unit,
@@ -35,6 +36,7 @@ use shop_proto::proto::audit::service::v1::{
     permission_audit_log_service_server::PermissionAuditLogServiceServer,
 };
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::authentication::service::v1::login_policy_service_server::LoginPolicyServiceServer;
 use shop_proto::proto::authentication::service::v1::mfa_service_server::MfaServiceServer;
 use shop_proto::proto::authentication::service::v1::user_credential_service_server::UserCredentialServiceServer;
 use shop_proto::proto::cart::service::v1::{
@@ -137,6 +139,9 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         },
     ))
     .add_service(MfaServiceServer::new(mfa::MfaService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(LoginPolicyServiceServer::new(login_policy::LoginPolicyService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(BrandServiceServer::new(brand::BrandService {

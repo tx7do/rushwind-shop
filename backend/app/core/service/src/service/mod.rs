@@ -21,6 +21,7 @@ pub mod interaction_service;
 pub mod internal_message_service;
 pub mod invoice_service;
 pub mod language_service;
+pub mod login_policy_service;
 pub mod member_tier_service;
 pub mod menu_service;
 pub mod mfa_service;

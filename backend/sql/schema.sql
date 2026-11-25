@@ -564,3 +564,88 @@ CREATE TABLE IF NOT EXISTS public.mall_interaction_counters (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_interaction_counters_unique
     ON public.mall_interaction_counters (target_type, target_id, metric);
+
+CREATE TABLE IF NOT EXISTS public.mall_notification_channels (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    type varchar(30) NOT NULL DEFAULT 'EMAIL',
+    smtp_host varchar(191) NULL,
+    smtp_port int NULL,
+    smtp_username varchar(191) NULL,
+    smtp_password text NULL,
+    smtp_from varchar(191) NULL,
+    smtp_tls varchar(20) NULL,
+    smtp_from_name varchar(191) NULL,
+    webhook_url text NULL,
+    webhook_secret text NULL,
+    CONSTRAINT mall_notification_channels_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_notification_rules (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    event_type varchar(50) NOT NULL,
+    channel varchar(30) NOT NULL DEFAULT 'CHANNEL_UNSPECIFIED',
+    is_async boolean NULL DEFAULT true,
+    is_enabled boolean NULL DEFAULT true,
+    remark text NULL,
+    CONSTRAINT mall_notification_rules_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_notification_templates (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    code varchar(100) NOT NULL,
+    title_template text NULL,
+    content_template text NULL,
+    is_enabled boolean NULL DEFAULT true,
+    remark text NULL,
+    CONSTRAINT mall_notification_templates_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_notification_deliveries (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    event_type varchar(50) NOT NULL,
+    channel varchar(30) NOT NULL,
+    channel_id bigint NULL,
+    recipient_user_id bigint NULL,
+    target varchar(191) NULL,
+    status varchar(20) NOT NULL DEFAULT 'SENDING',
+    last_error text NULL,
+    sent_at timestamptz NULL,
+    related_id bigint NULL,
+    request_id varchar(100) NULL,
+    attempts int NULL DEFAULT 0,
+    receipt_provider_id varchar(191) NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    CONSTRAINT mall_notification_deliveries_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_notification_deliveries_recipient
+    ON public.mall_notification_deliveries (recipient_user_id);

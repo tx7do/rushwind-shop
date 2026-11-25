@@ -6,6 +6,7 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
+    notification_service as notification,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
 use crate::state::AppState;
@@ -19,6 +20,13 @@ use shop_proto::proto::payment::service::v1::{
     payment_channel_config_service_server::PaymentChannelConfigServiceServer,
     payment_refund_service_server::PaymentRefundServiceServer,
     payment_transaction_service_server::PaymentTransactionServiceServer,
+};
+use shop_proto::proto::notification::service::v1::{
+    notification_channel_service_server::NotificationChannelServiceServer,
+    notification_preference_service_server::NotificationPreferenceServiceServer,
+    notification_rule_service_server::NotificationRuleServiceServer,
+    notification_service_server::NotificationServiceServer,
+    notification_template_service_server::NotificationTemplateServiceServer,
 };
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
@@ -133,6 +141,27 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         }))
         .add_service(InteractionAdminServiceServer::new(
             interaction::InteractionAdminService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(NotificationChannelServiceServer::new(
+            notification::NotificationChannelService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(NotificationRuleServiceServer::new(notification::NotificationRuleService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(NotificationTemplateServiceServer::new(
+            notification::NotificationTemplateService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(NotificationServiceServer::new(notification::NotificationService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(NotificationPreferenceServiceServer::new(
+            notification::NotificationPreferenceService {
                 state: std::sync::Arc::clone(&state),
             },
         ))

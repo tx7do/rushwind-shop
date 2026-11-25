@@ -12,6 +12,7 @@ pub mod category_service;
 pub mod groupon_service;
 pub mod identity_service;
 pub mod interaction_service;
+pub mod notification_service;
 pub mod order_service;
 pub mod payment_service;
 pub mod product_service;

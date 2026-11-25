@@ -2,6 +2,7 @@
 
 pub mod brand_translations;
 pub mod cart_items;
+pub mod comments;
 pub mod coupon_templates;
 pub mod user_coupons;
 pub mod order_items;

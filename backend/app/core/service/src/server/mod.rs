@@ -4,7 +4,7 @@
 
 use std::sync::Arc;
 
-use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
+use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
@@ -32,6 +32,7 @@ use shop_proto::proto::coupon::service::v1::{
     coupon_template_service_server::CouponTemplateServiceServer,
     user_coupon_service_server::UserCouponServiceServer,
 };
+use shop_proto::proto::comment::service::v1::comment_service_server::CommentServiceServer;
 use shop_proto::proto::cart::service::v1::{
     cart_item_service_server::CartItemServiceServer, cart_service_server::CartServiceServer,
 };
@@ -117,5 +118,10 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(ShipmentServiceServer::new(shipping::ShipmentService {
             state: std::sync::Arc::clone(&state),
         }))
-        .add_service(WishlistServiceServer::new(wishlist::WishlistService { state }))
+        .add_service(WishlistServiceServer::new(wishlist::WishlistService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(CommentServiceServer::new(comment::CommentService {
+            state: std::sync::Arc::clone(&state),
+        }))
 }

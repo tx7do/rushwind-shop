@@ -506,3 +506,24 @@ CREATE TABLE IF NOT EXISTS public.mall_wishlist (
 );
 
 CREATE INDEX IF NOT EXISTS idx_wishlist_user ON public.mall_wishlist (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_comments (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    content_type varchar(40) NOT NULL DEFAULT 'CONTENT_TYPE_PRODUCT',
+    object_id bigint NOT NULL,
+    content text NULL,
+    status varchar(30) NOT NULL DEFAULT 'STATUS_APPROVED',
+    rating int NULL DEFAULT 5,
+    parent_id bigint NULL,
+    CONSTRAINT mall_comments_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_comments_object
+    ON public.mall_comments (content_type, object_id);

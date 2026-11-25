@@ -33,6 +33,7 @@ pub mod online_session_service;
 pub mod order_service;
 pub mod payment_service;
 pub mod product_service;
+pub mod server_monitor_service;
 pub mod shipping_service;
 pub mod task_service;
 pub mod wishlist_service;

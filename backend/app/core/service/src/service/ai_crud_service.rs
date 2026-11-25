@@ -240,7 +240,7 @@ impl aiv1::ai_provider_service_server::AiProviderService for AiProviderService {
 
 // ── Conversation ─────────────────────────────────────────────────────
 
-fn conversation_proto(r: sys_ai_conversations::Model) -> aiv1::AiConversation {
+pub fn conversation_proto(r: sys_ai_conversations::Model) -> aiv1::AiConversation {
     aiv1::AiConversation {
         id: Some(r.id),
         title: r.title,

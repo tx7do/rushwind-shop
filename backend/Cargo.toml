@@ -46,6 +46,7 @@ rushwind-password-argon2 = { path = "../../rushwind/crates/rushwind-password-arg
 rushwind-storage = { path = "../../rushwind/crates/rushwind-storage", version = "0.0.1" }
 rushwind-storage-seaorm = { path = "../../rushwind/crates/rushwind-storage-seaorm", version = "0.0.1" }
 rushwind-storage-seaorm-support = { path = "../../rushwind/crates/rushwind-storage-seaorm-support", version = "0.0.1" }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 rushwind-oss = { path = "../../rushwind/crates/rushwind-oss", version = "0.0.1" }
 rushwind-oss-s3 = { path = "../../rushwind/crates/rushwind-oss-s3", version = "0.0.1" }
 rushwind-script = { path = "../../rushwind/crates/rushwind-script", version = "0.0.1" }

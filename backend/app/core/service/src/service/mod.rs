@@ -3,6 +3,7 @@
 //! Unimplemented — the reference's servers register every module the
 //! same way and land their logic module by module.
 
+pub mod access_key_service;
 pub mod api_service;
 pub mod audit_service;
 pub mod authentication_service;
@@ -10,6 +11,7 @@ pub mod brand_service;
 pub mod cart_service;
 pub mod category_service;
 pub mod comment_service;
+pub mod config_service;
 pub mod constants;
 pub mod context;
 pub mod coupon_service;

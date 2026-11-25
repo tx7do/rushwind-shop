@@ -1535,3 +1535,41 @@ CREATE TABLE IF NOT EXISTS public.sys_plan_modules (
 );
 
 CREATE INDEX IF NOT EXISTS idx_plan_modules_plan ON public.sys_plan_modules (plan_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_configs (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    name varchar(100) NULL,
+    key varchar(100) NULL,
+    value text NULL,
+    value_type varchar(20) NULL DEFAULT 'STRING',
+    is_built_in boolean NULL DEFAULT false,
+    CONSTRAINT sys_configs_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_sys_configs_key ON public.sys_configs (key);
+
+CREATE TABLE IF NOT EXISTS public.sys_access_keys (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(100) NULL,
+    access_key varchar(100) NULL,
+    secret_hash varchar(128) NULL,
+    status varchar(10) NULL DEFAULT 'ON',
+    expires_at timestamptz NULL,
+    last_used_at timestamptz NULL,
+    CONSTRAINT sys_access_keys_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_sys_access_keys_ak ON public.sys_access_keys (access_key);

@@ -67,6 +67,8 @@ pub mod sys_positions;
 pub mod sys_login_policies;
 pub mod sys_role_metadata;
 pub mod sys_role_permissions;
+pub mod sys_access_keys;
+pub mod sys_configs;
 pub mod sys_roles;
 pub mod sys_tenants;
 pub mod sys_user_credentials;

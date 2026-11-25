@@ -5,9 +5,9 @@
 use std::sync::Arc;
 
 use crate::service::{
-    self, api_service as api, audit_service as audit, authentication_service as authentication,
+    self, access_key_service as access_key, api_service as api, audit_service as audit, authentication_service as authentication,
     brand_service as brand, cart_service as cart, category_service as category,
-    comment_service as comment, coupon_service as coupon,
+    comment_service as comment, config_service as config, coupon_service as coupon,
     file_service as file, file_transfer_service as file_transfer, oss_service as oss, dict_entry_service as dict_entry,
     dict_type_service as dict_type, groupon_service as groupon, identity_service as identity,
     interaction_service as interaction, internal_message_service as internal_message,
@@ -41,6 +41,8 @@ use shop_proto::proto::identity::service::v1::{
     plan_module_service_server::PlanModuleServiceServer,
     plan_quota_service_server::PlanQuotaServiceServer, plan_service_server::PlanServiceServer,
 };
+use shop_proto::proto::access_key::service::v1::access_key_service_server::AccessKeyServiceServer;
+use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
 use shop_proto::proto::storage::service::v1::{
     file_service_server::FileServiceServer, file_transfer_service_server::FileTransferServiceServer,
     oss_service_server::OssServiceServer,
@@ -163,6 +165,12 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(PlanServiceServer::new(plan::PlanService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(AccessKeyServiceServer::new(access_key::AccessKeyService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(ConfigServiceServer::new(config::ConfigService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(PlanQuotaServiceServer::new(plan::PlanQuotaService {

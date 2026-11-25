@@ -40,7 +40,10 @@ fn cart_item_proto(r: cart_items::Model) -> cartv1::CartItem {
     }
 }
 
-async fn items_of(db: &sea_orm::DatabaseConnection, cart_id: i64) -> Result<Vec<cart_items::Model>, Status> {
+async fn items_of(
+    db: &sea_orm::DatabaseConnection,
+    cart_id: i64,
+) -> Result<Vec<cart_items::Model>, Status> {
     repo::items_of_cart(db, cart_id).await
 }
 
@@ -64,13 +67,10 @@ impl cartv1::cart_service_server::CartService for CartService {
         &self,
         request: Request<PagingRequest>,
     ) -> Result<Response<cartv1::ListCartResponse>, Status> {
-        let (rows, total) = fetch_paged(
-            &self.state.db,
-            carts::Entity::find(),
-            &request.into_inner(),
-        )
-        .await
-        .map_err(|e| Status::internal(e.message))?;
+        let (rows, total) =
+            fetch_paged(&self.state.db, carts::Entity::find(), &request.into_inner())
+                .await
+                .map_err(|e| Status::internal(e.message))?;
         Ok(Response::new(cartv1::ListCartResponse {
             items: rows.into_iter().map(cart_proto).collect(),
             total: total as i64,
@@ -81,14 +81,12 @@ impl cartv1::cart_service_server::CartService for CartService {
         &self,
         request: Request<PagingRequest>,
     ) -> Result<Response<cartv1::CountCartResponse>, Status> {
-        let (_, total) = fetch_paged(
-            &self.state.db,
-            carts::Entity::find(),
-            &request.into_inner(),
-        )
-        .await
-        .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(cartv1::CountCartResponse { count: total as i64 }))
+        let (_, total) = fetch_paged(&self.state.db, carts::Entity::find(), &request.into_inner())
+            .await
+            .map_err(|e| Status::internal(e.message))?;
+        Ok(Response::new(cartv1::CountCartResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -99,7 +97,9 @@ impl cartv1::cart_service_server::CartService for CartService {
         let Some(cartv1::get_cart_request::QueryBy::Id(id)) = req.query_by else {
             return Err(bad("query_by required"));
         };
-        Ok(Response::new(cart_proto(repo::cart_by_id(&self.state.db, id).await?)))
+        Ok(Response::new(cart_proto(
+            repo::cart_by_id(&self.state.db, id).await?,
+        )))
     }
 
     async fn create(
@@ -229,7 +229,9 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(cartv1::CountCartItemResponse { count: total as i64 }))
+        Ok(Response::new(cartv1::CountCartItemResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -353,6 +355,9 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
 // Keep the items_of helper referenced (the cart view composition joins
 // with the storefront cart page).
 #[allow(dead_code)]
-async fn _keep(db: &sea_orm::DatabaseConnection, id: i64) -> Result<Vec<cart_items::Model>, Status> {
+async fn _keep(
+    db: &sea_orm::DatabaseConnection,
+    id: i64,
+) -> Result<Vec<cart_items::Model>, Status> {
     items_of(db, id).await
 }

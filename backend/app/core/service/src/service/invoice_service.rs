@@ -105,7 +105,9 @@ impl invoicev1::invoice_service_server::InvoiceService for InvoiceService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(invoicev1::CountInvoiceResponse { count: total as i64 }))
+        Ok(Response::new(invoicev1::CountInvoiceResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -130,9 +132,7 @@ impl invoicev1::invoice_service_server::InvoiceService for InvoiceService {
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
-        let order_id = data
-            .order_id
-            .ok_or_else(|| bad("data.orderId required"))?;
+        let order_id = data.order_id.ok_or_else(|| bad("data.orderId required"))?;
         // The invoice number: INV + the order id + a short random
         // suffix (the real tax bureau number rides the integration).
         let number = format!(
@@ -145,12 +145,11 @@ impl invoicev1::invoice_service_server::InvoiceService for InvoiceService {
             user_id: Set(data.user_id),
             invoice_number: Set(Some(number)),
             invoice_type: Set(invoice_type_to_str(data.invoice_type.unwrap_or(1)).to_string()),
-            status: Set(
-                data.status
-                    .and_then(status_to_str)
-                    .unwrap_or("PENDING")
-                    .to_string(),
-            ),
+            status: Set(data
+                .status
+                .and_then(status_to_str)
+                .unwrap_or("PENDING")
+                .to_string()),
             buyer_name: Set(data.buyer_name.clone()),
             buyer_tax_id: Set(data.buyer_tax_id.clone()),
             buyer_address: Set(data.buyer_address.clone()),

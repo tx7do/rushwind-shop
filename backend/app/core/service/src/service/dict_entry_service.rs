@@ -57,7 +57,8 @@ impl shop_proto::proto::dict::service::v1::dict_entry_service_server::DictEntryS
     async fn count(
         &self,
         _request: Request<shop_proto::proto::pagination::PagingRequest>,
-    ) -> Result<Response<shop_proto::proto::dict::service::v1::CountDictEntryResponse>, Status> {
+    ) -> Result<Response<shop_proto::proto::dict::service::v1::CountDictEntryResponse>, Status>
+    {
         let total = sys_dict_entries::Entity::find()
             .count(&self.state.db)
             .await
@@ -72,8 +73,10 @@ impl shop_proto::proto::dict::service::v1::dict_entry_service_server::DictEntryS
     async fn list_by_type_code(
         &self,
         request: Request<shop_proto::proto::dict::service::v1::ListDictEntryByTypeCodeRequest>,
-    ) -> Result<Response<shop_proto::proto::dict::service::v1::ListDictEntryByTypeCodeResponse>, Status>
-    {
+    ) -> Result<
+        Response<shop_proto::proto::dict::service::v1::ListDictEntryByTypeCodeResponse>,
+        Status,
+    > {
         let req = request.into_inner();
         let type_id = sys_dict_types::Entity::find()
             .filter(sys_dict_types::Column::TypeCode.eq(req.type_code))

@@ -32,21 +32,14 @@ fn parse_unverified(token: &str) -> Option<(String, i64, i64, i64)> {
     Some((sub, tid, iat, exp))
 }
 
-fn to_proto(
-    s: crate::token::SessionInfo,
-    current_jti: Option<&str>,
-) -> osv1::OnlineSession {
+fn to_proto(s: crate::token::SessionInfo, current_jti: Option<&str>) -> osv1::OnlineSession {
     use chrono::TimeZone as _;
     osv1::OnlineSession {
         jti: Some(s.jti.clone()),
         user_id: Some(s.user_id),
         username: Some(s.username.clone()),
         tenant_id: Some(s.tenant_id),
-        client_type: Some(if s.client == ClientKind::App {
-            1
-        } else {
-            0
-        }),
+        client_type: Some(if s.client == ClientKind::App { 1 } else { 0 }),
         login_at: chrono::Utc.timestamp_opt(s.login_at, 0).single().map(|dt| {
             pbjson_types::Timestamp {
                 seconds: dt.timestamp(),

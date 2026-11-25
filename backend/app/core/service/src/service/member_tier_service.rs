@@ -25,13 +25,11 @@ fn tier_proto(r: member_tiers::Model) -> catalogv1::MemberTier {
         points_multiplier: Some(r.points_multiplier.unwrap_or(1) as i32),
         badge_icon: r.badge_icon.clone(),
         currency: Some(r.currency.clone()),
-        status: Some(
-            if r.status == "ACTIVE" {
-                catalogv1::member_tier::Status::Active
-            } else {
-                catalogv1::member_tier::Status::Inactive
-            } as i32,
-        ),
+        status: Some(if r.status == "ACTIVE" {
+            catalogv1::member_tier::Status::Active
+        } else {
+            catalogv1::member_tier::Status::Inactive
+        } as i32),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
 
@@ -73,7 +71,9 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountMemberTierResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountMemberTierResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -149,14 +149,12 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
             active.points_multiplier = Set(Some(v as i32));
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == catalogv1::member_tier::Status::Active as i32 {
-                    "ACTIVE"
-                } else {
-                    "INACTIVE"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == catalogv1::member_tier::Status::Active as i32 {
+                "ACTIVE"
+            } else {
+                "INACTIVE"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;

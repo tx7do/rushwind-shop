@@ -57,13 +57,11 @@ fn tier_proto(r: member_tiers::Model) -> catalogv1::MemberTier {
         points_multiplier: r.points_multiplier,
         badge_icon: r.badge_icon.clone(),
         currency: Some(r.currency.clone()),
-        status: Some(
-            if r.status == "ACTIVE" {
-                catalogv1::member_tier::Status::Active
-            } else {
-                catalogv1::member_tier::Status::Inactive
-            } as i32,
-        ),
+        status: Some(if r.status == "ACTIVE" {
+            catalogv1::member_tier::Status::Active
+        } else {
+            catalogv1::member_tier::Status::Inactive
+        } as i32),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
         ..Default::default()
@@ -138,7 +136,9 @@ impl catalogv1::points_ledger_service_server::PointsLedgerService for PointsLedg
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountPointsLedgerResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountPointsLedgerResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -193,7 +193,12 @@ impl catalogv1::points_ledger_service_server::PointsLedgerService for PointsLedg
             .await
             .map_err(db_status)?
             .into_iter()
-            .any(|r| r.reason.as_deref().map(|s| s.starts_with(&day_prefix)).unwrap_or(false));
+            .any(|r| {
+                r.reason
+                    .as_deref()
+                    .map(|s| s.starts_with(&day_prefix))
+                    .unwrap_or(false)
+            });
         if existing {
             let balance = points_ledgers::Entity::find()
                 .filter(points_ledgers::Column::UserId.eq(user_id))
@@ -240,9 +245,12 @@ impl catalogv1::points_ledger_service_server::PointsLedgerService for PointsLedg
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let checked_in_today = rows
-            .iter()
-            .any(|r| r.reason.as_deref().map(|s| s.starts_with(&day_prefix)).unwrap_or(false));
+        let checked_in_today = rows.iter().any(|r| {
+            r.reason
+                .as_deref()
+                .map(|s| s.starts_with(&day_prefix))
+                .unwrap_or(false)
+        });
         Ok(Response::new(catalogv1::GetCheckInStatusResponse {
             checked_in_today,
             consecutive_days: rows.len() as i32,
@@ -302,4 +310,3 @@ impl catalogv1::points_ledger_service_server::PointsLedgerService for PointsLedg
         }))
     }
 }
-

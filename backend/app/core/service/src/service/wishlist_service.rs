@@ -71,9 +71,10 @@ impl wishlistv1::wishlist_service_server::WishlistService for WishlistService {
             .product_id
             .ok_or_else(|| bad("data.productId required"))?;
         // The owner: the data's user, else the forwarded operator.
-        let user_id = data.user_id.or((op != 0).then_some(op)).ok_or_else(|| {
-            bad("data.userId required (or forward the operator metadata)")
-        })?;
+        let user_id = data
+            .user_id
+            .or((op != 0).then_some(op))
+            .ok_or_else(|| bad("data.userId required (or forward the operator metadata)"))?;
         let active = wishlists::ActiveModel {
             user_id: Set(user_id),
             product_id: Set(product_id),

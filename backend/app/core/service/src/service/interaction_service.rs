@@ -124,8 +124,14 @@ impl interv1::interaction_service_server::InteractionService for InteractionServ
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
-            bump_counter(&self.state.db, target_type, target_id, "COUNTER_METRIC_LIKE", 1)
-                .await?
+            bump_counter(
+                &self.state.db,
+                target_type,
+                target_id,
+                "COUNTER_METRIC_LIKE",
+                1,
+            )
+            .await?
         };
         Ok(Response::new(interv1::LikeResponse {
             liked: true,
@@ -154,8 +160,14 @@ impl interv1::interaction_service_server::InteractionService for InteractionServ
         let count = if let Some(row) = row {
             let model: interaction_likes::ActiveModel = row.into();
             model.delete(&self.state.db).await.map_err(db_status)?;
-            bump_counter(&self.state.db, target_type, target_id, "COUNTER_METRIC_LIKE", -1)
-                .await?
+            bump_counter(
+                &self.state.db,
+                target_type,
+                target_id,
+                "COUNTER_METRIC_LIKE",
+                -1,
+            )
+            .await?
         } else {
             // The idempotent unlike of a never-liked target.
             interaction_counters::Entity::find()
@@ -193,8 +205,7 @@ impl interv1::interaction_service_server::InteractionService for InteractionServ
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let liked: std::collections::HashSet<i64> =
-            rows.into_iter().map(|r| r.target_id).collect();
+        let liked: std::collections::HashSet<i64> = rows.into_iter().map(|r| r.target_id).collect();
         let statuses = req
             .target_ids
             .into_iter()

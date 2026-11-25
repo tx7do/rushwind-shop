@@ -16,10 +16,7 @@ pub async fn brand_by_id(db: &DatabaseConnection, id: i64) -> StatusResult<brand
 /// The `code` query — the brands table carries no code column; the
 /// unique code lives on the translation's slug (the proto doc: "slug 或
 /// 其他唯一标识符"). Resolve through the translation table.
-pub async fn brand_by_code(
-    db: &DatabaseConnection,
-    code: &str,
-) -> StatusResult<brands::Model> {
+pub async fn brand_by_code(db: &DatabaseConnection, code: &str) -> StatusResult<brands::Model> {
     let t = brand_translations::Entity::find()
         .filter(brand_translations::Column::Slug.eq(code))
         .one(db)

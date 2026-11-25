@@ -204,5 +204,4 @@ impl identityv1::tenant_service_server::TenantService for TenantService {
             "create_tenant_with_admin_user rides the rbac phase",
         ))
     }
-
 }

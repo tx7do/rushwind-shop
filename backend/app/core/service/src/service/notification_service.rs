@@ -12,8 +12,7 @@ use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
 use store::entities::{
-    notification_channels, notification_deliveries, notification_rules,
-    notification_templates,
+    notification_channels, notification_deliveries, notification_rules, notification_templates,
 };
 use store::paging::fetch_paged;
 
@@ -77,28 +76,23 @@ fn channel_proto(r: notification_channels::Model) -> notifv1::NotificationChanne
     notifv1::NotificationChannel {
         id: Some(r.id),
         name: Some(r.name.clone()),
-        r#type: Some(
-            match r.r#type.as_str() {
-                "WEBHOOK" => Type::Webhook,
-                "SMS" => Type::Sms,
-                "WECOM_APP" => Type::WecomApp,
-                "DINGTALK_APP" => Type::DingtalkApp,
-                _ => Type::Email,
-            } as i32,
-        ),
+        r#type: Some(match r.r#type.as_str() {
+            "WEBHOOK" => Type::Webhook,
+            "SMS" => Type::Sms,
+            "WECOM_APP" => Type::WecomApp,
+            "DINGTALK_APP" => Type::DingtalkApp,
+            _ => Type::Email,
+        } as i32),
         smtp_host: r.smtp_host.clone(),
         smtp_port: r.smtp_port.map(|v| v as u32),
         smtp_username: r.smtp_username.clone(),
         has_password: Some(r.smtp_password.is_some()),
         smtp_from: r.smtp_from.clone(),
-        smtp_tls: r
-            .smtp_tls
-            .as_deref()
-            .map(|t| match t {
-                "SSL" => 2,
-                "STARTTLS" => 1,
-                _ => 0,
-            }),
+        smtp_tls: r.smtp_tls.as_deref().map(|t| match t {
+            "SSL" => 2,
+            "STARTTLS" => 1,
+            _ => 0,
+        }),
         smtp_from_name: r.smtp_from_name.clone(),
         webhook_url: r.webhook_url.clone(),
         has_webhook_secret: Some(r.webhook_secret.is_some()),
@@ -113,16 +107,14 @@ fn rule_proto(r: notification_rules::Model) -> notifv1::NotificationRule {
         id: Some(r.id),
         event_type: Some(notifv1::EventType::try_from(0).unwrap_or_default() as i32),
         channel: Some(
-            notifv1::Channel::try_from(
-                match r.channel.as_str() {
-                    "EMAIL" => 1,
-                    "WEBHOOK" => 2,
-                    "INTERNAL" => 3,
-                    "SMS" => 4,
-                    "EXT" => 5,
-                    _ => 0,
-                },
-            )
+            notifv1::Channel::try_from(match r.channel.as_str() {
+                "EMAIL" => 1,
+                "WEBHOOK" => 2,
+                "INTERNAL" => 3,
+                "SMS" => 4,
+                "EXT" => 5,
+                _ => 0,
+            })
             .unwrap_or(notifv1::Channel::Unspecified) as i32,
         ),
         is_async: r.is_async,
@@ -152,20 +144,16 @@ fn template_proto(r: notification_templates::Model) -> notifv1::NotificationTemp
 fn delivery_proto(r: notification_deliveries::Model) -> notifv1::NotificationDelivery {
     notifv1::NotificationDelivery {
         id: Some(r.id),
-        event_type: Some(
-            notifv1::EventType::try_from(0).unwrap_or_default() as i32,
-        ),
+        event_type: Some(notifv1::EventType::try_from(0).unwrap_or_default() as i32),
         channel: Some(
-            notifv1::Channel::try_from(
-                match r.channel.as_str() {
-                    "EMAIL" => 1,
-                    "WEBHOOK" => 2,
-                    "INTERNAL" => 3,
-                    "SMS" => 4,
-                    "EXT" => 5,
-                    _ => 0,
-                },
-            )
+            notifv1::Channel::try_from(match r.channel.as_str() {
+                "EMAIL" => 1,
+                "WEBHOOK" => 2,
+                "INTERNAL" => 3,
+                "SMS" => 4,
+                "EXT" => 5,
+                _ => 0,
+            })
             .unwrap_or(notifv1::Channel::Unspecified) as i32,
         ),
         channel_id: r.channel_id,
@@ -737,8 +725,8 @@ impl notifv1::notification_preference_service_server::NotificationPreferenceServ
                 name: Some("Channel test".to_string()),
             },
         ];
-        Ok(Response::new(notifv1::ListMyNotificationCategoriesResponse {
-            items,
-        }))
+        Ok(Response::new(
+            notifv1::ListMyNotificationCategoriesResponse { items },
+        ))
     }
 }

@@ -42,13 +42,11 @@ fn promotion_proto(r: promotions::Model) -> catalogv1::Promotion {
         valid_from: r.valid_from.and_then(ts_to_proto),
         valid_until: r.valid_until.and_then(ts_to_proto),
         currency: Some(r.currency.clone()),
-        status: Some(
-            if r.status == "ACTIVE" {
-                catalogv1::promotion::Status::Active
-            } else {
-                catalogv1::promotion::Status::Inactive
-            } as i32,
-        ),
+        status: Some(if r.status == "ACTIVE" {
+            catalogv1::promotion::Status::Active
+        } else {
+            catalogv1::promotion::Status::Inactive
+        } as i32),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
         updated_at: r.updated_at.and_then(ts_to_proto),
@@ -90,7 +88,9 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountPromotionResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountPromotionResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -169,14 +169,12 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
             active.reduction_amount = Set(Some(v));
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == catalogv1::promotion::Status::Active as i32 {
-                    "ACTIVE"
-                } else {
-                    "INACTIVE"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == catalogv1::promotion::Status::Active as i32 {
+                "ACTIVE"
+            } else {
+                "INACTIVE"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;
@@ -211,8 +209,7 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now: chrono::DateTime<chrono::FixedOffset> =
-            chrono::DateTime::from(store::now());
+        let now: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
         let items: Vec<catalogv1::Promotion> = rows
             .into_iter()
             .filter(|r| {

@@ -20,8 +20,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ],
         auth_free: AUTH_FREE,
         // The shop tree carries `(redact.internal_method*)` annotations the
-// framework's plan builder does not model yet; mounting the static plan
-// returns with their support (fail-closed means no partial plan).
+        // framework's plan builder does not model yet; mounting the static plan
+        // returns with their support (fail-closed means no partial plan).
         redact_plan_expr: None,
         proto_module_path: "crate::proto",
         pool_expr: "crate::pool()",

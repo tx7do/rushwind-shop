@@ -79,7 +79,9 @@ impl shop_proto::proto::dict::service::v1::dict_type_service_server::DictTypeSer
                     .one(&self.state.db)
                     .await
             }
-            Some(shop_proto::proto::dict::service::v1::get_dict_type_request::QueryBy::Code(code)) => {
+            Some(shop_proto::proto::dict::service::v1::get_dict_type_request::QueryBy::Code(
+                code,
+            )) => {
                 sys_dict_types::Entity::find()
                     .filter(sys_dict_types::Column::TypeCode.eq(code))
                     .one(&self.state.db)

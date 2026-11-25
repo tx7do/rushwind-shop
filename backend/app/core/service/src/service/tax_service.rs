@@ -20,13 +20,11 @@ fn rate_proto(r: tax_rates::Model) -> taxv1::TaxRate {
         id: Some(r.id),
         region: Some(r.region.clone()),
         tax_rate: Some(r.tax_rate),
-        status: Some(
-            if r.status == "ACTIVE" {
-                taxv1::tax_rate::Status::Active
-            } else {
-                taxv1::tax_rate::Status::Inactive
-            } as i32,
-        ),
+        status: Some(if r.status == "ACTIVE" {
+            taxv1::tax_rate::Status::Active
+        } else {
+            taxv1::tax_rate::Status::Inactive
+        } as i32),
         currency: Some(r.currency.clone()),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
@@ -69,7 +67,9 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(taxv1::CountTaxRateResponse { count: total as i64 }))
+        Ok(Response::new(taxv1::CountTaxRateResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -141,14 +141,12 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
             active.currency = Set(v);
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == taxv1::tax_rate::Status::Active as i32 {
-                    "ACTIVE"
-                } else {
-                    "INACTIVE"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == taxv1::tax_rate::Status::Active as i32 {
+                "ACTIVE"
+            } else {
+                "INACTIVE"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;

@@ -77,9 +77,10 @@ impl smv1::server_monitor_service_server::ServerMonitorService for ServerMonitor
                 hostname,
                 ..Default::default()
             }),
-            collected_at: Some(crate::state::ts_to_proto(store::now()).unwrap_or(
-                pbjson_types::Timestamp::default(),
-            )),
+            collected_at: Some(
+                crate::state::ts_to_proto(store::now())
+                    .unwrap_or(pbjson_types::Timestamp::default()),
+            ),
         }))
     }
 }

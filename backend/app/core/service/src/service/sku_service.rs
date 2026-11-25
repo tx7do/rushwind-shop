@@ -64,9 +64,10 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
         &self,
         request: Request<PagingRequest>,
     ) -> Result<Response<catalogv1::ListSkuResponse>, Status> {
-        let (rows, total) = fetch_paged(&self.state.db, skus::Entity::find(), &request.into_inner())
-            .await
-            .map_err(|e| Status::internal(e.message))?;
+        let (rows, total) =
+            fetch_paged(&self.state.db, skus::Entity::find(), &request.into_inner())
+                .await
+                .map_err(|e| Status::internal(e.message))?;
         Ok(Response::new(catalogv1::ListSkuResponse {
             items: rows.into_iter().map(sku_proto).collect(),
             total: total as i64,
@@ -80,7 +81,9 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
         let (_, total) = fetch_paged(&self.state.db, skus::Entity::find(), &request.into_inner())
             .await
             .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountSkuResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountSkuResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -105,7 +108,9 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
-        let product_id = data.product_id.ok_or_else(|| bad("data.productId required"))?;
+        let product_id = data
+            .product_id
+            .ok_or_else(|| bad("data.productId required"))?;
         let active = skus::ActiveModel {
             product_id: Set(product_id),
             sku_code: Set(data.sku_code.unwrap_or_default()),
@@ -237,7 +242,9 @@ impl catalogv1::sku_price_service_server::SkuPriceService for SkuPriceService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountSkuResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountSkuResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -355,10 +362,12 @@ impl catalogv1::sku_attribute_combination_service_server::SkuAttributeCombinatio
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::ListSkuAttributeCombinationResponse {
-            items: rows.into_iter().map(combination_proto).collect(),
-            total: total as i64,
-        }))
+        Ok(Response::new(
+            catalogv1::ListSkuAttributeCombinationResponse {
+                items: rows.into_iter().map(combination_proto).collect(),
+                total: total as i64,
+            },
+        ))
     }
 
     async fn count(
@@ -372,9 +381,11 @@ impl catalogv1::sku_attribute_combination_service_server::SkuAttributeCombinatio
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountSkuAttributeCombinationResponse {
-            count: total as i64,
-        }))
+        Ok(Response::new(
+            catalogv1::CountSkuAttributeCombinationResponse {
+                count: total as i64,
+            },
+        ))
     }
 
     async fn get(

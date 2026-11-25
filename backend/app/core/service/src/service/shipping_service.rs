@@ -10,7 +10,7 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{shipping_rates, shipments};
+use store::entities::{shipments, shipping_rates};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::pagination::PagingRequest;
@@ -22,10 +22,10 @@ fn rate_proto(r: shipping_rates::Model) -> shippingv1::ShippingRate {
         region: Some(r.region.clone()),
         base_fee: Some(r.base_fee),
         per_unit_fee: r.per_unit_fee,
-        status: Some(shippingv1::shipping_rate::Status::try_from(
-            if r.status == "ACTIVE" { 1 } else { 2 },
-        )
-        .unwrap_or(shippingv1::shipping_rate::Status::Active) as i32),
+        status: Some(
+            shippingv1::shipping_rate::Status::try_from(if r.status == "ACTIVE" { 1 } else { 2 })
+                .unwrap_or(shippingv1::shipping_rate::Status::Active) as i32,
+        ),
         currency: Some(r.currency.clone()),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
@@ -41,12 +41,14 @@ fn shipment_proto(r: shipments::Model) -> shippingv1::Shipment {
         user_id: r.user_id,
         carrier: r.carrier.clone(),
         tracking_number: r.tracking_number.clone(),
-        status: Some(shippingv1::shipment::Status::try_from(match r.status.as_str() {
-            "SHIPPED" => 2,
-            "DELIVERED" => 3,
-            _ => 1,
-        })
-        .unwrap_or(shippingv1::shipment::Status::Pending) as i32),
+        status: Some(
+            shippingv1::shipment::Status::try_from(match r.status.as_str() {
+                "SHIPPED" => 2,
+                "DELIVERED" => 3,
+                _ => 1,
+            })
+            .unwrap_or(shippingv1::shipment::Status::Pending) as i32,
+        ),
         tracking_events: r.tracking_events.clone(),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
@@ -122,11 +124,10 @@ impl shippingv1::shipping_rate_service_server::ShippingRateService for ShippingR
             base_fee: Set(data.base_fee.unwrap_or(0)),
             per_unit_fee: Set(Some(data.per_unit_fee.unwrap_or(0))),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
-            status: Set(
-                data.status
-                    .map(|v| if v == 1 { "ACTIVE" } else { "INACTIVE" }.to_string())
-                    .unwrap_or_else(|| "ACTIVE".to_string()),
-            ),
+            status: Set(data
+                .status
+                .map(|v| if v == 1 { "ACTIVE" } else { "INACTIVE" }.to_string())
+                .unwrap_or_else(|| "ACTIVE".to_string())),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             created_at: Set(Some(store::now().into())),
             ..Default::default()
@@ -214,7 +215,9 @@ impl shippingv1::shipment_service_server::ShipmentService for ShipmentService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(shippingv1::CountShipmentResponse { count: total as i64 }))
+        Ok(Response::new(shippingv1::CountShipmentResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -245,18 +248,17 @@ impl shippingv1::shipment_service_server::ShipmentService for ShipmentService {
             user_id: Set(data.user_id),
             carrier: Set(data.carrier),
             tracking_number: Set(data.tracking_number),
-            status: Set(
-                data.status
-                    .map(|v| {
-                        match shippingv1::shipment::Status::try_from(v).ok() {
-                            Some(shippingv1::shipment::Status::Shipped) => "SHIPPED",
-                            Some(shippingv1::shipment::Status::Delivered) => "DELIVERED",
-                            _ => "PENDING",
-                        }
-                        .to_string()
-                    })
-                    .unwrap_or_else(|| "PENDING".to_string()),
-            ),
+            status: Set(data
+                .status
+                .map(|v| {
+                    match shippingv1::shipment::Status::try_from(v).ok() {
+                        Some(shippingv1::shipment::Status::Shipped) => "SHIPPED",
+                        Some(shippingv1::shipment::Status::Delivered) => "DELIVERED",
+                        _ => "PENDING",
+                    }
+                    .to_string()
+                })
+                .unwrap_or_else(|| "PENDING".to_string())),
             tracking_events: Set(data.tracking_events),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             created_at: Set(Some(store::now().into())),
@@ -288,14 +290,12 @@ impl shippingv1::shipment_service_server::ShipmentService for ShipmentService {
             active.tracking_events = Set(Some(v));
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                match shippingv1::shipment::Status::try_from(v).ok() {
-                    Some(shippingv1::shipment::Status::Shipped) => "SHIPPED",
-                    Some(shippingv1::shipment::Status::Delivered) => "DELIVERED",
-                    _ => "PENDING",
-                }
-                .to_string(),
-            );
+            active.status = Set(match shippingv1::shipment::Status::try_from(v).ok() {
+                Some(shippingv1::shipment::Status::Shipped) => "SHIPPED",
+                Some(shippingv1::shipment::Status::Delivered) => "DELIVERED",
+                _ => "PENDING",
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;

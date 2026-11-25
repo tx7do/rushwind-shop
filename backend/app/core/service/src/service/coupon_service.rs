@@ -198,11 +198,10 @@ impl couponv1::coupon_template_service_server::CouponTemplateService for CouponT
         let data = req.data.ok_or_else(|| bad("data required"))?;
         let active = coupon_templates::ActiveModel {
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
-            discount_type: Set(
-                data.discount_type
-                    .and_then(discount_type_to_str)
-                    .unwrap_or_else(|| "FIXED_AMOUNT".to_string()),
-            ),
+            discount_type: Set(data
+                .discount_type
+                .and_then(discount_type_to_str)
+                .unwrap_or_else(|| "FIXED_AMOUNT".to_string())),
             discount_value: Set(Some(data.discount_value.unwrap_or(0))),
             discount_percentage: Set(data.discount_percentage),
             valid_from: Set(data.valid_from.map(ts_from_proto)),
@@ -210,11 +209,10 @@ impl couponv1::coupon_template_service_server::CouponTemplateService for CouponT
             max_redemptions: Set(data.max_redemptions),
             max_redemptions_per_user: Set(data.max_redemptions_per_user),
             redeemed_count: Set(Some(0)),
-            status: Set(
-                data.status
-                    .and_then(template_status_to_str)
-                    .unwrap_or_else(|| "ACTIVE".to_string()),
-            ),
+            status: Set(data
+                .status
+                .and_then(template_status_to_str)
+                .unwrap_or_else(|| "ACTIVE".to_string())),
             claimable: Set(Some(data.claimable.unwrap_or(true))),
             points_price: Set(Some(data.points_price.unwrap_or(0))),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
@@ -338,11 +336,10 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
         let active = user_coupons::ActiveModel {
             user_id: Set(user_id),
             coupon_template_id: Set(template_id),
-            status: Set(
-                data.status
-                    .and_then(user_status_to_str)
-                    .unwrap_or_else(|| "UNUSED".to_string()),
-            ),
+            status: Set(data
+                .status
+                .and_then(user_status_to_str)
+                .unwrap_or_else(|| "UNUSED".to_string())),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             created_at: Set(Some(store::now().into())),
             ..Default::default()
@@ -440,11 +437,7 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
         let mut t_active: coupon_templates::ActiveModel = template.into();
-        let redeemed = t_active
-            .redeemed_count
-            .clone()
-            .take()
-            .unwrap_or_default();
+        let redeemed = t_active.redeemed_count.clone().take().unwrap_or_default();
         t_active.redeemed_count = Set(Some(redeemed.unwrap_or(0) + 1));
         t_active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))

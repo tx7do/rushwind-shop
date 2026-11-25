@@ -69,10 +69,10 @@ struct ClientSection {
 impl Config {
     /// Embedded defaults, env overrides win.
     pub fn load() -> Result<Self, String> {
-        let data: DataFile = serde_yaml::from_str(DATA_YAML)
-            .map_err(|e| format!("data.yaml: {e}"))?;
-        let auth: AuthFile = serde_yaml::from_str(AUTH_YAML)
-            .map_err(|e| format!("auth.yaml: {e}"))?;
+        let data: DataFile =
+            serde_yaml::from_str(DATA_YAML).map_err(|e| format!("data.yaml: {e}"))?;
+        let auth: AuthFile =
+            serde_yaml::from_str(AUTH_YAML).map_err(|e| format!("auth.yaml: {e}"))?;
 
         let section = auth
             .authenticator
@@ -91,9 +91,8 @@ impl Config {
             .ok()
             .filter(|s| !s.is_empty())
             .unwrap_or(section.key);
-        let to_secs = |d: Option<DurationWire>| -> i64 {
-            d.map(|d| d.0.as_secs() as i64).unwrap_or(5400)
-        };
+        let to_secs =
+            |d: Option<DurationWire>| -> i64 { d.map(|d| d.0.as_secs() as i64).unwrap_or(5400) };
 
         Ok(Self {
             core_addr,

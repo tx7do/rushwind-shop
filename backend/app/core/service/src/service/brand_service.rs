@@ -14,9 +14,7 @@ use store::paging::fetch_paged;
 use shop_proto::proto::catalog::service::v1 as catalogv1;
 use shop_proto::proto::pagination::PagingRequest;
 
-pub(crate) fn brand_translation_proto(
-    r: brand_translations::Model,
-) -> catalogv1::BrandTranslation {
+pub(crate) fn brand_translation_proto(r: brand_translations::Model) -> catalogv1::BrandTranslation {
     catalogv1::BrandTranslation {
         id: Some(r.id),
         brand_id: Some(r.brand_id),
@@ -74,7 +72,10 @@ fn brand_active(
     now: chrono::DateTime<chrono::FixedOffset>,
 ) -> brands::ActiveModel {
     brands::ActiveModel {
-        sort_order: data.sort_order.map(|v| Set(Some(v as i32))).unwrap_or(Set(None::<i32>)),
+        sort_order: data
+            .sort_order
+            .map(|v| Set(Some(v as i32)))
+            .unwrap_or(Set(None::<i32>)),
         logo_url: Set(data.logo_url),
         created_at: Set(Some(now.into())),
         ..Default::default()
@@ -213,8 +214,7 @@ impl catalogv1::brand_service_server::BrandService for BrandService {
         request: Request<catalogv1::BrandTranslationExistsRequest>,
     ) -> Result<Response<catalogv1::BrandTranslationExistsResponse>, Status> {
         let req = request.into_inner();
-        let row =
-            repo::translation_of(&self.state.db, req.brand_id, &req.language_code).await?;
+        let row = repo::translation_of(&self.state.db, req.brand_id, &req.language_code).await?;
         Ok(Response::new(catalogv1::BrandTranslationExistsResponse {
             exists: row.is_some(),
         }))
@@ -276,9 +276,7 @@ impl catalogv1::brand_service_server::BrandService for BrandService {
         let req = request.into_inner();
         let id = match req.query_by {
             Some(catalogv1::delete_brand_translation_request::QueryBy::Id(id)) => id,
-            Some(catalogv1::delete_brand_translation_request::QueryBy::Identifier(
-                identifier,
-            )) => {
+            Some(catalogv1::delete_brand_translation_request::QueryBy::Identifier(identifier)) => {
                 let row = repo::translation_of(
                     &self.state.db,
                     identifier.brand_id,

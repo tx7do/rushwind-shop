@@ -22,13 +22,11 @@ fn alert_proto(r: stock_alerts::Model) -> catalogv1::StockAlert {
         sku_id: Some(r.sku_id),
         stock_qty_at_trigger: Some(r.stock_qty_at_trigger),
         threshold: Some(r.threshold),
-        status: Some(
-            if r.status == "RESOLVED" {
-                catalogv1::stock_alert::Status::Resolved
-            } else {
-                catalogv1::stock_alert::Status::Open
-            } as i32,
-        ),
+        status: Some(if r.status == "RESOLVED" {
+            catalogv1::stock_alert::Status::Resolved
+        } else {
+            catalogv1::stock_alert::Status::Open
+        } as i32),
         created_at: r.created_at.and_then(ts_to_proto),
         ..Default::default()
     }
@@ -81,7 +79,6 @@ impl catalogv1::stock_alert_service_server::StockAlertService for StockAlertServ
         }))
     }
 
-
     async fn get(
         &self,
         request: Request<catalogv1::GetStockAlertRequest>,
@@ -111,20 +108,17 @@ impl catalogv1::stock_alert_service_server::StockAlertService for StockAlertServ
             .ok_or_else(|| Status::not_found("stock alert not found"))?;
         let mut active: stock_alerts::ActiveModel = existing.into();
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == catalogv1::stock_alert::Status::Resolved as i32 {
-                    "RESOLVED"
-                } else {
-                    "OPEN"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == catalogv1::stock_alert::Status::Resolved as i32 {
+                "RESOLVED"
+            } else {
+                "OPEN"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
-
 }
 
 /// The internal append face (the sku AdjustStock flow calls this when
@@ -189,7 +183,9 @@ impl catalogv1::stock_op_log_service_server::StockOpLogService for StockOpLogSer
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountStockOpLogResponse { count: total as i64 }))
+        Ok(Response::new(catalogv1::CountStockOpLogResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -207,5 +203,4 @@ impl catalogv1::stock_op_log_service_server::StockOpLogService for StockOpLogSer
             .ok_or_else(|| Status::not_found("stock op log not found"))?;
         Ok(Response::new(op_log_proto(row)))
     }
-
 }

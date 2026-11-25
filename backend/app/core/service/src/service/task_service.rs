@@ -57,9 +57,10 @@ impl taskv1::task_service_server::TaskService for TaskService {
         &self,
         request: Request<PagingRequest>,
     ) -> Result<Response<taskv1::ListTaskResponse>, Status> {
-        let (rows, total) = fetch_paged(&self.state.db, tasks::Entity::find(), &request.into_inner())
-            .await
-            .map_err(|e| Status::internal(e.message))?;
+        let (rows, total) =
+            fetch_paged(&self.state.db, tasks::Entity::find(), &request.into_inner())
+                .await
+                .map_err(|e| Status::internal(e.message))?;
         Ok(Response::new(taskv1::ListTaskResponse {
             items: rows.into_iter().map(task_proto).collect(),
             total: total as i64,
@@ -73,7 +74,9 @@ impl taskv1::task_service_server::TaskService for TaskService {
         let (_, total) = fetch_paged(&self.state.db, tasks::Entity::find(), &request.into_inner())
             .await
             .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(taskv1::CountTaskResponse { count: total as i64 }))
+        Ok(Response::new(taskv1::CountTaskResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -118,7 +121,9 @@ impl taskv1::task_service_server::TaskService for TaskService {
             type_name: Set(type_name),
             payload: Set(data.task_payload.clone()),
             cron_spec: Set(data.cron_spec.clone()),
-            options: Set(data.task_options.map(|o| serde_json::json!({ "max_retry": o.max_retry }))),
+            options: Set(data
+                .task_options
+                .map(|o| serde_json::json!({ "max_retry": o.max_retry }))),
             enable: Set(Some(data.enable.unwrap_or(true))),
             remark: Set(data.remark.clone()),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),

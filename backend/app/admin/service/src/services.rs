@@ -5,10 +5,8 @@
 //! land with their domains.
 
 pub mod behaviors;
-pub mod proxy_kit;
 pub mod proxies;
-
-
+pub mod proxy_kit;
 
 use crate::state::StatusError;
 

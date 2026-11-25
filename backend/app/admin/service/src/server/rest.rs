@@ -23,9 +23,9 @@ use axum::routing::MethodRouter;
 
 use crate::state::AppState;
 use auth::auth_gate;
-use shop_proto::pool;
 use rushwind_http_binding::bindgate::bind_run;
 use rushwind_http_binding::wire::RouteWire;
+use shop_proto::pool;
 
 /// The deployment's registered codec subtypes — the packages
 /// its binary imports (the compatibility spec §2.1 register).

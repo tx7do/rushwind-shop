@@ -23,9 +23,9 @@ use axum::routing::MethodRouter;
 
 use crate::state::AppState;
 use auth::auth_gate;
-use shop_proto::pool;
 use rushwind_http_binding::bindgate::bind_run;
 use rushwind_http_binding::wire::RouteWire;
+use shop_proto::pool;
 
 /// The deployment's registered codec subtypes — the packages
 /// its binary imports (the compatibility spec §2.1 register).
@@ -51,7 +51,8 @@ impl auth::AccessTokenChecker for CoreTokenChecker {
                     // The app BFF's session store is the ct=1 side — the
                     // validation dials the same client the token was
                     // minted against.
-                    client_type: shop_proto::proto::authentication::service::v1::ClientType::App as i32,
+                    client_type: shop_proto::proto::authentication::service::v1::ClientType::App
+                        as i32,
                     ..Default::default()
                 },
             ))

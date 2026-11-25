@@ -101,7 +101,9 @@ impl auditv1::api_audit_log_service_server::ApiAuditLogService for ApiAuditLogSe
         request: Request<auditv1::CreateApiAuditLogRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let data = req.data.ok_or_else(|| Status::invalid_argument("data required"))?;
+        let data = req
+            .data
+            .ok_or_else(|| Status::invalid_argument("data required"))?;
         let active = api_audit_logs::ActiveModel {
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             user_id: Set(data.user_id),
@@ -192,7 +194,9 @@ impl auditv1::login_audit_log_service_server::LoginAuditLogService for LoginAudi
         request: Request<auditv1::CreateLoginAuditLogRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let data = req.data.ok_or_else(|| Status::invalid_argument("data required"))?;
+        let data = req
+            .data
+            .ok_or_else(|| Status::invalid_argument("data required"))?;
         let active = login_audit_logs::ActiveModel {
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             user_id: Set(data.user_id),
@@ -285,7 +289,9 @@ impl auditv1::operation_audit_log_service_server::OperationAuditLogService
         request: Request<auditv1::CreateOperationAuditLogRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let data = req.data.ok_or_else(|| Status::invalid_argument("data required"))?;
+        let data = req
+            .data
+            .ok_or_else(|| Status::invalid_argument("data required"))?;
         let active = operation_audit_logs::ActiveModel {
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             user_id: Set(data.user_id),
@@ -380,7 +386,9 @@ impl auditv1::data_access_audit_log_service_server::DataAccessAuditLogService
         request: Request<auditv1::CreateDataAccessAuditLogRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let data = req.data.ok_or_else(|| Status::invalid_argument("data required"))?;
+        let data = req
+            .data
+            .ok_or_else(|| Status::invalid_argument("data required"))?;
         let active = data_access_audit_logs::ActiveModel {
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             user_id: Set(data.user_id),
@@ -478,7 +486,9 @@ impl auditv1::permission_audit_log_service_server::PermissionAuditLogService
         request: Request<auditv1::CreatePermissionAuditLogRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let data = req.data.ok_or_else(|| Status::invalid_argument("data required"))?;
+        let data = req
+            .data
+            .ok_or_else(|| Status::invalid_argument("data required"))?;
         let active = permission_audit_logs::ActiveModel {
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             operator_id: Set(data.operator_id),

@@ -31,7 +31,9 @@ pub struct LanguageService {
 }
 
 #[async_trait::async_trait]
-impl shop_proto::proto::dict::service::v1::language_service_server::LanguageService for LanguageService {
+impl shop_proto::proto::dict::service::v1::language_service_server::LanguageService
+    for LanguageService
+{
     async fn list(
         &self,
         request: Request<shop_proto::proto::pagination::PagingRequest>,

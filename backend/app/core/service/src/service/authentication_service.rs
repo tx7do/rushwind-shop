@@ -15,11 +15,11 @@ use store::entities::sys_users;
 
 use shop_proto::proto::authentication::service::v1 as authv1;
 use shop_proto::proto::authentication::service::v1::{
-    login_request, BlockTokenRequest, BlockTokenResponse, GenerateCaptchaResponse, GrantType,
-    GetAccessTokensRequest, GetAccessTokensResponse, LoginRequest, LoginResponse, LogoutRequest,
-    RevokeTokenByIdRequest, TokenType, UnblockTokenRequest, RegisterUserRequest,
-    RegisterUserResponse, ValidateTokenRequest, ValidateTokenResponse, VerifyCaptchaRequest,
-    VerifyCaptchaResponse, WhoAmIResponse, UserTokenPayload,
+    login_request, BlockTokenRequest, BlockTokenResponse, GenerateCaptchaResponse,
+    GetAccessTokensRequest, GetAccessTokensResponse, GrantType, LoginRequest, LoginResponse,
+    LogoutRequest, RegisterUserRequest, RegisterUserResponse, RevokeTokenByIdRequest, TokenType,
+    UnblockTokenRequest, UserTokenPayload, ValidateTokenRequest, ValidateTokenResponse,
+    VerifyCaptchaRequest, VerifyCaptchaResponse, WhoAmIResponse,
 };
 
 type ResponseResult<T> = Result<Response<T>, Status>;
@@ -183,7 +183,12 @@ impl AuthenticationService {
             return Err(Status::unauthenticated("refresh token invalid"));
         }
         let (access, refresh) = self
-            .issue_pair(client, row.id, row.tenant_id.unwrap_or(0), &row.username.clone())
+            .issue_pair(
+                client,
+                row.id,
+                row.tenant_id.unwrap_or(0),
+                &row.username.clone(),
+            )
             .await?;
         Ok(self.login_response(client, access, refresh))
     }
@@ -196,9 +201,7 @@ impl AuthenticationService {
         let claims = self
             .state
             .jwt
-            .authenticate(&[
-                ("authorization".to_string(), format!("Bearer {token}")),
-            ])
+            .authenticate(&[("authorization".to_string(), format!("Bearer {token}"))])
             .map_err(|_| Status::unauthenticated("invalid token"))?;
         let uid = claims
             .0
@@ -218,18 +221,26 @@ impl AuthenticationService {
             .unwrap_or_default()
             .to_string();
         let tid = claims.0.get("tid").and_then(|v| v.as_i64()).unwrap_or(0);
-        let valid = self.tokens(client).is_valid_access_token(uid, &jti, token).await;
+        let valid = self
+            .tokens(client)
+            .is_valid_access_token(uid, &jti, token)
+            .await;
         let blocked = self.tokens(client).is_blocked(&jti).await;
-        Ok((Identity { user_id: uid, tenant_id: tid, username, jti }, valid && !blocked))
+        Ok((
+            Identity {
+                user_id: uid,
+                tenant_id: tid,
+                username,
+                jti,
+            },
+            valid && !blocked,
+        ))
     }
 }
 
 #[async_trait::async_trait]
 impl authv1::authentication_service_server::AuthenticationService for AuthenticationService {
-    async fn login(
-        &self,
-        request: Request<LoginRequest>,
-    ) -> ResponseResult<LoginResponse> {
+    async fn login(&self, request: Request<LoginRequest>) -> ResponseResult<LoginResponse> {
         let req = request.into_inner();
         let resp = match GrantType::try_from(req.grant_type) {
             Ok(GrantType::Password) => self.do_password(&req).await?,
@@ -239,10 +250,7 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
         Ok(Response::new(resp))
     }
 
-    async fn logout(
-        &self,
-        request: Request<LogoutRequest>,
-    ) -> ResponseResult<pbjson_types::Empty> {
+    async fn logout(&self, request: Request<LogoutRequest>) -> ResponseResult<pbjson_types::Empty> {
         let req = request.into_inner();
         let client = crate::token::ClientKind::from_i32(req.client_type);
         if req.user_id == 0 {
@@ -286,17 +294,11 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
             created_at: sea_orm::Set(Some(store::now().into())),
             ..Default::default()
         };
-        let row = active
-            .insert(&self.state.db)
-            .await
-            .map_err(db_status)?;
+        let row = active.insert(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(RegisterUserResponse { user_id: row.id }))
     }
 
-    async fn refresh_token(
-        &self,
-        request: Request<LoginRequest>,
-    ) -> ResponseResult<LoginResponse> {
+    async fn refresh_token(&self, request: Request<LoginRequest>) -> ResponseResult<LoginResponse> {
         let req = request.into_inner();
         Ok(Response::new(self.do_refresh(&req).await?))
     }
@@ -332,7 +334,9 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
             .access_tokens(req.user_id)
             .await
             .map_err(Status::internal)?;
-        Ok(Response::new(GetAccessTokensResponse { access_tokens: tokens }))
+        Ok(Response::new(GetAccessTokensResponse {
+            access_tokens: tokens,
+        }))
     }
 
     async fn revoke_token_by_id(
@@ -368,7 +372,7 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
             .block_token(&jti, 24 * 3600)
             .await
             .map_err(Status::internal)?;
-                Ok(Response::new(BlockTokenResponse {
+        Ok(Response::new(BlockTokenResponse {
             blocked_until: Some(pbjson_types::Timestamp {
                 seconds: now + 24 * 3600,
                 nanos: 0,

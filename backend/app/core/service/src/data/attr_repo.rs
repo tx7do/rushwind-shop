@@ -5,11 +5,14 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, Qu
 
 use crate::state::{not_found_status, StatusResult};
 use store::entities::{
-    product_attribute_translations, product_attribute_value_translations, product_attributes,
-    product_attribute_values,
+    product_attribute_translations, product_attribute_value_translations, product_attribute_values,
+    product_attributes,
 };
 
-pub async fn attribute_by_id(db: &DatabaseConnection, id: i64) -> StatusResult<product_attributes::Model> {
+pub async fn attribute_by_id(
+    db: &DatabaseConnection,
+    id: i64,
+) -> StatusResult<product_attributes::Model> {
     product_attributes::Entity::find_by_id(id)
         .one(db)
         .await

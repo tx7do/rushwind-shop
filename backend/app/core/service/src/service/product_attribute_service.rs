@@ -63,7 +63,10 @@ async fn attr_translations_of(
     repo::translations_of(db, id).await
 }
 
-async fn attribute_of(db: &sea_orm::DatabaseConnection, id: i64) -> Result<catalogv1::ProductAttribute, Status> {
+async fn attribute_of(
+    db: &sea_orm::DatabaseConnection,
+    id: i64,
+) -> Result<catalogv1::ProductAttribute, Status> {
     let row = repo::attribute_by_id(db, id).await?;
     let translations = attr_translations_of(db, row.id).await?;
     Ok(attribute_proto(row, translations))
@@ -77,7 +80,10 @@ fn attribute_active(
     now: chrono::DateTime<chrono::FixedOffset>,
 ) -> product_attributes::ActiveModel {
     product_attributes::ActiveModel {
-        sort_order: data.sort_order.map(|v| Set(Some(v as i32))).unwrap_or(Set(None::<i32>)),
+        sort_order: data
+            .sort_order
+            .map(|v| Set(Some(v as i32)))
+            .unwrap_or(Set(None::<i32>)),
         created_at: Set(Some(now.into())),
         ..Default::default()
     }
@@ -88,7 +94,9 @@ pub struct ProductAttributeService {
 }
 
 #[async_trait::async_trait]
-impl catalogv1::product_attribute_service_server::ProductAttributeService for ProductAttributeService {
+impl catalogv1::product_attribute_service_server::ProductAttributeService
+    for ProductAttributeService
+{
     async fn list(
         &self,
         request: Request<PagingRequest>,
@@ -197,7 +205,8 @@ impl catalogv1::product_attribute_service_server::ProductAttributeService for Pr
         request: Request<catalogv1::DeleteProductAttributeRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(catalogv1::delete_product_attribute_request::QueryBy::Id(id)) = req.query_by else {
+        let Some(catalogv1::delete_product_attribute_request::QueryBy::Id(id)) = req.query_by
+        else {
             return Err(bad("query_by required"));
         };
         repo::delete_attribute(&self.state.db, id).await?;
@@ -211,9 +220,11 @@ impl catalogv1::product_attribute_service_server::ProductAttributeService for Pr
         let req = request.into_inner();
         let row =
             repo::translation_of(&self.state.db, req.attribute_id, &req.language_code).await?;
-        Ok(Response::new(catalogv1::ProductAttributeTranslationExistsResponse {
-            exists: row.is_some(),
-        }))
+        Ok(Response::new(
+            catalogv1::ProductAttributeTranslationExistsResponse {
+                exists: row.is_some(),
+            },
+        ))
     }
 
     async fn get_translation(
@@ -241,7 +252,9 @@ impl catalogv1::product_attribute_service_server::ProductAttributeService for Pr
     ) -> Result<Response<catalogv1::ProductAttributeTranslation>, Status> {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
-        let attribute_id = data.attribute_id.ok_or_else(|| bad("data.attributeId required"))?;
+        let attribute_id = data
+            .attribute_id
+            .ok_or_else(|| bad("data.attributeId required"))?;
         let active = attr_translation_active(data, attribute_id, store::now())?;
         let row = repo::insert_translation(&self.state.db, active).await?;
         Ok(Response::new(attr_translation_proto(row)))

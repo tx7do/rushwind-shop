@@ -11,13 +11,11 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{
-    orders, payment_channel_configs, payment_refunds, payment_transactions,
-};
+use store::entities::{orders, payment_channel_configs, payment_refunds, payment_transactions};
 use store::paging::fetch_paged;
 
-use shop_proto::proto::payment::service::v1 as paymentv1;
 use shop_proto::proto::pagination::PagingRequest;
+use shop_proto::proto::payment::service::v1 as paymentv1;
 
 fn status_to_i32(stored: &str) -> i32 {
     use paymentv1::payment_transaction::Status;
@@ -76,8 +74,10 @@ fn channel_proto(r: payment_channel_configs::Model) -> paymentv1::PaymentChannel
     paymentv1::PaymentChannelConfig {
         id: Some(r.id),
         name: Some(r.name.clone()),
-        channel: Some(channel_to_i32(r.channel.as_str())
-            .unwrap_or(paymentv1::PaymentChannelType::PaymentChannelUnspecified as i32)),
+        channel: Some(
+            channel_to_i32(r.channel.as_str())
+                .unwrap_or(paymentv1::PaymentChannelType::PaymentChannelUnspecified as i32),
+        ),
         app_id: r.app_id.clone(),
         mch_id: r.mch_id.clone(),
         sandbox: r.sandbox,
@@ -187,8 +187,7 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
         request: Request<paymentv1::GetPaymentTransactionRequest>,
     ) -> Result<Response<paymentv1::PaymentTransaction>, Status> {
         let req = request.into_inner();
-        let Some(paymentv1::get_payment_transaction_request::QueryBy::Id(id)) = req.query_by
-        else {
+        let Some(paymentv1::get_payment_transaction_request::QueryBy::Id(id)) = req.query_by else {
             return Err(bad("query_by required"));
         };
         let row = payment_transactions::Entity::find_by_id(id)
@@ -211,11 +210,10 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
             user_id: Set(data.user_id),
             amount: Set(data.amount.unwrap_or(0)),
             currency: Set(data.currency.clone().unwrap_or_else(|| "CNY".to_string())),
-            status: Set(
-                data.status
-                    .and_then(status_to_str_from_i32)
-                    .unwrap_or_else(|| "PENDING".to_string()),
-            ),
+            status: Set(data
+                .status
+                .and_then(status_to_str_from_i32)
+                .unwrap_or_else(|| "PENDING".to_string())),
             business_ref_id: Set(data.business_ref_id.clone()),
             idempotency_key: Set(data.idempotency_key.clone()),
             payment_method: Set(data.payment_method.and_then(payment_method_to_str)),
@@ -245,11 +243,13 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
             active.gateway_trade_no = Set(Some(v.clone()));
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                status_to_str_from_i32(v).unwrap_or_else(|| {
-                    active.status.clone().take().unwrap_or_else(|| "PENDING".into())
-                }),
-            );
+            active.status = Set(status_to_str_from_i32(v).unwrap_or_else(|| {
+                active
+                    .status
+                    .clone()
+                    .take()
+                    .unwrap_or_else(|| "PENDING".into())
+            }));
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;
@@ -306,13 +306,11 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
-        Ok(Response::new(
-            paymentv1::CreatePaymentIntentResponse {
-                transaction: Some(tx_proto(row)),
-                channel: Some(channel_proto(channel)),
-                subject: format!("Order #{} — RushWind Shop", req.order_id),
-            },
-        ))
+        Ok(Response::new(paymentv1::CreatePaymentIntentResponse {
+            transaction: Some(tx_proto(row)),
+            channel: Some(channel_proto(channel)),
+            subject: format!("Order #{} — RushWind Shop", req.order_id),
+        }))
     }
 
     /// The confirm face: PENDING → SUCCEEDED (first success only),
@@ -380,15 +378,13 @@ fn payment_method_to_str(v: i32) -> Option<String> {
 #[allow(dead_code)]
 fn payment_method_to_i32(stored: &str) -> Option<i32> {
     use paymentv1::PaymentMethod;
-    Some(
-        match stored {
-            "BALANCE" => PaymentMethod::Balance,
-            "CREDIT" => PaymentMethod::Credit,
-            "WECHAT" => PaymentMethod::Wechat,
-            "MOCK" => PaymentMethod::Mock,
-            _ => return None,
-        } as i32,
-    )
+    Some(match stored {
+        "BALANCE" => PaymentMethod::Balance,
+        "CREDIT" => PaymentMethod::Credit,
+        "WECHAT" => PaymentMethod::Wechat,
+        "MOCK" => PaymentMethod::Mock,
+        _ => return None,
+    } as i32)
 }
 
 #[allow(dead_code)]
@@ -417,15 +413,13 @@ fn business_type_to_i32(stored: &str) -> Option<i32> {
 #[allow(dead_code)]
 fn channel_to_i32(stored: &str) -> Option<i32> {
     use paymentv1::PaymentChannelType;
-    Some(
-        match stored {
-            "PAYMENT_CHANNEL_MOCK" => PaymentChannelType::PaymentChannelMock,
-            "PAYMENT_CHANNEL_WECHAT_NATIVE" => PaymentChannelType::PaymentChannelWechatNative,
-            "PAYMENT_CHANNEL_WECHAT_H5" => PaymentChannelType::PaymentChannelWechatH5,
-            "PAYMENT_CHANNEL_ALIPAY_PAGE" => PaymentChannelType::PaymentChannelAlipayPage,
-            _ => return None,
-        } as i32,
-    )
+    Some(match stored {
+        "PAYMENT_CHANNEL_MOCK" => PaymentChannelType::PaymentChannelMock,
+        "PAYMENT_CHANNEL_WECHAT_NATIVE" => PaymentChannelType::PaymentChannelWechatNative,
+        "PAYMENT_CHANNEL_WECHAT_H5" => PaymentChannelType::PaymentChannelWechatH5,
+        "PAYMENT_CHANNEL_ALIPAY_PAGE" => PaymentChannelType::PaymentChannelAlipayPage,
+        _ => return None,
+    } as i32)
 }
 
 pub struct PaymentRefundService {
@@ -495,11 +489,10 @@ impl paymentv1::payment_refund_service_server::PaymentRefundService for PaymentR
         let active = payment_refunds::ActiveModel {
             transaction_id: Set(transaction_id),
             amount: Set(data.amount.unwrap_or(0)),
-            status: Set(
-                data.status
-                    .and_then(status_to_str_from_i32)
-                    .unwrap_or_else(|| "PENDING".to_string()),
-            ),
+            status: Set(data
+                .status
+                .and_then(status_to_str_from_i32)
+                .unwrap_or_else(|| "PENDING".to_string())),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
             business_ref_id: Set(data.business_ref_id.clone()),
             idempotency_key: Set(data.idempotency_key.clone()),
@@ -524,8 +517,7 @@ impl paymentv1::payment_refund_service_server::PaymentRefundService for PaymentR
             .ok_or_else(|| Status::not_found("refund not found"))?;
         let mut active: payment_refunds::ActiveModel = existing.into();
         if let Some(v) = data.status {
-            active.status =
-                Set(status_to_str_from_i32(v).unwrap_or_else(|| "PENDING".to_string()));
+            active.status = Set(status_to_str_from_i32(v).unwrap_or_else(|| "PENDING".to_string()));
         }
         if let Some(v) = data.amount {
             active.amount = Set(v);
@@ -587,9 +579,11 @@ impl paymentv1::payment_channel_config_service_server::PaymentChannelConfigServi
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(paymentv1::CountPaymentChannelConfigResponse {
-            count: total as i64,
-        }))
+        Ok(Response::new(
+            paymentv1::CountPaymentChannelConfigResponse {
+                count: total as i64,
+            },
+        ))
     }
 
     async fn get(

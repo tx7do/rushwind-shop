@@ -3,7 +3,7 @@
 use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
 use crate::state::{not_found_status, StatusResult};
-use store::entities::{products, product_translations};
+use store::entities::{product_translations, products};
 
 pub async fn product_by_id(db: &DatabaseConnection, id: i64) -> StatusResult<products::Model> {
     products::Entity::find_by_id(id)
@@ -16,10 +16,7 @@ pub async fn product_by_id(db: &DatabaseConnection, id: i64) -> StatusResult<pro
 /// The `code` query — the brands table carries no code column; the
 /// unique code lives on the translation's slug (the proto doc: "slug 或
 /// 其他唯一标识符"). Resolve through the translation table.
-pub async fn product_by_code(
-    db: &DatabaseConnection,
-    code: &str,
-) -> StatusResult<products::Model> {
+pub async fn product_by_code(db: &DatabaseConnection, code: &str) -> StatusResult<products::Model> {
     let t = product_translations::Entity::find()
         .filter(product_translations::Column::Slug.eq(code))
         .one(db)

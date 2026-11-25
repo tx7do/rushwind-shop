@@ -8,7 +8,7 @@ use tonic::{Request, Response, Status};
 
 use crate::data::product_repo as repo;
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{products, product_translations};
+use store::entities::{product_translations, products};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::catalog::service::v1 as catalogv1;
@@ -64,7 +64,10 @@ async fn product_translations_of(
     repo::translations_of(db, id).await
 }
 
-async fn product_of(db: &sea_orm::DatabaseConnection, id: i64) -> Result<catalogv1::Product, Status> {
+async fn product_of(
+    db: &sea_orm::DatabaseConnection,
+    id: i64,
+) -> Result<catalogv1::Product, Status> {
     let row = repo::product_by_id(db, id).await?;
     let translations = product_translations_of(db, row.id).await?;
     Ok(product_proto(row, translations))
@@ -78,7 +81,10 @@ fn product_active(
     now: chrono::DateTime<chrono::FixedOffset>,
 ) -> products::ActiveModel {
     products::ActiveModel {
-        sort_order: data.sort_order.map(|v| Set(Some(v as i32))).unwrap_or(Set(None::<i32>)),
+        sort_order: data
+            .sort_order
+            .map(|v| Set(Some(v as i32)))
+            .unwrap_or(Set(None::<i32>)),
         image_url: Set(data.image_url),
         status: Set(data.status.map(product_status_to_str)),
         category_id: Set(data.category_id),
@@ -223,8 +229,7 @@ impl catalogv1::product_service_server::ProductService for ProductService {
         request: Request<catalogv1::ProductTranslationExistsRequest>,
     ) -> Result<Response<catalogv1::ProductTranslationExistsResponse>, Status> {
         let req = request.into_inner();
-        let row =
-            repo::translation_of(&self.state.db, req.product_id, &req.language_code).await?;
+        let row = repo::translation_of(&self.state.db, req.product_id, &req.language_code).await?;
         Ok(Response::new(catalogv1::ProductTranslationExistsResponse {
             exists: row.is_some(),
         }))
@@ -255,7 +260,9 @@ impl catalogv1::product_service_server::ProductService for ProductService {
     ) -> Result<Response<catalogv1::ProductTranslation>, Status> {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
-        let brand_id = data.product_id.ok_or_else(|| bad("data.productId required"))?;
+        let brand_id = data
+            .product_id
+            .ok_or_else(|| bad("data.productId required"))?;
         let active = product_translation_active(data, brand_id, store::now())?;
         let row = repo::insert_translation(&self.state.db, active).await?;
         Ok(Response::new(product_translation_proto(row)))
@@ -399,9 +406,9 @@ impl catalogv1::product_service_server::ProductService for ProductService {
             })
             .take(5)
             .collect();
-        Ok(Response::new(
-            catalogv1::SearchProductSuggestionsResponse { items },
-        ))
+        Ok(Response::new(catalogv1::SearchProductSuggestionsResponse {
+            items,
+        }))
     }
 }
 

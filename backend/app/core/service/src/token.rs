@@ -148,10 +148,7 @@ impl TokenStore {
         if stored.as_deref() != Some(refresh) {
             return Ok(false);
         }
-        let _: () = conn
-            .del(key.as_str())
-            .await
-            .map_err(|e| e.to_string())?;
+        let _: () = conn.del(key.as_str()).await.map_err(|e| e.to_string())?;
         Ok(true)
     }
 

@@ -89,7 +89,9 @@ impl commentv1::comment_service_server::CommentService for CommentService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(commentv1::CountCommentResponse { count: total as i64 }))
+        Ok(Response::new(commentv1::CountCommentResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -121,11 +123,10 @@ impl commentv1::comment_service_server::CommentService for CommentService {
             content_type: Set("CONTENT_TYPE_PRODUCT".to_string()),
             object_id: Set(object_id),
             content: Set(data.content.clone()),
-            status: Set(
-                data.status
-                    .and_then(status_to_str)
-                    .unwrap_or_else(|| "STATUS_APPROVED".to_string()),
-            ),
+            status: Set(data
+                .status
+                .and_then(status_to_str)
+                .unwrap_or_else(|| "STATUS_APPROVED".to_string())),
             rating: Set(data.rating.map(|v| v as i32)),
             parent_id: Set(data.parent_id.filter(|v| *v != 0)),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),

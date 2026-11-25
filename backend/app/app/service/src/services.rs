@@ -4,11 +4,9 @@
 //! (authentication — captcha/cookie concerns; admin-portal aggregation)
 //! land with their domains.
 
-pub mod public;
-pub mod proxy_kit;
 pub mod proxies;
-
-
+pub mod proxy_kit;
+pub mod public;
 
 use crate::state::StatusError;
 

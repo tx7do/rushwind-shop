@@ -65,9 +65,7 @@ pub struct GrouponActivityService {
 }
 
 #[async_trait::async_trait]
-impl catalogv1::groupon_activity_service_server::GrouponActivityService
-    for GrouponActivityService
-{
+impl catalogv1::groupon_activity_service_server::GrouponActivityService for GrouponActivityService {
     async fn list(
         &self,
         request: Request<PagingRequest>,
@@ -179,14 +177,12 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService
             active.group_price = Set(v);
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == catalogv1::groupon_activity::Status::Active as i32 {
-                    "ACTIVE"
-                } else {
-                    "INACTIVE"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == catalogv1::groupon_activity::Status::Active as i32 {
+                "ACTIVE"
+            } else {
+                "INACTIVE"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;
@@ -217,14 +213,11 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now_tz: chrono::DateTime<chrono::FixedOffset> =
-            chrono::DateTime::from(store::now());
+        let now_tz: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
         let items: Vec<catalogv1::GrouponActivity> = rows
             .into_iter()
             .filter(|r| {
-                r.valid_from
-                    .map(|v| v <= now_tz)
-                    .unwrap_or(true)
+                r.valid_from.map(|v| v <= now_tz).unwrap_or(true)
                     && r.valid_until.map(|v| v >= now_tz).unwrap_or(true)
             })
             .map(activity_proto)
@@ -247,10 +240,7 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService
         if let Some(status) = &req.status {
             select = select.filter(groupon_groups::Column::Status.eq(status.as_str()));
         }
-        let rows = select
-            .all(&self.state.db)
-            .await
-            .map_err(db_status)?;
+        let rows = select.all(&self.state.db).await.map_err(db_status)?;
         let total = rows.len() as i64;
         Ok(Response::new(catalogv1::ListGrouponGroupResponse {
             items: rows.into_iter().map(group_proto).collect(),

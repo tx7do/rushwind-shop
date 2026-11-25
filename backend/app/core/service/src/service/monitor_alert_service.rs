@@ -23,15 +23,17 @@ fn rule_proto(r: monitor_alert_rules::Model) -> mav1::MonitorAlertRule {
     mav1::MonitorAlertRule {
         id: Some(r.id),
         name: Some(r.name.clone()),
-        metric: Some(mav1::MonitorMetric::try_from(
-            match r.metric.as_str() {
+        metric: Some(
+            mav1::MonitorMetric::try_from(match r.metric.as_str() {
                 "GO_MEM_ALLOC_MB" => 2,
                 _ => 1,
-            },
-        )
-        .unwrap_or(mav1::MonitorMetric::GoGoroutines) as i32),
-        op: Some(mav1::AlertOp::try_from(if r.op == "LE" { 2 } else { 1 })
-            .unwrap_or(mav1::AlertOp::Ge) as i32),
+            })
+            .unwrap_or(mav1::MonitorMetric::GoGoroutines) as i32,
+        ),
+        op: Some(
+            mav1::AlertOp::try_from(if r.op == "LE" { 2 } else { 1 }).unwrap_or(mav1::AlertOp::Ge)
+                as i32,
+        ),
         threshold: Some(r.threshold),
         cooldown_minutes: r.cooldown_minutes.map(|v| v as u32),
         channel: Some(if r.channel.as_deref() == Some("WEBHOOK") {
@@ -131,9 +133,7 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
             name: Set(name),
             metric: Set(metric.to_string()),
             op: Set(
-                if mav1::AlertOp::try_from(data.op.unwrap_or(1)).ok()
-                    == Some(mav1::AlertOp::Le)
-                {
+                if mav1::AlertOp::try_from(data.op.unwrap_or(1)).ok() == Some(mav1::AlertOp::Le) {
                     "LE"
                 } else {
                     "GE"
@@ -231,12 +231,13 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
             let in_cooldown = r
                 .last_alerted_at
                 .map(|t| {
-                    (chrono::DateTime::<chrono::FixedOffset>::from(store::now()) - t)
-                        .num_minutes()
+                    (chrono::DateTime::<chrono::FixedOffset>::from(store::now()) - t).num_minutes()
                         < r.cooldown_minutes.unwrap_or(30) as i64
                 })
                 .unwrap_or(false);
-            let notified = firing && !in_cooldown && r.target.as_deref().map(|t| !t.is_empty()).unwrap_or(false);
+            let notified = firing
+                && !in_cooldown
+                && r.target.as_deref().map(|t| !t.is_empty()).unwrap_or(false);
             if notified {
                 fired += 1;
             }

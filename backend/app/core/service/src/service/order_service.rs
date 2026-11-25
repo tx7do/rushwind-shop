@@ -76,9 +76,7 @@ fn order_item_proto(r: order_items::Model) -> orderv1::OrderItem {
         id: Some(r.id),
         order_id: Some(r.order_id),
         sku_id: Some(r.sku_id),
-        sku_snapshot: r
-            .sku_snapshot
-            .and_then(|j| serde_json::from_value(j).ok()),
+        sku_snapshot: r.sku_snapshot.and_then(|j| serde_json::from_value(j).ok()),
         quantity: Some(r.quantity),
         unit_price: r.unit_price,
         subtotal: r.subtotal,
@@ -152,7 +150,9 @@ impl orderv1::order_service_server::OrderService for OrderService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(orderv1::CountOrderResponse { count: total as i64 }))
+        Ok(Response::new(orderv1::CountOrderResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -163,7 +163,9 @@ impl orderv1::order_service_server::OrderService for OrderService {
         let Some(orderv1::get_order_request::QueryBy::Id(id)) = req.query_by else {
             return Err(bad("query_by required"));
         };
-        Ok(Response::new(order_proto(order_row(&self.state.db, id).await?)))
+        Ok(Response::new(order_proto(
+            order_row(&self.state.db, id).await?,
+        )))
     }
 
     async fn create(
@@ -253,9 +255,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
         request: Request<orderv1::ExpireOrderByTimeoutRequest>,
     ) -> Result<Response<orderv1::ExpireOrderByTimeoutResponse>, Status> {
         let req = request.into_inner();
-        let order_id = req
-            .order_id
-            .ok_or_else(|| bad("order_id required"))?;
+        let order_id = req.order_id.ok_or_else(|| bad("order_id required"))?;
         let row = transition(&self.state, order_id, &["PENDING_PAYMENT"], "CANCELLED").await?;
         let _ = (req.task_id, req.trace_id);
         Ok(Response::new(orderv1::ExpireOrderByTimeoutResponse {
@@ -317,7 +317,9 @@ impl orderv1::order_item_service_server::OrderItemService for OrderItemService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(orderv1::CountOrderItemResponse { count: total as i64 }))
+        Ok(Response::new(orderv1::CountOrderItemResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(

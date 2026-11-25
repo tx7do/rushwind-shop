@@ -95,7 +95,9 @@ impl identityv1::user_service_server::UserService for UserService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(identityv1::CountUserResponse { count: total as i64 }))
+        Ok(Response::new(identityv1::CountUserResponse {
+            count: total as i64,
+        }))
     }
 
     async fn get(
@@ -230,7 +232,12 @@ impl identityv1::user_service_server::UserService for UserService {
             active.status = Set(Some(v.to_string()));
         }
         // The password change rides its own hash pass.
-        if req.password.as_deref().map(|p| !p.is_empty()).unwrap_or(false) {
+        if req
+            .password
+            .as_deref()
+            .map(|p| !p.is_empty())
+            .unwrap_or(false)
+        {
             let hash = rushwind_password::PasswordHasher::hash(
                 &rushwind_password_argon2::Argon2Hasher::new(),
                 req.password.as_deref().unwrap_or(""),
@@ -376,9 +383,7 @@ pub struct ShippingAddressService {
 }
 
 #[async_trait::async_trait]
-impl addressv1::shipping_address_service_server::ShippingAddressService
-    for ShippingAddressService
-{
+impl addressv1::shipping_address_service_server::ShippingAddressService for ShippingAddressService {
     async fn list(
         &self,
         request: Request<PagingRequest>,
@@ -510,8 +515,7 @@ impl addressv1::shipping_address_service_server::ShippingAddressService
         request: Request<addressv1::DeleteShippingAddressRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(addressv1::delete_shipping_address_request::QueryBy::Id(id)) = req.query_by
-        else {
+        let Some(addressv1::delete_shipping_address_request::QueryBy::Id(id)) = req.query_by else {
             return Err(bad("query_by required"));
         };
         shipping_addresses::Entity::delete_by_id(id)

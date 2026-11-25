@@ -50,8 +50,10 @@ fn value_proto(
     r: product_attribute_values::Model,
     translations: Vec<product_attribute_value_translations::Model>,
 ) -> catalogv1::ProductAttributeValue {
-    let available_languages: Vec<String> =
-        translations.iter().map(|t| t.language_code.clone()).collect();
+    let available_languages: Vec<String> = translations
+        .iter()
+        .map(|t| t.language_code.clone())
+        .collect();
     catalogv1::ProductAttributeValue {
         id: Some(r.id),
         attribute_id: Some(r.attribute_id),
@@ -89,10 +91,12 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
             let translations = repo::value_translations_of(&self.state.db, r.id).await?;
             items.push(value_proto(r, translations));
         }
-        Ok(Response::new(catalogv1::ListProductAttributeValueResponse {
-            items,
-            total: total as i64,
-        }))
+        Ok(Response::new(
+            catalogv1::ListProductAttributeValueResponse {
+                items,
+                total: total as i64,
+            },
+        ))
     }
 
     async fn count(
@@ -106,9 +110,11 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
-        Ok(Response::new(catalogv1::CountProductAttributeValueResponse {
-            count: total as i64,
-        }))
+        Ok(Response::new(
+            catalogv1::CountProductAttributeValueResponse {
+                count: total as i64,
+            },
+        ))
     }
 
     async fn get(
@@ -194,8 +200,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         request: Request<catalogv1::DeleteProductAttributeValueRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(catalogv1::delete_product_attribute_value_request::QueryBy::Id(id)) =
-            req.query_by
+        let Some(catalogv1::delete_product_attribute_value_request::QueryBy::Id(id)) = req.query_by
         else {
             return Err(bad("query_by required"));
         };
@@ -206,8 +211,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
     async fn translation_exists(
         &self,
         request: Request<catalogv1::ProductAttributeValueTranslationExistsRequest>,
-    ) -> Result<Response<catalogv1::ProductAttributeValueTranslationExistsResponse>, Status>
-    {
+    ) -> Result<Response<catalogv1::ProductAttributeValueTranslationExistsResponse>, Status> {
         let req = request.into_inner();
         let row =
             repo::value_translation_of(&self.state.db, req.value_id, &req.language_code).await?;
@@ -283,9 +287,8 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         request: Request<catalogv1::DeleteProductAttributeValueTranslationRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(catalogv1::delete_product_attribute_value_translation_request::QueryBy::Id(
-            id,
-        )) = req.query_by
+        let Some(catalogv1::delete_product_attribute_value_translation_request::QueryBy::Id(id)) =
+            req.query_by
         else {
             return Err(bad("query_by required"));
         };

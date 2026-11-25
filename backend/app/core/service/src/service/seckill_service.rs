@@ -29,12 +29,8 @@ fn activity_proto(r: seckill_activities::Model) -> catalogv1::SeckillActivity {
         valid_until: r.valid_until.and_then(ts_to_proto),
         currency: Some(r.currency.clone()),
         status: Some(
-            catalogv1::seckill_activity::Status::try_from(if r.status == "ACTIVE" {
-                1
-            } else {
-                2
-            })
-            .unwrap_or(catalogv1::seckill_activity::Status::Active) as i32,
+            catalogv1::seckill_activity::Status::try_from(if r.status == "ACTIVE" { 1 } else { 2 })
+                .unwrap_or(catalogv1::seckill_activity::Status::Active) as i32,
         ),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
@@ -48,9 +44,7 @@ pub struct SeckillActivityService {
 }
 
 #[async_trait::async_trait]
-impl catalogv1::seckill_activity_service_server::SeckillActivityService
-    for SeckillActivityService
-{
+impl catalogv1::seckill_activity_service_server::SeckillActivityService for SeckillActivityService {
     async fn list(
         &self,
         request: Request<PagingRequest>,
@@ -161,14 +155,12 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService
             active.total_stock = Set(v as i32);
         }
         if let Some(v) = data.status {
-            active.status = Set(
-                if v == catalogv1::seckill_activity::Status::Active as i32 {
-                    "ACTIVE"
-                } else {
-                    "INACTIVE"
-                }
-                .to_string(),
-            );
+            active.status = Set(if v == catalogv1::seckill_activity::Status::Active as i32 {
+                "ACTIVE"
+            } else {
+                "INACTIVE"
+            }
+            .to_string());
         }
         active.updated_at = Set(Some(store::now().into()));
         active.update(&self.state.db).await.map_err(db_status)?;
@@ -200,8 +192,7 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now: chrono::DateTime<chrono::FixedOffset> =
-            chrono::DateTime::from(store::now());
+        let now: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
         let items: Vec<catalogv1::SeckillActivity> = rows
             .into_iter()
             .filter(|r| {

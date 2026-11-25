@@ -164,12 +164,11 @@ impl imv1::internal_message_service_server::InternalMessageService for InternalM
         let active = internal_messages::ActiveModel {
             title: Set(title),
             content: Set(data.content.unwrap_or_default()),
-            status: Set(
-                data.status
-                    .and_then(message_status_to_str)
-                    .unwrap_or("DRAFT")
-                    .to_string(),
-            ),
+            status: Set(data
+                .status
+                .and_then(message_status_to_str)
+                .unwrap_or("DRAFT")
+                .to_string()),
             sender_id: Set(data.sender_id),
             sender_name: Set(data.sender_name.clone()),
             category_id: Set(data.category_id),
@@ -308,12 +307,11 @@ impl imv1::internal_message_recipient_service_server::InternalMessageRecipientSe
         let active = internal_message_recipients::ActiveModel {
             message_id: Set(message_id),
             recipient_user_id: Set(recipient_user_id),
-            status: Set(
-                data.status
-                    .and_then(recipient_status_to_str)
-                    .unwrap_or("SENT")
-                    .to_string(),
-            ),
+            status: Set(data
+                .status
+                .and_then(recipient_status_to_str)
+                .unwrap_or("SENT")
+                .to_string()),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
             created_at: Set(Some(store::now().into())),
             ..Default::default()
@@ -347,8 +345,7 @@ impl imv1::internal_message_recipient_service_server::InternalMessageRecipientSe
         request: Request<imv1::DeleteInternalMessageRecipientRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(imv1::delete_internal_message_recipient_request::QueryBy::Id(id)) =
-            req.query_by
+        let Some(imv1::delete_internal_message_recipient_request::QueryBy::Id(id)) = req.query_by
         else {
             return Err(bad("query_by required"));
         };
@@ -600,8 +597,7 @@ impl imv1::internal_message_category_service_server::InternalMessageCategoryServ
         request: Request<imv1::DeleteInternalMessageCategoryRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let req = request.into_inner();
-        let Some(imv1::delete_internal_message_category_request::QueryBy::Id(id)) =
-            req.query_by
+        let Some(imv1::delete_internal_message_category_request::QueryBy::Id(id)) = req.query_by
         else {
             return Err(bad("query_by required"));
         };

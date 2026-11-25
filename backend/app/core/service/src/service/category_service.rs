@@ -63,7 +63,10 @@ async fn category_translations_of(
     repo::translations_of(db, id).await
 }
 
-async fn category_of(db: &sea_orm::DatabaseConnection, id: i64) -> Result<catalogv1::Category, Status> {
+async fn category_of(
+    db: &sea_orm::DatabaseConnection,
+    id: i64,
+) -> Result<catalogv1::Category, Status> {
     let row = repo::category_by_id(db, id).await?;
     let translations = category_translations_of(db, row.id).await?;
     Ok(category_proto(row, translations))
@@ -77,7 +80,10 @@ fn category_active(
     now: chrono::DateTime<chrono::FixedOffset>,
 ) -> categories::ActiveModel {
     categories::ActiveModel {
-        sort_order: data.sort_order.map(|v| Set(Some(v as i32))).unwrap_or(Set(None::<i32>)),
+        sort_order: data
+            .sort_order
+            .map(|v| Set(Some(v as i32)))
+            .unwrap_or(Set(None::<i32>)),
         path: Set(data.path),
         depth: Set(data.depth),
         parent_id: Set(data.parent_id),
@@ -222,11 +228,12 @@ impl catalogv1::category_service_server::CategoryService for CategoryService {
         request: Request<catalogv1::CategoryTranslationExistsRequest>,
     ) -> Result<Response<catalogv1::CategoryTranslationExistsResponse>, Status> {
         let req = request.into_inner();
-        let row =
-            repo::translation_of(&self.state.db, req.category_id, &req.language_code).await?;
-        Ok(Response::new(catalogv1::CategoryTranslationExistsResponse {
-            exists: row.is_some(),
-        }))
+        let row = repo::translation_of(&self.state.db, req.category_id, &req.language_code).await?;
+        Ok(Response::new(
+            catalogv1::CategoryTranslationExistsResponse {
+                exists: row.is_some(),
+            },
+        ))
     }
 
     async fn get_translation(
@@ -254,7 +261,9 @@ impl catalogv1::category_service_server::CategoryService for CategoryService {
     ) -> Result<Response<catalogv1::CategoryTranslation>, Status> {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
-        let brand_id = data.category_id.ok_or_else(|| bad("data.categoryId required"))?;
+        let brand_id = data
+            .category_id
+            .ok_or_else(|| bad("data.categoryId required"))?;
         let active = category_translation_active(data, brand_id, store::now())?;
         let row = repo::insert_translation(&self.state.db, active).await?;
         Ok(Response::new(category_translation_proto(row)))

@@ -61,6 +61,7 @@ pub mod tax_rates;
 pub mod sys_tenants;
 pub mod wishlists;
 pub mod groupon_groups;
+pub mod seckill_activities;
 pub mod shipping_addresses;
 pub mod shipping_rates;
 pub mod shipments;

@@ -39,6 +39,7 @@ pub async fn tables_present(db: &DatabaseConnection) -> Result<bool, sea_orm::Db
         "mall_product_attributes",
         "mall_product_translations",
         "mall_promotions",
+        "mall_seckill_activities",
         "mall_stock_alerts",
         "mall_stock_op_logs",
         "mall_skus",

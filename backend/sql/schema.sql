@@ -1330,3 +1330,26 @@ CREATE TABLE IF NOT EXISTS public.mall_product_attribute_value_translations (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_pav_translations_value_language
     ON public.mall_product_attribute_value_translations (value_id, language_code);
+
+CREATE TABLE IF NOT EXISTS public.mall_seckill_activities (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    sku_id bigint NOT NULL,
+    seckill_price bigint NOT NULL DEFAULT 0,
+    total_stock int NOT NULL DEFAULT 0,
+    sold_count int NOT NULL DEFAULT 0,
+    per_user_limit int NULL DEFAULT 1,
+    priority int NULL DEFAULT 0,
+    valid_from timestamptz NULL,
+    valid_until timestamptz NULL,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_seckill_activities_pkey PRIMARY KEY (id)
+);

@@ -14,6 +14,7 @@ use crate::service::{self, authentication_service as authentication, audit_servi
     policy_evaluation_log_service as policy_log, position_service as position,
     language_service as language, redis_cache_service as redis_cache,
     role_service as role,
+    seckill_service as seckill,
     server_monitor_service as server_monitor, tenant_service as tenant,
     online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
@@ -69,6 +70,7 @@ use shop_proto::proto::catalog::service::v1::{
     stock_alert_service_server::StockAlertServiceServer,
     stock_op_log_service_server::StockOpLogServiceServer,
 };
+use shop_proto::proto::catalog::service::v1::seckill_activity_service_server::SeckillActivityServiceServer;
 use shop_proto::proto::redis_cache::service::v1::redis_cache_monitor_service_server::RedisCacheMonitorServiceServer;
 use shop_proto::proto::online_session::service::v1::online_session_service_server::OnlineSessionServiceServer;
 use shop_proto::proto::order::service::v1::{
@@ -207,6 +209,9 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(PromotionServiceServer::new(promotion::PromotionService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(SeckillActivityServiceServer::new(seckill::SeckillActivityService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(StockAlertServiceServer::new(stock::StockAlertService {

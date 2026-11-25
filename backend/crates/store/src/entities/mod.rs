@@ -2,6 +2,8 @@
 
 pub mod brand_translations;
 pub mod cart_items;
+pub mod order_items;
+pub mod orders;
 pub mod carts;
 pub mod brands;
 pub mod categories;

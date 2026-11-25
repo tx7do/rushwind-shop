@@ -226,3 +226,57 @@ CREATE TABLE IF NOT EXISTS public.mall_sku_attribute_combinations (
         FOREIGN KEY (sku_id)
         REFERENCES public.mall_skus (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_orders (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    business_ref_id varchar(100) NULL,
+    idempotency_key varchar(100) NULL,
+    user_id bigint NOT NULL,
+    total_amount bigint NOT NULL DEFAULT 0,
+    original_amount bigint NULL DEFAULT 0,
+    discount_amount bigint NULL DEFAULT 0,
+    shipping_fee bigint NULL DEFAULT 0,
+    tax_amount bigint NULL DEFAULT 0,
+    shipping_region varchar(100) NULL,
+    status varchar(20) NOT NULL DEFAULT 'PENDING_PAYMENT',
+    recipient_name varchar(191) NULL,
+    recipient_phone varchar(30) NULL,
+    shipping_address text NULL,
+    groupon_activity_id bigint NULL,
+    groupon_group_id bigint NULL,
+    CONSTRAINT mall_orders_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_orders_user ON public.mall_orders (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_order_items (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    order_id bigint NOT NULL,
+    user_id bigint NULL,
+    sku_id bigint NOT NULL,
+    sku_snapshot jsonb NULL,
+    quantity integer NOT NULL DEFAULT 1,
+    unit_price bigint NULL DEFAULT 0,
+    subtotal bigint NULL DEFAULT 0,
+    CONSTRAINT mall_order_items_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_order_items_order
+        FOREIGN KEY (order_id)
+        REFERENCES public.mall_orders (id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_order_items_order ON public.mall_order_items (order_id);

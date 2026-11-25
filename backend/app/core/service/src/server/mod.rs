@@ -5,9 +5,12 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
-    product_service as product, sku_service as sku};
+    order_service as order, product_service as product, sku_service as sku};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::order::service::v1::{
+    order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
+};
 use shop_proto::proto::cart::service::v1::{
     cart_item_service_server::CartItemServiceServer, cart_service_server::CartServiceServer,
 };
@@ -52,4 +55,8 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
                 state: std::sync::Arc::clone(&state),
             },
         ))
+        .add_service(OrderServiceServer::new(order::OrderService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(OrderItemServiceServer::new(order::OrderItemService { state }))
 }

@@ -1,20 +1,28 @@
-feat(catalog-sku): the sku domain joins — three services, 22 RPCs, the stock-adjustment face included
+feat(order): the trade state machine joins — 16 RPCs across the order and its line items
 
-Three services in one drop: SkuService (the sellable unit — product
-link, code, stock quantity, plus AdjustStock with the negative-stock
-guard), SkuPriceService (per-currency prices carrying the exact
-amount string the reference stores — no float round-trips), and
-SkuAttributeCombinationService (the sku-attribute-value links). The
-golden DDL grows the three tables (prices and combinations cascade
-off the sku), and the bootstrap gate grew with them.
+OrderService (9 RPCs) and OrderItemService (7) over the two golden-DDL
+tables (the 24-column order — the four amount fields, the recipient
+triple, the groupon links, the idempotency/business-ref keys — and the
+items with the sku_snapshot jsonb). The lifecycle is the only write
+path for status: Create lands as PENDING_PAYMENT, CancelOrder walks
+PENDING_PAYMENT to CANCELLED, ConfirmReceipt walks PAID/FULFILLED to
+FULFILLED, ExpireOrderByTimeout sweeps a stale pending row (the
+Asynq task's face — the task_id/trace_id ride for idempotency), and
+the transition helper refuses any move off a non-matching state with
+FailedPrecondition. Terminal states never move again.
 
-Known gap, recorded: the AdjustStock route is a Go-style colon verb
-(`/admin/v1/mall/skus/{id}:adjust-stock`, no body declaration — the
-delta rides the query string); the gen-http route table handles the
-spelling but the axum 0.8 mount answers 405 on the POST — the
-framework's route-table verb handling is the follow-up. The other 21
-RPCs of the domain answer live.
+The status enum maps both ways between the proto values and the bare
+member-name spellings the reference's demo data stores (CANCELLED,
+PENDING_PAYMENT, ...).
 
-verified: admin create sku + price (CNY 5900), the anonymous sku list
-reading both back with stockQty, the cart add consuming the new sku —
-the storefront sellable chain complete end to end
+Known gap (the sku drop recorded its first case): the colon-verb
+routes (`{id}:cancel`, `{id}:confirm-receipt`, `{id}:adjust-stock`)
+answer 405 at the axum 0.8 mount — the gen-http route table carries
+the Go-style verb spelling but the adapter's method routing does not
+reach it; the framework side is the follow-up. The state machine
+itself verified live over the gRPC face: cancel lands CANCELLED, and
+the second cancel answers FailedPrecondition with the exact guard
+message.
+
+verified: app create order (gated) lands PENDING_PAYMENT; the grpcurl
+matrix — cancel, get reads CANCELLED, double-cancel refused — green

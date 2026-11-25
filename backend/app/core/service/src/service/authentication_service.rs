@@ -146,13 +146,32 @@ impl AuthenticationService {
         let row = self
             .verify_credential(&username, req.password.as_deref().unwrap_or(""))
             .await?;
+        // The MFA gate: a user riding an ENABLED TOTP factor gets no
+        // token from the password step — an operation id instead, and
+        // MfaService::verify_mfa_challenge issues the real pair.
+        let tid = row.tenant_id.unwrap_or(0);
+        if crate::data::mfa_factor_repo::has_enabled_totp(&self.state.db, tid, row.id).await? {
+            let cache =
+                crate::data::mfa_challenge_cache::MfaChallengeCache::new(self.state.redis.clone());
+            let op_id = cache
+                .set_login_challenge(
+                    serde_json::json!({
+                        "uid": row.id,
+                        "tid": tid,
+                        "sub": row.username,
+                    }),
+                    client as i32,
+                )
+                .await
+                .map_err(Status::internal)?;
+            return Ok(LoginResponse {
+                token_type: TokenType::Bearer as i32,
+                mfa_operation_id: Some(op_id),
+                ..Default::default()
+            });
+        }
         let (access, refresh) = self
-            .issue_pair(
-                client,
-                row.id,
-                row.tenant_id.unwrap_or(0),
-                &row.username.clone(),
-            )
+            .issue_pair(client, row.id, tid, &row.username.clone())
             .await?;
         Ok(self.login_response(client, access, refresh))
     }

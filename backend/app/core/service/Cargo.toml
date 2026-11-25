@@ -21,6 +21,10 @@ rushwind-authn-jwt = { workspace = true }
 rushwind-password = { workspace = true }
 rushwind-password-argon2 = { workspace = true }
 redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
+hmac = "0.12"
+sha1 = "0.10"
+qrcode = { version = "0.14", default-features = false }
+png = "0.17"
 uuid = { workspace = true }
 sysinfo = { workspace = true }
 base64 = "0.22"

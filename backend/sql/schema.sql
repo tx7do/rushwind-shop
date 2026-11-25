@@ -1423,3 +1423,24 @@ CREATE TABLE IF NOT EXISTS public.sys_user_credentials (
 
 CREATE INDEX IF NOT EXISTS idx_user_credentials_identifier
     ON public.sys_user_credentials (identifier);
+
+CREATE TABLE IF NOT EXISTS public.sys_user_mfa_factors (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    method varchar(30) NULL DEFAULT 'TOTP',
+    secret_hash varchar(512) NULL,
+    display_name varchar(128) NULL,
+    status varchar(30) NULL DEFAULT 'ENABLED',
+    last_used_at timestamptz NULL,
+    CONSTRAINT sys_user_mfa_factors_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_sys_user_mfa_tenant_user_id
+    ON public.sys_user_mfa_factors (tenant_id, user_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sys_user_mfa_tenant_uid_method
+    ON public.sys_user_mfa_factors (tenant_id, user_id, method);

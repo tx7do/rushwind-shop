@@ -23,6 +23,8 @@ pub mod invoice_service;
 pub mod language_service;
 pub mod member_tier_service;
 pub mod menu_service;
+pub mod mfa_service;
+pub mod mfa_totp;
 pub mod monitor_alert_service;
 pub mod notification_service;
 pub mod online_session_service;

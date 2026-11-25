@@ -10,6 +10,8 @@ pub mod dict_entry_repo;
 pub mod dict_type_repo;
 pub mod language_repo;
 pub mod menu_repo;
+pub mod mfa_challenge_cache;
+pub mod mfa_factor_repo;
 pub mod org_unit_repo;
 pub mod permission_api_repo;
 pub mod permission_group_repo;

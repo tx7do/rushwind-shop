@@ -30,6 +30,20 @@ pub fn decrypt_aes_cbc(ciphertext: &[u8]) -> Option<String> {
     String::from_utf8(out).ok()
 }
 
+/// The encrypt direction of the same DefaultAESKey pair — bytes out
+/// (the MFA secret-at-rest front: the base64 wrap is the caller's).
+pub fn encrypt_aes_cbc(plaintext: &[u8]) -> Option<Vec<u8>> {
+    use aes::cipher::BlockEncryptMut;
+    type Aes128CbcEnc = cbc::Encryptor<aes::Aes128>;
+    let mut out = vec![0u8; plaintext.len() + 16];
+    let len = Aes128CbcEnc::new(DEFAULT_AES_KEY.into(), DEFAULT_AES_KEY.into())
+        .encrypt_padded_b2b_mut::<Pkcs7>(plaintext, &mut out)
+        .ok()?
+        .len();
+    out.truncate(len);
+    Some(out)
+}
+
 /// bcrypt hash at default cost.
 pub fn hash_password(password: &str) -> Result<String, String> {
     bcrypt::hash(password, bcrypt::DEFAULT_COST).map_err(|e| format!("bcrypt: {e}"))

@@ -51,7 +51,25 @@ async fn seed_dev_admin(db: &DatabaseConnection) -> Result<(), sea_orm::DbErr> {
         stmt,
     ))
     .await?;
-    eprintln!("[bootstrap] dev admin seeded (admin / admin123)");
+    // The platform-admin role binding — the route authority gate reads
+    // the caller's role codes through the perm-codes face, and the
+    // shell's pages declare `sys:platform_admin`.
+    let seed_roles = format!(
+        "WITH r AS (\
+           INSERT INTO public.sys_roles (tenant_id, name, code, status, sort_order, created_at) \
+           VALUES (0, 'Platform Admin', 'sys:platform_admin', 'ON', 1, '{now}') \
+           RETURNING id\
+         ), u AS (SELECT id FROM public.sys_users WHERE username = 'admin' LIMIT 1) \
+         INSERT INTO public.sys_user_roles (tenant_id, user_id, role_id, created_at) \
+         SELECT 0, u.id, r.id, '{now}' FROM u, r",
+        now = now.format("%Y-%m-%d %H:%M:%S%:z"),
+    );
+    db.execute_raw(sea_orm::Statement::from_string(
+        sea_orm::DatabaseBackend::Postgres,
+        seed_roles,
+    ))
+    .await?;
+    eprintln!("[bootstrap] dev admin seeded (admin / admin123) + platform-admin role");
     Ok(())
 }
 

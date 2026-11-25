@@ -4,6 +4,7 @@
 //! (authentication — captcha/cookie concerns; admin-portal aggregation)
 //! land with their domains.
 
+pub mod admin_portal;
 pub mod behaviors;
 pub mod proxies;
 pub mod proxy_kit;

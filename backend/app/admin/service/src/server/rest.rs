@@ -136,7 +136,7 @@ pub fn build_router(state: Arc<AppState>) -> axum::Router {
 
     mount_services!(
         mount_access_key_service => Arc::new(crate::services::proxies::AccessKeyProxy { state: Arc::clone(&state) }),
-        mount_admin_portal_service => Arc::new(shop_proto::gen_admin::nulls::NullAdminPortalService),
+        mount_admin_portal_service => Arc::new(crate::services::admin_portal::AdminPortalService { state: Arc::clone(&state) }),
         mount_ai_agent_service => Arc::new(crate::services::proxies::AiAgentProxy { state: Arc::clone(&state) }),
         mount_ai_chat_service => Arc::new(crate::services::proxies::AiChatProxy { state: Arc::clone(&state) }),
         mount_ai_content_service => Arc::new(crate::services::proxies::AiContentProxy { state: Arc::clone(&state) }),

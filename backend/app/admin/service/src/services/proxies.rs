@@ -239,8 +239,8 @@ passthrough_proxy! {
             pass login(authentication_v1::LoginRequest) -> authentication_v1::LoginResponse,
             stub logout(pbjson_types::Empty) -> pbjson_types::Empty,
             pass refresh_token(authentication_v1::LoginRequest) -> authentication_v1::LoginResponse,
-            stub generate_captcha(pbjson_types::Empty)
-                -> authentication_v1::GenerateCaptchaResponse,
+            hand generate_captcha(pbjson_types::Empty)
+                -> authentication_v1::GenerateCaptchaResponse => generate_captcha,
             pass verify_captcha(authentication_v1::VerifyCaptchaRequest)
                 -> authentication_v1::VerifyCaptchaResponse,
         ]
@@ -1493,7 +1493,7 @@ passthrough_proxy! {
         >,
         behaviors: behaviors,
         methods: [
-            stub get_user(pbjson_types::Empty) -> identity_v1::User,
+            pass get_user(pbjson_types::Empty) -> identity_v1::User,
             pass update_user(identity_v1::UpdateUserRequest) -> pbjson_types::Empty,
             stub change_password(identity_v1::ChangePasswordRequest) -> pbjson_types::Empty,
             stub upload_avatar(identity_v1::UploadAvatarRequest)

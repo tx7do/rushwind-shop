@@ -35,7 +35,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       proxy: {
         [env.VITE_APP_BASE_API]: {
           changeOrigin: true,
-          target: env.VITE_APP_API_URL,
+          // 同源代理（axios 的 baseURL 保持空，跨源会被浏览器 CORS 拦）；
+          // env 未给地址时兜底本地 admin BFF。
+          target: env.VITE_APP_API_URL || "http://127.0.0.1:10600",
           // 后端按 /admin/v1 前缀注册路由（剥前缀会全量 404），前缀原样透传
         },
       },

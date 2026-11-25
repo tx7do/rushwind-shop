@@ -11,7 +11,7 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{shipping_addresses, sys_users};
+use store::entities::{shipping_addresses, sys_user_roles, sys_users};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::address::service::v1 as addressv1;
@@ -57,6 +57,25 @@ fn user_proto(r: sys_users::Model) -> identityv1::User {
         updated_at: r.updated_at.and_then(ts_to_proto),
         ..Default::default()
     }
+}
+
+/// The user row plus its role ids (the `sys_user_roles` join) — the
+/// profile faces carry the roles so the portal aggregates resolve.
+async fn user_with_roles(
+    db: &sea_orm::DatabaseConnection,
+    r: sys_users::Model,
+) -> identityv1::User {
+    use sea_orm::QueryOrder as _;
+    let mut proto = user_proto(r);
+    let role_ids: Vec<i64> = sys_user_roles::Entity::find()
+        .filter(sys_user_roles::Column::UserId.eq(proto.id.unwrap_or(0)))
+        .order_by_asc(sys_user_roles::Column::RoleId)
+        .all(db)
+        .await
+        .map(|rows| rows.into_iter().map(|row| row.role_id).collect())
+        .unwrap_or_default();
+    proto.role_ids = role_ids;
+    proto
 }
 
 // ── UserService (the admin user-administration face) ────────────────
@@ -113,7 +132,7 @@ impl identityv1::user_service_server::UserService for UserService {
             .await
             .map_err(db_status)?
             .ok_or_else(|| Status::not_found("user not found"))?;
-        Ok(Response::new(user_proto(row)))
+        Ok(Response::new(user_with_roles(&self.state.db, row).await))
     }
 
     async fn create(
@@ -301,10 +320,21 @@ impl identityv1::user_profile_service_server::UserProfileService for UserProfile
         &self,
         request: Request<pbjson_types::Empty>,
     ) -> Result<Response<identityv1::User>, Status> {
-        let _ = request;
         // The self face reads the forwarded operator (the gate's claim
         // bag rides the metadata through the BFF proxy).
-        Err(Status::unimplemented("requires caller claims metadata"))
+        let uid: i64 = request
+            .metadata()
+            .get("x-user-id")
+            .and_then(|v| v.to_str().ok())
+            .and_then(|v| v.parse::<i64>().ok())
+            .filter(|v| *v > 0)
+            .ok_or_else(|| Status::unauthenticated("requires caller claims metadata"))?;
+        let row = sys_users::Entity::find_by_id(uid)
+            .one(&self.state.db)
+            .await
+            .map_err(db_status)?
+            .ok_or_else(|| Status::not_found("user not found"))?;
+        Ok(Response::new(user_with_roles(&self.state.db, row).await))
     }
 
     async fn update_user(

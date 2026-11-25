@@ -51,9 +51,13 @@ impl AuthenticationService {
     }
 
     /// The credential check: username → the row → the stored hash via
-    /// the engine's Argon2id. A plaintext-equal fallback exists ONLY
-    /// for pre-migration dev rows (a PHC string never equals a raw
-    /// password, so production hashes take the engine path alone).
+    /// the engine's Argon2id. The wire carries the front-end's
+    /// AES-encrypted password (the VITE_AES_KEY envelope, base64) —
+    /// the decrypt runs first and falls back to the raw spelling so
+    /// the plaintext probes (curl, the dev seeding) keep working; a
+    /// plaintext-equal fallback exists ONLY for pre-migration dev rows
+    /// (a PHC string never equals a raw password, so production hashes
+    /// take the engine path alone).
     async fn verify_credential(
         &self,
         username: &str,
@@ -72,14 +76,19 @@ impl AuthenticationService {
             crate::crypto::dummy_verify();
             return Err(Status::unauthenticated("user not found"));
         }
+        // The front-end envelope first: base64(AES-128-CBC(key, iv=key,
+        // PKCS7)). An undecryptable wire (a plaintext probe) keeps the
+        // raw spelling.
+        let plain = store::crypto::decrypt_login_credential(password)
+            .unwrap_or_else(|_| password.to_string());
         let stored = row.password.as_deref().unwrap_or("");
         let ok = rushwind_password::PasswordHasher::verify(
             &rushwind_password_argon2::Argon2Hasher::new(),
-            password,
+            &plain,
             stored,
         )
         .unwrap_or(false)
-            || (stored == password && !password.is_empty());
+            || (stored == &plain && !plain.is_empty());
         if !ok {
             crate::crypto::dummy_verify();
             return Err(Status::unauthenticated("user not found"));

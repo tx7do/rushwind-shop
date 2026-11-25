@@ -510,7 +510,7 @@ passthrough_proxy! {
         >,
         behaviors: public,
         methods: [
-            stub get_user(pbjson_types::Empty) -> identity_v1::User,
+            pass get_user(pbjson_types::Empty) -> identity_v1::User,
             pass update_user(identity_v1::UpdateUserRequest) -> pbjson_types::Empty,
             stub change_password(identity_v1::ChangePasswordRequest) -> pbjson_types::Empty,
             stub upload_avatar(identity_v1::UploadAvatarRequest)

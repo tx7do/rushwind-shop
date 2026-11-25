@@ -7,11 +7,11 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TransactionTrait};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{order_items, orders};
+use store::entities::{cart_items, carts, order_items, orders, sku_prices, skus, stock_op_logs};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::order::service::v1 as orderv1;
@@ -175,24 +175,54 @@ impl orderv1::order_service_server::OrderService for OrderService {
         let req = request.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
         let user_id = data.user_id.ok_or_else(|| bad("data.userId required"))?;
-        let status = data
-            .status
-            .and_then(status_to_str)
-            .unwrap_or("PENDING_PAYMENT")
-            .to_string();
+        if data
+            .idempotency_key
+            .as_ref()
+            .map(|s| s.is_empty())
+            .unwrap_or(true)
+        {
+            return Err(bad("idempotency_key is required"));
+        }
+        let tenant_id = data.tenant_id.unwrap_or(0);
+        let currency = data.currency.unwrap_or_else(|| "CNY".to_string());
+
+        // The storefront sends the ORDER SHELL only (totalAmount 0, no
+        // items) — the conversion from the user's cart is the server's
+        // job (the reference's tx flow): find the cart, price each item
+        // off sku_prices, snapshot + insert order items, deduct stock
+        // with a ledger row each, clear the cart, and stamp the computed
+        // total back onto the order — all inside one transaction.
+        let mut txn = self.state.db.begin().await.map_err(db_status)?;
+
+        let cart = carts::Entity::find()
+            .filter(carts::Column::TenantId.eq(tenant_id))
+            .filter(carts::Column::UserId.eq(user_id))
+            .one(&txn)
+            .await
+            .map_err(db_status)?
+            .ok_or_else(|| bad("cart is empty or not found"))?;
+        let cart_items = cart_items::Entity::find()
+            .filter(cart_items::Column::CartId.eq(cart.id))
+            .all(&txn)
+            .await
+            .map_err(db_status)?;
+        if cart_items.is_empty() {
+            return Err(bad("cart is empty"));
+        }
+
         let active = orders::ActiveModel {
             user_id: Set(user_id),
-            tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
+            tenant_id: Set(Some(tenant_id)),
+            currency: Set(currency.clone()),
             business_ref_id: Set(data.business_ref_id),
             idempotency_key: Set(data.idempotency_key),
-            total_amount: Set(data.total_amount.unwrap_or(0)),
-            original_amount: Set(Some(data.original_amount.unwrap_or(0))),
-            discount_amount: Set(Some(data.discount_amount.unwrap_or(0))),
-            shipping_fee: Set(Some(data.shipping_fee.unwrap_or(0))),
-            tax_amount: Set(Some(data.tax_amount.unwrap_or(0))),
+            total_amount: Set(0), // recomputed below from the priced items
+            original_amount: Set(Some(0)),
+            discount_amount: Set(Some(0)),
+            shipping_fee: Set(Some(0)),
+            tax_amount: Set(Some(0)),
             shipping_region: Set(data.shipping_region),
-            status: Set(status),
+            status: Set("PENDING_PAYMENT".to_string()), // the create-time state, client value ignored
             recipient_name: Set(data.recipient_name),
             recipient_phone: Set(data.recipient_phone),
             shipping_address: Set(data.shipping_address),
@@ -201,9 +231,96 @@ impl orderv1::order_service_server::OrderService for OrderService {
             created_at: Set(Some(store::now().into())),
             ..Default::default()
         };
-        active.insert(&self.state.db).await.map_err(db_status)?;
-        // The line items ride the OrderItem face (the contract carries
-        // no items field on the create order request).
+        let order = active.insert(&txn).await.map_err(db_status)?;
+        let order_id = order.id;
+
+        let mut total_amount: i64 = 0;
+        for item in &cart_items {
+            let qty = i64::from(item.quantity.max(1));
+            let sku = skus::Entity::find_by_id(item.sku_id)
+                .one(&txn)
+                .await
+                .map_err(db_status)?
+                .ok_or_else(|| bad("sku not found"))?;
+            if sku.stock_qty < item.quantity.max(1) {
+                return Err(bad("insufficient stock for sku"));
+            }
+            let price = sku_prices::Entity::find()
+                .filter(sku_prices::Column::SkuId.eq(item.sku_id))
+                .filter(sku_prices::Column::Currency.eq(&currency))
+                .one(&txn)
+                .await
+                .map_err(db_status)?
+                .ok_or_else(|| bad("sku has no price for settlement currency"))?;
+            let unit_price: i64 = price
+                .amount
+                .parse()
+                .map_err(|_| bad("sku has invalid price"))?;
+            if unit_price <= 0 {
+                return Err(bad("sku has invalid price"));
+            }
+            let subtotal = unit_price * qty;
+            total_amount += subtotal;
+
+            let snapshot = serde_json::json!({
+                "sku_id": item.sku_id,
+                "quantity": item.quantity.max(1),
+                "currency": currency,
+                "unit_price": unit_price,
+            });
+            order_items::ActiveModel {
+                order_id: Set(order_id),
+                sku_id: Set(item.sku_id),
+                sku_snapshot: Set(Some(snapshot)),
+                quantity: Set(item.quantity.max(1)),
+                unit_price: Set(Some(unit_price)),
+                subtotal: Set(Some(subtotal)),
+                created_at: Set(Some(store::now().into())),
+                ..Default::default()
+            }
+            .insert(&txn)
+            .await
+            .map_err(db_status)?;
+
+            let new_stock = sku.stock_qty - item.quantity.max(1);
+            skus::ActiveModel {
+                id: sea_orm::Unchanged(item.sku_id),
+                stock_qty: Set(new_stock),
+                ..Default::default()
+            }
+            .update(&txn)
+            .await
+            .map_err(db_status)?;
+            stock_op_logs::ActiveModel {
+                sku_id: Set(item.sku_id),
+                product_id: Set(Some(sku.product_id)),
+                delta: Set(-item.quantity.max(1)),
+                stock_before: Set(Some(sku.stock_qty)),
+                stock_after: Set(Some(new_stock)),
+                reason: Set(Some("ORDER_DEDUCT".to_string())),
+                ref_id: Set(Some(order_id)),
+                created_at: Set(Some(store::now().into())),
+                ..Default::default()
+            }
+            .insert(&txn)
+            .await
+            .map_err(db_status)?;
+        }
+
+        cart_items::Entity::delete_many()
+            .filter(cart_items::Column::CartId.eq(cart.id))
+            .exec(&txn)
+            .await
+            .map_err(db_status)?;
+
+        // Stamp the server-computed total onto the order (the client's
+        // totalAmount rides in as 0 by design).
+        let mut stamped: orders::ActiveModel = order.into();
+        stamped.total_amount = Set(total_amount);
+        stamped.original_amount = Set(Some(total_amount));
+        stamped.update(&txn).await.map_err(db_status)?;
+
+        txn.commit().await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
 

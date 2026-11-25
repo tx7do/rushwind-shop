@@ -598,4 +598,33 @@ impl paymentv1::payment_channel_config_service_server::PaymentChannelConfigServi
             .ok_or_else(|| Status::not_found("channel config not found"))?;
         Ok(Response::new(channel_proto(row)))
     }
+
+    /// The storefront's channel list: only the ENABLED configs, stripped
+    /// to the public PaymentChannel shape (no credentials, no app/mch
+    /// ids — those are the acquiring side's secrets).
+    async fn list_enabled_channels(
+        &self,
+        _request: Request<paymentv1::ListEnabledChannelsRequest>,
+    ) -> Result<Response<paymentv1::ListEnabledChannelsResponse>, Status> {
+        let rows = payment_channel_configs::Entity::find()
+            .filter(payment_channel_configs::Column::Enabled.eq(true))
+            .all(&self.state.db)
+            .await
+            .map_err(db_status)?;
+        let items = rows
+            .into_iter()
+            .map(|r| {
+                let cfg = channel_proto(r);
+                paymentv1::PaymentChannel {
+                    id: cfg.id,
+                    name: cfg.name,
+                    channel: cfg.channel,
+                    sandbox: cfg.sandbox,
+                }
+            })
+            .collect();
+        Ok(Response::new(paymentv1::ListEnabledChannelsResponse {
+            items,
+        }))
+    }
 }

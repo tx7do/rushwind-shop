@@ -1251,6 +1251,11 @@ CREATE TABLE IF NOT EXISTS public.mall_stock_alerts (
 CREATE TABLE IF NOT EXISTS public.mall_stock_op_logs (
     id bigserial,
     created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
     tenant_id bigint NULL DEFAULT 0,
     sku_id bigint NOT NULL,
     product_id bigint NULL,

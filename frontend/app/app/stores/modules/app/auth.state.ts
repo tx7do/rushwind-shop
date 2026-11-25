@@ -42,6 +42,10 @@ export const useAuthStore = defineStore('auth', () => {
                 mobile: params.mobile,
                 password: encryptPassword(params.password),
                 grant_type: 'password',
+                // 店铺前台固定 app 会话域（ct=1）：core 按此把 token 存进
+                // App TokenStore，app BFF 的校验才找得到它；缺省 ct=0 会把
+                // 凭据写进 Admin 库，紧随其后的 /app/v1/me 必然 401。
+                client_type: 1,
             })
 
             // 如果成功获取到 accessToken

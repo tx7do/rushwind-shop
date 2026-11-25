@@ -423,3 +423,26 @@ CREATE TABLE IF NOT EXISTS public.mall_shipments (
 );
 
 CREATE INDEX IF NOT EXISTS idx_shipments_order ON public.mall_shipments (order_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_shipping_addresses (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    recipient_name varchar(191) NOT NULL,
+    recipient_phone varchar(30) NOT NULL,
+    region varchar(100) NULL,
+    detail_address text NULL,
+    postal_code varchar(20) NULL,
+    tag varchar(50) NULL,
+    is_default boolean NULL DEFAULT false,
+    CONSTRAINT mall_shipping_addresses_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_shipping_addresses_user
+    ON public.mall_shipping_addresses (user_id);

@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
-    coupon_service as coupon, order_service as order, payment_service as payment, product_service as product,
+    coupon_service as coupon, identity_service as identity, order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
@@ -20,6 +20,10 @@ use shop_proto::proto::payment::service::v1::{
 };
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
+};
+use shop_proto::proto::address::service::v1::shipping_address_service_server::ShippingAddressServiceServer;
+use shop_proto::proto::identity::service::v1::{
+    user_profile_service_server::UserProfileServiceServer, user_service_server::UserServiceServer,
 };
 use shop_proto::proto::coupon::service::v1::{
     coupon_template_service_server::CouponTemplateServiceServer,
@@ -79,6 +83,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(UserCouponServiceServer::new(coupon::UserCouponService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(UserServiceServer::new(identity::UserService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(UserProfileServiceServer::new(identity::UserProfileService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(ShippingAddressServiceServer::new(identity::ShippingAddressService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(PaymentTransactionServiceServer::new(payment::PaymentTransactionService {

@@ -12,7 +12,8 @@ use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
 use store::entities::{
-    notification_channels, notification_deliveries, notification_rules, notification_templates,
+    internal_message_recipients, internal_messages, notification_channels, notification_deliveries,
+    notification_rules, notification_templates,
 };
 use store::paging::fetch_paged;
 
@@ -610,6 +611,44 @@ impl notifv1::notification_service_server::NotificationService for NotificationS
     ) -> Result<Response<notifv1::SendNotificationResponse>, Status> {
         let req = request.into_inner();
         let channel = channel_enum_to_str(req.channel.unwrap_or(3));
+        // The INTERNAL channel delivers for real: the message lands in
+        // the recipient's in-app inbox (mall_internal_messages + the
+        // recipient row), so the storefront's 消息中心 reads it. The
+        // other channels stay ledger-only — they need external
+        // providers (SMTP/SMS gateway/webhook endpoints) this
+        // deployment doesn't carry.
+        let internal_delivered = channel == "INTERNAL"
+            && req.recipient_user_id.unwrap_or(0) > 0
+            && !req.title.is_empty();
+        if internal_delivered {
+            let msg = internal_messages::ActiveModel {
+                tenant_id: Set(Some(0)),
+                title: Set(req.title.clone()),
+                content: Set(req.content.clone()),
+                status: Set("SENT".to_string()),
+                sender_id: Set(req.operator_user_id),
+                sender_name: Set(Some("system".to_string())),
+                created_at: Set(Some(store::now().into())),
+                ..Default::default()
+            }
+            .insert(&self.state.db)
+            .await
+            .map_err(db_status)?;
+            internal_message_recipients::ActiveModel {
+                tenant_id: Set(Some(0)),
+                message_id: Set(msg.id),
+                recipient_user_id: Set(req.recipient_user_id.unwrap_or(0)),
+                status: Set("SENT".to_string()),
+                received_at: Set(Some(store::now().into())),
+                title: Set(Some(req.title.clone())),
+                content: Set(Some(req.content.clone())),
+                created_at: Set(Some(store::now().into())),
+                ..Default::default()
+            }
+            .insert(&self.state.db)
+            .await
+            .map_err(db_status)?;
+        }
         let active = notification_deliveries::ActiveModel {
             event_type: Set(event_type_to_str(req.event_type)),
             channel: Set(channel.to_string()),

@@ -1208,3 +1208,57 @@ CREATE TABLE IF NOT EXISTS public.sys_languages (
   native_name character varying,
   is_default boolean DEFAULT false
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_promotions (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    promo_type varchar(30) NOT NULL DEFAULT 'SPECIAL_PRICE',
+    product_id bigint NULL,
+    special_price bigint NULL DEFAULT 0,
+    threshold_amount bigint NULL DEFAULT 0,
+    reduction_amount bigint NULL DEFAULT 0,
+    priority int NULL DEFAULT 0,
+    valid_from timestamptz NULL,
+    valid_until timestamptz NULL,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_promotions_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_stock_alerts (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    sku_id bigint NOT NULL,
+    stock_qty_at_trigger int NOT NULL DEFAULT 0,
+    threshold int NOT NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'OPEN',
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    CONSTRAINT mall_stock_alerts_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_stock_op_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    sku_id bigint NOT NULL,
+    product_id bigint NULL,
+    delta int NOT NULL DEFAULT 0,
+    stock_before int NULL DEFAULT 0,
+    stock_after int NULL DEFAULT 0,
+    reason varchar(40) NULL,
+    ref_id bigint NULL,
+    remark text NULL,
+    CONSTRAINT mall_stock_op_logs_pkey PRIMARY KEY (id)
+);

@@ -38,6 +38,8 @@ pub mod order_service;
 pub mod payment_service;
 pub mod product_service;
 pub mod server_monitor_service;
+pub mod promotion_service;
+pub mod stock_service;
 pub mod shipping_service;
 pub mod tax_service;
 pub mod task_service;

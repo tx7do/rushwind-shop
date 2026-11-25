@@ -27,6 +27,7 @@ pub mod identity_service;
 pub mod internal_message_service;
 pub mod interaction_service;
 pub mod notification_service;
+pub mod monitor_alert_service;
 pub mod online_session_service;
 pub mod order_service;
 pub mod payment_service;

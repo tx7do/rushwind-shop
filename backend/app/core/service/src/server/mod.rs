@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
-    internal_message_service as internal_message, notification_service as notification,
+    internal_message_service as internal_message, monitor_alert_service as monitor, notification_service as notification,
     api_service as api, menu_service as menu, org_unit_service as org_unit,
     permission_group_service as perm_group, permission_service as perm_svc,
     policy_evaluation_log_service as policy_log, position_service as position,
@@ -50,6 +50,7 @@ use shop_proto::proto::notification::service::v1::{
     notification_service_server::NotificationServiceServer,
     notification_template_service_server::NotificationTemplateServiceServer,
 };
+use shop_proto::proto::monitor_alert::service::v1::monitor_alert_service_server::MonitorAlertServiceServer;
 use shop_proto::proto::online_session::service::v1::online_session_service_server::OnlineSessionServiceServer;
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
@@ -213,6 +214,9 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(RoleServiceServer::new(role::RoleService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(MonitorAlertServiceServer::new(monitor::MonitorAlertService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(MenuServiceServer::new(menu::MenuService {

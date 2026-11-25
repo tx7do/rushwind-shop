@@ -1096,3 +1096,27 @@ CREATE TABLE IF NOT EXISTS public.sys_permission_groups (
   module character varying,
   parent_id bigint
 );
+
+CREATE TABLE IF NOT EXISTS public.sys_monitor_alert_rules (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    metric varchar(40) NOT NULL DEFAULT 'GO_GOROUTINES',
+    op varchar(10) NOT NULL DEFAULT 'GE',
+    threshold double precision NOT NULL DEFAULT 0,
+    cooldown_minutes int NULL DEFAULT 30,
+    channel varchar(30) NULL DEFAULT 'EMAIL',
+    target varchar(255) NULL,
+    is_enabled boolean NULL DEFAULT true,
+    remark text NULL,
+    last_firing boolean NULL DEFAULT false,
+    last_value double precision NULL DEFAULT 0,
+    last_alerted_at timestamptz NULL,
+    CONSTRAINT sys_monitor_alert_rules_pkey PRIMARY KEY (id)
+);

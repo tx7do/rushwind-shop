@@ -32,6 +32,7 @@ pub mod products;
 pub mod sku_attribute_combinations;
 pub mod groupon_activities;
 pub mod sys_apis;
+pub mod monitor_alert_rules;
 pub mod sys_menus;
 pub mod sys_permissions;
 pub mod sys_role_metadata;

@@ -1,16 +1,18 @@
 //! The member-tier service — the tier cards (the reference's
 //! member_tier_service.go): the level ladder with the spend threshold
-//! and the points multiplier. The GetUserTierInfo composite face (the
-//! user's lifetime spend matched onto the ladder) rides the order
-//! aggregation's landing.
+//! and the points multiplier. The GetUserTierInfo composite face sums
+//! the user's paid-order totals (PAID and every state that follows it
+//! — fulfilled work still counts as spend) and matches the sum onto
+//! the ladder: the highest tier whose min_spend the lifetime spend
+//! clears wins; below every threshold answers the lowest ACTIVE tier.
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, QueryOrder, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::member_tiers;
+use store::entities::{member_tiers, orders};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::catalog::service::v1 as catalogv1;
@@ -180,11 +182,42 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
     ) -> Result<Response<catalogv1::GetUserTierInfoResponse>, Status> {
         let req = request.into_inner();
         let user_id = req.user_id;
-        // The composite face: the user's lifetime spend matched onto the
-        // ladder — rides the order aggregation's landing.
-        let _ = user_id;
-        Err(Status::unimplemented(
-            "get_user_tier_info rides the order aggregation's landing",
-        ))
+        // The lifetime spend: every PAID-and-after order's total (the
+        // paid ladder — PENDING_PAYMENT hasn't cost money, CANCELLED
+        // refunded it).
+        let rows = orders::Entity::find()
+            .filter(orders::Column::UserId.eq(user_id))
+            .filter(orders::Column::Status.is_in(["PAID", "FULFILLED", "COMPLETED", "CONFIRMED"]))
+            .all(&self.state.db)
+            .await
+            .map_err(db_status)?;
+        let cumulative_spend: i64 = rows.iter().map(|r| r.total_amount).sum();
+
+        // The ladder: ACTIVE tiers by level ascending; the match is the
+        // highest tier whose min_spend the spend clears (levels may not
+        // be monotonic in min_spend, so scan all and keep the best).
+        let tiers = member_tiers::Entity::find()
+            .filter(member_tiers::Column::Status.eq("ACTIVE"))
+            .order_by_asc(member_tiers::Column::Level)
+            .all(&self.state.db)
+            .await
+            .map_err(db_status)?;
+        let mut best: Option<member_tiers::Model> = None;
+        for t in tiers.iter().filter(|t| t.min_spend <= cumulative_spend) {
+            let better = match &best {
+                Some(b) => t.min_spend >= b.min_spend,
+                None => true,
+            };
+            if better {
+                best = Some(t.clone());
+            }
+        }
+        // Below every threshold → the lowest-ACTIVE-tier entry level, so
+        // the response always carries a tier card for the UI to render.
+        let tier = best.or_else(|| tiers.first().cloned());
+        Ok(Response::new(catalogv1::GetUserTierInfoResponse {
+            tier: tier.map(tier_proto),
+            cumulative_spend,
+        }))
     }
 }

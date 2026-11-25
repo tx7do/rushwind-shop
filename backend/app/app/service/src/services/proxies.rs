@@ -228,10 +228,10 @@ passthrough_proxy! {
         >,
         behaviors: public,
         methods: [
-            stub get_my_tier_info(catalog_v1::GetUserTierInfoRequest)
-                -> catalog_v1::GetUserTierInfoResponse,
-            stub list_tiers(catalog_v1::ListActiveMemberTiersRequest)
-                -> catalog_v1::ListMemberTierResponse,
+            hand get_my_tier_info(catalog_v1::GetUserTierInfoRequest)
+                -> catalog_v1::GetUserTierInfoResponse => get_my_tier_info,
+            hand list_tiers(catalog_v1::ListActiveMemberTiersRequest)
+                -> catalog_v1::ListMemberTierResponse => list_tiers,
         ]
     }
 }

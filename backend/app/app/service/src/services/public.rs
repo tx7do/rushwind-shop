@@ -7,6 +7,7 @@ use crate::state::StatusError;
 use tonic::Status;
 
 use crate::state::AppState;
+use shop_proto::proto::catalog::service::v1 as catalog_v1;
 use shop_proto::proto::payment::service::v1 as payment_v1;
 
 /// The acquiring-channel enum → the dialog's pay-type enum
@@ -84,4 +85,61 @@ pub async fn mock_confirm_payment(
     Ok(payment_v1::MockConfirmPaymentResponse {
         status: resp.status,
     })
+}
+
+/// The member-tier storefront faces: "my tier" (the login state decides
+/// whose ladder — the client never names a user) and the anonymous
+/// active-tier list.
+pub async fn get_my_tier_info(
+    state: &std::sync::Arc<AppState>,
+    ctx: &rushwind_http_binding::ctx::RequestContext,
+    mut msg: catalog_v1::GetUserTierInfoRequest,
+) -> Result<catalog_v1::GetUserTierInfoResponse, StatusError> {
+    // The login state is the only source of user_id — the query string
+    // cannot name an arbitrary user.
+    msg.user_id = ctx
+        .claims
+        .as_ref()
+        .and_then(|c| c.get("uid"))
+        .and_then(|v| v.as_u64())
+        .map(|v| v as i64)
+        .ok_or_else(|| StatusError::new(401, "UNAUTHORIZED", "user identity required"))?;
+    use catalog_v1::member_tier_service_client::MemberTierServiceClient;
+    let mut core = MemberTierServiceClient::new(state.core_channel.clone());
+    let resp = core
+        .get_user_tier_info(tonic::Request::new(msg))
+        .await
+        .map_err(crate::services::map_status)?
+        .into_inner();
+    Ok(resp)
+}
+
+/// The anonymous ladder: every ACTIVE tier, smallest level first (the
+/// membership page renders the cards from it).
+pub async fn list_tiers(
+    state: &std::sync::Arc<AppState>,
+    _ctx: &rushwind_http_binding::ctx::RequestContext,
+    _msg: catalog_v1::ListActiveMemberTiersRequest,
+) -> Result<catalog_v1::ListMemberTierResponse, StatusError> {
+    use shop_proto::proto::pagination::PagingRequest;
+    let mut core = catalog_v1::member_tier_service_client::MemberTierServiceClient::new(
+        state.core_channel.clone(),
+    );
+    let resp = core
+        .list(tonic::Request::new(PagingRequest {
+            page: Some(1),
+            page_size: Some(100),
+            no_paging: Some(true),
+            ..Default::default()
+        }))
+        .await
+        .map_err(crate::services::map_status)?
+        .into_inner();
+    let items: Vec<catalog_v1::MemberTier> = resp
+        .items
+        .into_iter()
+        .filter(|t| t.status == Some(catalog_v1::member_tier::Status::Active as i32))
+        .collect();
+    let total = items.len() as i64;
+    Ok(catalog_v1::ListMemberTierResponse { items, total })
 }

@@ -28,6 +28,7 @@ pub const AUTH_FREE: &[(&str, &str)] = &[
     ("app.service.v1.BrandService", "Get"),
     ("app.service.v1.ProductService", "List"),
     ("app.service.v1.ProductService", "Get"),
+    ("app.service.v1.MemberTierService", "ListTiers"),
     ("app.service.v1.ProductService", "SearchProducts"),
     ("app.service.v1.ProductService", "SearchProductSuggestions"),
     ("app.service.v1.PromotionService", "ListActivePromotions"),

@@ -15,6 +15,8 @@ pub mod categories;
 pub mod product_translations;
 pub mod products;
 pub mod sku_attribute_combinations;
+pub mod groupon_activities;
+pub mod groupon_groups;
 pub mod shipping_addresses;
 pub mod shipping_rates;
 pub mod shipments;

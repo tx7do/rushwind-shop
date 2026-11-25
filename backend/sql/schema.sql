@@ -446,3 +446,47 @@ CREATE TABLE IF NOT EXISTS public.mall_shipping_addresses (
 
 CREATE INDEX IF NOT EXISTS idx_shipping_addresses_user
     ON public.mall_shipping_addresses (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_groupon_activities (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    sku_id bigint NOT NULL,
+    group_price bigint NOT NULL DEFAULT 0,
+    group_size int NOT NULL DEFAULT 2,
+    group_valid_hours int NULL DEFAULT 24,
+    per_user_limit int NULL DEFAULT 1,
+    valid_from timestamptz NULL,
+    valid_until timestamptz NULL,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_groupon_activities_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_groupon_groups (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    activity_id bigint NOT NULL,
+    leader_order_id bigint NULL,
+    member_count int NULL DEFAULT 0,
+    paid_count int NULL DEFAULT 0,
+    target_size int NOT NULL DEFAULT 2,
+    expire_at timestamptz NULL,
+    status varchar(20) NOT NULL DEFAULT 'OPENING',
+    CONSTRAINT mall_groupon_groups_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_groupon_groups_activity
+        FOREIGN KEY (activity_id)
+        REFERENCES public.mall_groupon_activities (id) ON DELETE CASCADE
+);

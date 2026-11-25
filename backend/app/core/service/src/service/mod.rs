@@ -8,6 +8,7 @@ pub mod brand_service;
 pub mod cart_service;
 pub mod coupon_service;
 pub mod category_service;
+pub mod groupon_service;
 pub mod identity_service;
 pub mod order_service;
 pub mod payment_service;

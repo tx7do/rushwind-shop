@@ -18058,7 +18058,7 @@ export function createSkuServiceClient(
       if (request.id === undefined || request.id === null) {
         throw new Error('missing required field request.id');
       }
-      const path = `/admin/v1/mall/skus/${request.id}:adjust-stock`;
+      const path = `/admin/v1/mall/skus/${request.id}/adjust-stock`;
       const bodyMap = { ...request } as Record<string, unknown>;
       delete bodyMap["id"];
       const body = JSON.stringify(bodyMap);

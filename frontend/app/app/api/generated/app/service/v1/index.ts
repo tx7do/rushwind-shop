@@ -2891,7 +2891,7 @@ export function createOrderServiceClient(
       if (request.id === undefined || request.id === null) {
         throw new Error('missing required field request.id');
       }
-      const path = `/app/v1/mall/orders/${request.id}:cancel`;
+      const path = `/app/v1/mall/orders/${request.id}/cancel`;
       const bodyMap = { ...request } as Record<string, unknown>;
       delete bodyMap["id"];
       const body = JSON.stringify(bodyMap);
@@ -2904,7 +2904,7 @@ export function createOrderServiceClient(
       if (request.id === undefined || request.id === null) {
         throw new Error('missing required field request.id');
       }
-      const path = `/app/v1/mall/orders/${request.id}:confirm-receipt`;
+      const path = `/app/v1/mall/orders/${request.id}/confirm-receipt`;
       const bodyMap = { ...request } as Record<string, unknown>;
       delete bodyMap["id"];
       const body = JSON.stringify(bodyMap);

@@ -1,0 +1,12 @@
+data:
+  database:
+    driver: "postgres"
+    source: "postgres://postgres:*Abcd123456@127.0.0.1:5432/rushwind_shop?sslmode=disable"
+  grpc_addr: "0.0.0.0:10800"
+  redis:
+    addr: "127.0.0.1:6379"
+    password: "*Abcd123456"
+  jwt_key: "dev_only_change_me_in_prod"
+  access_token_expires: 5400
+  refresh_token_expires: 43200
+  app_access_token_expires: 900

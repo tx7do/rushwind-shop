@@ -1,0 +1,13 @@
+//! The core domain service library face: configuration, state, and the
+//! domain gRPC service implementations. The binary (`main.rs`) is a
+//! thin tonic assembly entry over this surface.
+
+pub mod config;
+pub mod crypto;
+pub mod data;
+
+pub use state::{db_status, not_found_status, StatusResult};
+pub mod server;
+pub mod service;
+pub mod state;
+pub mod token;

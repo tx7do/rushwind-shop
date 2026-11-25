@@ -1,0 +1,25 @@
+[package]
+name = "auth"
+description = "The auth gate for the protected subtrees of both Shop deployments: credential verification, the server-side session checks, and the claim-bag injection, rendering the four-field status envelope on failure."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+shop-proto = { path = "../proto", version = "0.0.1" }
+async-trait = { workspace = true }
+rushwind-authn = { workspace = true }
+rushwind-authn-gate = { workspace = true }
+rushwind-http-binding = { workspace = true }
+axum = { workspace = true, features = ["matched-path"] }
+base64 = "0.22"
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt"] }

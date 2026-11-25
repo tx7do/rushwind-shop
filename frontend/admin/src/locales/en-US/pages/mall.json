@@ -1,0 +1,571 @@
+{
+  "moduleName": "Catalog Management",
+  "category": {
+    "moduleName": "Category Management",
+    "name": "Category Name",
+    "slug": "Category Slug",
+    "description": "Category Description",
+    "fullPath": "Full Path",
+    "sortOrder": "Sort Order",
+    "parent": "Parent Category",
+    "createdAt": "Created At",
+    "imageUrl": "Image URL",
+    "button": {
+      "create": "Create Category",
+      "update": "Edit Category"
+    }
+  },
+  "brand": {
+    "moduleName": "Brand Management",
+    "name": "Brand Name",
+    "slug": "Brand Slug",
+    "description": "Brand Description",
+    "logoUrl": "Brand Logo URL",
+    "sortOrder": "Sort Order",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Brand",
+      "update": "Edit Brand"
+    }
+  },
+  "product": {
+    "moduleName": "Product Management",
+    "settings": "Settings",
+    "name": "Product Name",
+    "slug": "Product Slug",
+    "shortDescription": "Short Description",
+    "longDescription": "Long Description",
+    "status": "Product Status",
+    "category": "Category",
+    "brand": "Brand",
+    "sortOrder": "Sort Order",
+    "imageUrl": "Image URL",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Product",
+      "update": "Edit Product"
+    },
+    "aiGenerate": "AI Copywriting",
+    "aiNeedName": "Fill in the product name first (or at least a short hint)",
+    "aiGenerateSuccess": "Copy generated and filled into the form",
+    "aiGenerateFailed": "AI generation failed. Configure a provider in AI Providers first",
+    "aiOverwriteConfirm": "This will overwrite the existing short/long description. Continue?",
+    "discardConfirm": "You have unsaved changes. Leave without saving?"
+  },
+  "productAttribute": {
+    "moduleName": "Attribute Management",
+    "name": "Attribute Name",
+    "sortOrder": "Sort Order",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Attribute",
+      "update": "Edit Attribute"
+    }
+  },
+  "productAttributeValue": {
+    "moduleName": "Attribute Value Management",
+    "displayName": "Attribute Value Name",
+    "sortOrder": "Sort Order",
+    "createdAt": "Created At",
+    "noAttributeContext": "Attribute values belong to a specific attribute. Pick one in Attribute Management first",
+    "goAttributes": "Go to Attribute Management",
+    "button": {
+      "create": "Create Attribute Value",
+      "update": "Edit Attribute Value"
+    },
+    "currentAttribute": "Current attribute: {name} (all values under it)"
+  },
+  "sku": {
+    "moduleName": "SKU Management",
+    "skuCode": "SKU Code",
+    "stockQty": "Stock Quantity",
+    "productId": "Product",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create SKU",
+      "update": "Edit SKU"
+    }
+  },
+  "lowStock": {
+    "moduleName": "Low-Stock Management",
+    "title": "Low-Stock Management",
+    "threshold": "Stock Threshold",
+    "alert": "This is a low-stock monitoring view showing SKUs whose stock is below the threshold. The threshold matches the scan threshold of the stock-alert periodic task; use this view to locate items needing restock."
+  },
+  "order": {
+    "moduleName": "Order Management",
+    "title": "Order Management",
+    "detailTitle": "Order Detail",
+    "orderItemsTitle": "Order Item Details",
+    "id": "Order ID",
+    "userId": "User ID",
+    "totalAmount": "Total Amount",
+    "originalAmount": "Original Amount",
+    "discountAmount": "Discount Amount",
+    "currency": "Currency",
+    "status": "Order Status",
+    "recipientName": "Recipient Name",
+    "recipientPhone": "Recipient Phone",
+    "shippingAddress": "Shipping Address",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "statusTransition": "Status Action",
+    "close": "Close Order",
+    "cancel": "Cancel Order",
+    "cancelConfirm": "Cancel this unpaid order? Reserved stock will be released.",
+    "orderItems": {
+      "id": "Order Item ID",
+      "skuId": "SKU ID",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "subtotal": "Subtotal",
+      "skuSnapshot": "SKU Snapshot",
+      "createdAt": "Created At"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "PENDING_PAYMENT": "Pending Payment",
+      "PAID": "Paid",
+      "CANCELLED": "Cancelled",
+      "FULFILLED": "Fulfilled",
+      "CLOSED": "Closed"
+    }
+  },
+  "paymentTransaction": {
+    "moduleName": "Payment Transaction",
+    "title": "Payment Transaction Monitor",
+    "id": "Transaction ID",
+    "orderId": "Order ID",
+    "userId": "User ID",
+    "amount": "Amount",
+    "currency": "Currency",
+    "status": "Payment Status",
+    "paymentMethod": "Payment Method",
+    "businessType": "Business Type",
+    "createdAt": "Created At",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "PENDING": "Pending",
+      "SUCCEEDED": "Succeeded",
+      "FAILED": "Failed",
+      "REFUNDED": "Refunded"
+    },
+    "methodLabel": {
+      "ALIPAY": "Alipay",
+      "WECHAT": "WeChat Pay",
+      "BALANCE": "Balance",
+      "CARD": "Card",
+      "MOCK": "Mock"
+    },
+    "businessTypeLabel": {
+      "BUSINESS_TYPE_CONSUME": "Consume",
+      "BUSINESS_TYPE_REFUND": "Refund",
+      "BUSINESS_TYPE_RECHARGE": "Recharge"
+    }
+  },
+  "refund": {
+    "moduleName": "Refund Management",
+    "title": "Refund Transaction Monitor",
+    "id": "Refund ID",
+    "transactionId": "Transaction ID",
+    "amount": "Refund Amount",
+    "currency": "Currency",
+    "status": "Refund Status",
+    "businessRefId": "Business Reference",
+    "createdAt": "Created At",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "PENDING": "Pending",
+      "SUCCEEDED": "Succeeded",
+      "FAILED": "Failed"
+    }
+  },
+  "financeOverview": {
+    "title": "Finance Overview",
+    "disclaimer": "Note: Payments are currently a simulated stub (forced success). The amounts below are display samples, not settlement-grade data, and must not be used for reconciliation.",
+    "metricCardTransactionVolumeTitle": "Transaction Volume (Sample)",
+    "metricCardTransactionVolumeDesc": "Sum of recent succeeded payment amounts",
+    "metricCardRefundVolumeTitle": "Refund Volume (Sample)",
+    "metricCardRefundVolumeDesc": "Sum of recent succeeded refund amounts",
+    "metricCardNetRevenueTitle": "Net Revenue (Sample)",
+    "metricCardNetRevenueDesc": "Transaction volume minus refund volume",
+    "chartTrendTitle": "Transaction Volume Trend",
+    "chartTrendDesc": "Daily aggregated succeeded payment amount",
+    "chartTxStatusTitle": "Payment Status Volume Distribution",
+    "chartTxStatusDesc": "Amount share by payment transaction status",
+    "exportOrders": "Export Orders (XLSX)"
+  },
+  "shipment": {
+    "moduleName": "Shipment Management",
+    "title": "Shipment Management",
+    "id": "Shipment ID",
+    "orderId": "Related Order",
+    "carrier": "Carrier",
+    "trackingNumber": "Tracking Number",
+    "status": "Shipment Status",
+    "createdAt": "Created At",
+    "fulfill": "Ship",
+    "deliver": "Mark Delivered",
+    "create": {
+      "title": "Create Shipment",
+      "orderId": "Related Order",
+      "orderIdPlaceholder": "Select an order to ship",
+      "carrier": "Carrier",
+      "carrierPlaceholder": "Enter carrier",
+      "trackingNumber": "Tracking Number",
+      "trackingNumberPlaceholder": "Enter tracking number"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "PENDING": "Pending",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered"
+    },
+    "confirm": {
+      "fulfill": "Confirm shipping this shipment? The related order will be marked as fulfilled.",
+      "deliver": "Confirm this shipment is delivered? The shipment flow will end."
+    }
+  },
+  "couponTemplate": {
+    "moduleName": "Coupon Template",
+    "title": "Coupon Template Management",
+    "discountType": "Discount Type",
+    "discountValue": "Discount Value (cents)",
+    "discountPercentage": "Discount Percentage",
+    "validFrom": "Valid From",
+    "validUntil": "Valid Until",
+    "maxRedemptions": "Max Redemptions",
+    "maxRedemptionsPerUser": "Max Redemptions Per User",
+    "redeemedCount": "Redeemed Count",
+    "status": "Status",
+    "claimable": "Claimable",
+    "claimableLabel": {
+      "true": "Claimable",
+      "false": "Not claimable"
+    },
+    "currency": "Currency",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Coupon Template",
+      "update": "Edit Coupon Template"
+    },
+    "typeLabel": {
+      "DISCOUNT_TYPE_UNSPECIFIED": "Unknown",
+      "FIXED_AMOUNT": "Fixed amount",
+      "PERCENTAGE": "Percentage"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
+  },
+  "shippingRate": {
+    "moduleName": "Shipping Rate",
+    "title": "Shipping Rate Template Management",
+    "region": "Destination Region",
+    "baseFee": "Base Fee (cents)",
+    "perUnitFee": "Per-Unit Fee (cents)",
+    "status": "Status",
+    "currency": "Currency",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Shipping Rate",
+      "update": "Edit Shipping Rate"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
+  },
+  "stockAlert": {
+    "moduleName": "Stock Alert",
+    "title": "Stock Alert Management",
+    "skuId": "SKU ID",
+    "stockQtyAtTrigger": "Stock At Trigger",
+    "threshold": "Threshold",
+    "status": "Status",
+    "createdAt": "Created At",
+    "alert": "This view lists stock-alert records persisted by the periodic scan task. Alerts can only be marked resolved; they cannot be created or deleted.",
+    "statusLabel": {
+      "OPEN": "Open",
+      "RESOLVED": "Resolved"
+    },
+    "button": {
+      "update": "Resolve Alert"
+    }
+  },
+  "taxRate": {
+    "moduleName": "Tax Rate",
+    "title": "Tax Rate Rule Management",
+    "region": "Destination Region",
+    "taxRate": "Tax Rate (%)",
+    "status": "Status",
+    "currency": "Currency",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Tax Rate",
+      "update": "Edit Tax Rate"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
+  },
+  "userCoupon": {
+    "moduleName": "User Coupon",
+    "title": "User Coupon Issuance Management",
+    "userId": "User ID",
+    "couponTemplateId": "Template ID",
+    "status": "Status",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "UNUSED": "Unused",
+      "USED": "Redeemed",
+      "EXPIRED": "Expired"
+    },
+    "statusTip": "Issued as Unused by default; Redeemed/Expired are for offline backfill",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Issue Coupon"
+    }
+  },
+  "comment": {
+    "moduleName": "Comment",
+    "title": "Comment Moderation",
+    "objectId": "Object ID",
+    "contentType": "Content Type",
+    "status": "Status",
+    "content": "Content",
+    "createdBy": "Author ID",
+    "createdAt": "Created At",
+    "button": {
+      "update": "Edit Comment"
+    },
+    "replySection": "Replies",
+    "noReplies": "No replies yet",
+    "replyContent": "Reply",
+    "replyPlaceholder": "Reply as the merchant (visible to buyers once posted)",
+    "replyTip": "The reply is created as a child comment and published as approved",
+    "replySubmit": "Post Reply",
+    "replySuccess": "Reply posted",
+    "replyFailed": "Failed to post reply",
+    "typeLabel": {
+      "CONTENT_TYPE_PRODUCT": "Product review",
+      "CONTENT_TYPE_SHOP": "Shop",
+      "CONTENT_TYPE_POST": "Article"
+    },
+    "statusLabel": {
+      "STATUS_PENDING": "Pending",
+      "STATUS_APPROVED": "Approved",
+      "STATUS_REJECTED": "Rejected",
+      "STATUS_SPAM": "Spam"
+    }
+  },
+  "invoice": {
+    "moduleName": "Invoice",
+    "title": "Invoice Management",
+    "orderId": "Order ID",
+    "userId": "User ID",
+    "invoiceNumber": "Invoice Number",
+    "invoiceType": "Invoice Type",
+    "status": "Status",
+    "typeLabel": {
+      "INVOICE_TYPE_UNSPECIFIED": "Unknown",
+      "VAT_GENERAL": "VAT General Invoice",
+      "VAT_SPECIAL": "VAT Special Invoice",
+      "ELECTRONIC": "E-Invoice"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "Unknown",
+      "PENDING": "Pending",
+      "ISSUED": "Issued",
+      "CANCELLED": "Voided"
+    },
+    "buyerName": "Buyer Name",
+    "buyerTaxId": "Buyer Tax ID",
+    "buyerAddress": "Buyer Address",
+    "buyerPhone": "Buyer Phone",
+    "amount": "Amount (cents)",
+    "currency": "Currency",
+    "createdAt": "Created At",
+    "button": {
+      "create": "Create Invoice",
+      "update": "Edit Invoice"
+    }
+  },
+  "promotion": {
+    "moduleName": "Promotion Management",
+    "title": "Promotion Management",
+    "name": "Name",
+    "promoType": "Type",
+    "promoTypeLabel": {
+      "SPECIAL_PRICE": "Special Price",
+      "FULL_REDUCTION": "Full Reduction"
+    },
+    "productId": "Product",
+    "productIdTip": "Special-price promotions require a product ID; the product sells at the special price during the window",
+    "storeWide": "Store-wide",
+    "specialPrice": "Special Price",
+    "thresholdAmount": "Threshold",
+    "reductionAmount": "Reduction",
+    "currency": "Currency",
+    "validity": "Validity",
+    "validFrom": "From",
+    "validUntil": "Until",
+    "priority": "Priority",
+    "priorityTip": "When multiple special-price promotions overlap on one product, the highest priority wins",
+    "status": "Status",
+    "statusLabel": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "amountUnitTip": "Unit: yuan (stored in cents server-side, auto-converted)",
+    "button": {
+      "create": "Create Promotion",
+      "update": "Edit Promotion"
+    }
+  },
+  "stockOpLog": {
+    "alert": "Stock operation logs are append-only audit records: order deductions, cancel/refund restorations and manual adjustments are all traced here. Read-only.",
+    "skuId": "SKU ID",
+    "productId": "Product ID",
+    "delta": "Delta",
+    "stockBefore": "Before",
+    "stockAfter": "After",
+    "reason": "Reason",
+    "reasonLabel": {
+      "ORDER_DEDUCT": "Order Deduct",
+      "CANCEL_RESTORE": "Cancel Restore",
+      "REFUND_RESTORE": "Refund Restore",
+      "MANUAL_ADJUST": "Manual Adjust"
+    },
+    "refId": "Ref",
+    "remark": "Remark",
+    "createdBy": "Operator",
+    "createdAt": "Time"
+  },
+  "stockAdjust": {
+    "title": "Adjust Stock",
+    "button": "Adjust",
+    "skuId": "SKU ID",
+    "currentStock": "Current Stock",
+    "delta": "Delta",
+    "deltaTip": "Positive for inbound, negative for outbound; rejected if resulting stock would be negative",
+    "deltaZero": "Delta must not be zero",
+    "remark": "Remark"
+  },
+  "paymentChannel": {
+    "name": "Channel Name",
+    "channel": "Channel Type",
+    "channelType": {
+      "mock": "Mock (demo)",
+      "wechatNative": "WeChat Pay Native (QR)",
+      "alipayPage": "Alipay (Page Pay)",
+      "wechatH5": "WeChat Pay H5 (mobile)"
+    },
+    "appId": "App ID",
+    "mchId": "Merchant ID (mch_id)",
+    "sandbox": "Sandbox",
+    "sandboxOn": "Sandbox",
+    "sandboxOff": "Production",
+    "enabled": "Enabled",
+    "enabledOn": "Enabled",
+    "enabledOff": "Disabled",
+    "credentials": "Credentials",
+    "credentialsConfigured": "Configured",
+    "credentialsMissing": "Not configured",
+    "credentialsKeepPlaceholder": "Configured — leave empty to keep, enter new value to replace",
+    "sectionCredentials": "Gateway credentials (deployer's own merchant account)",
+    "mchCertSerialNo": "Merchant Cert Serial No.",
+    "apiV3Key": "APIv3 Key",
+    "privateKeyPem": "Merchant Private Key (apiclient_key.pem)",
+    "alipayPrivateKey": "Application Private Key",
+    "alipayPublicKey": "Alipay Public Key",
+    "mockNoCredentials": "Mock channel requires no credentials",
+    "mockHint": "The mock channel involves no real money and is for development/demo only. Keep it disabled in production and use real channels.",
+    "wechatNoSandbox": "WeChat Pay v3 has no sandbox; verify with small real payments on your merchant account",
+    "remark": "Remark",
+    "button": {
+      "create": "New Payment Channel",
+      "update": "Edit Payment Channel"
+    },
+    "updatedAt": "Updated At"
+  },
+  "seckill": {
+    "name": "Activity Name",
+    "skuId": "SKU ID",
+    "seckillPrice": "Seckill Price",
+    "totalStock": "Total Stock",
+    "soldProgress": "Sold / Limit",
+    "perUserLimit": "Per-user Limit",
+    "validFrom": "Start Time",
+    "validUntil": "End Time",
+    "validRange": "Activity Window",
+    "status": "Status",
+    "statusLabel": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "button": {
+      "create": "New Seckill Activity",
+      "update": "Edit Seckill Activity"
+    }
+  },
+  "points": {
+    "userId": "User ID",
+    "type": "Type",
+    "typeLabel": {
+      "earn": "Earn",
+      "deduct": "Deduct",
+      "redeem": "Redeem",
+      "adjust": "Adjust",
+      "checkIn": "Check-in"
+    },
+    "delta": "Delta",
+    "balanceAfter": "Balance After",
+    "reason": "Reason",
+    "refOrderId": "Order",
+    "createdAt": "Time"
+  },
+  "groupon": {
+    "name": "Activity Name",
+    "skuId": "SKU ID",
+    "groupPrice": "Group Price",
+    "groupSize": "Group Size",
+    "groupValidHours": "Group Valid Hours",
+    "status": "Status",
+    "statusLabel": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "groups": "Groups",
+    "groupsOf": "Groups: {name}",
+    "noGroups": "No groups yet",
+    "leaderOrder": "Leader Order",
+    "paidProgress": "Paid / Target",
+    "groupStatus": "Group Status",
+    "groupStatusLabel": {
+      "opening": "Opening",
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "expireAt": "Expires At",
+    "button": {
+      "create": "New Groupon Activity",
+      "update": "Edit Groupon Activity"
+    }
+  },
+  "memberTier": {
+    "name": "Tier Name",
+    "level": "Level",
+    "minSpend": "Min Spend",
+    "pointsMultiplier": "Points Multiplier",
+    "status": "Status",
+    "button": {
+      "create": "New Tier",
+      "update": "Edit Tier"
+    }
+  }
+}

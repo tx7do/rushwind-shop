@@ -1,0 +1,129 @@
+{
+  "home": {
+    "title": "Mall",
+    "subtitle": "Curated picks, within reach",
+    "featured": "Featured products",
+    "categories": "Browse categories",
+    "heroDescription": "Discover great products across categories, with a convenient shopping experience.",
+    "promoBanner": {
+      "title": "Exclusive new-user offer",
+      "subtitle": "Discount on your first order — curated picks await",
+      "cta": "Shop now"
+    }
+  },
+  "category": {
+    "products": "Products in this category",
+    "empty": "No products in this category yet.",
+    "notFound": "Category not found.",
+    "breadcrumbHome": "Home",
+    "filters": "Filters",
+    "filterCategories": "Categories",
+    "filterBrands": "Brands",
+    "sortBy": "Sort by",
+    "sortFeatured": "Featured",
+    "sortLatest": "Latest",
+    "title": "Categories"
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "outOfStock": "Out of stock",
+    "selectSku": "Please select a specification",
+    "description": "Product description",
+    "price": "Price",
+    "priceFrom": "From",
+    "viewDetail": "View details",
+    "notFound": "Product not found.",
+    "selectAttribute": "Please select",
+    "skuUnavailable": "This specification is not available.",
+    "currencyCny": "¥",
+    "serviceAuthentic": "Authenticity guaranteed",
+    "serviceReturn": "7-day no-reason returns",
+    "serviceShipping": "Fast dispatch"
+  },
+  "loading": "Loading…",
+  "cart": {
+    "title": "Shopping Cart",
+    "subtitle": "Manage the items you're about to check out"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "subtitle": "Manage the products you've saved",
+    "empty": "You haven't saved any products yet.",
+    "table": {
+      "product": "Product",
+      "createdAt": "Saved At",
+      "action": "Action"
+    },
+    "errors": {
+      "removeFailed": "Failed to remove from wishlist. Please try again later."
+    }
+  },
+  "productRating": {
+    "average": "Average Rating",
+    "count": "Ratings",
+    "noRating": "No ratings yet",
+    "selectRating": "Select Rating",
+    "aiSummary": "AI review insights",
+    "aiSummaryEmpty": ""
+  },
+  "coupons": {
+    "title": "Coupon Center",
+    "myPoints": "My Points",
+    "empty": "No coupons available",
+    "off": "OFF",
+    "validUntil": "Valid until",
+    "redeemed": "Redeemed",
+    "exchange": "{points} pts",
+    "exchanging": "Exchanging…",
+    "exchangeSuccess": "Exchange successful! Coupon added",
+    "exchangeFailed": "Exchange failed"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "subtitle": "Confirm shipping details and place your order"
+  },
+  "orderStatus": {
+    "status_unspecified": "Unknown",
+    "pending_payment": "Pending payment",
+    "paid": "Paid",
+    "cancelled": "Cancelled",
+    "fulfilled": "Fulfilled",
+    "closed": "Closed"
+  },
+  "promotion": {
+    "specialPriceTag": "Special Price",
+    "fullReductionTag": "Spend {threshold}, save {reduction}"
+  },
+  "orders": {
+    "title": "My Orders"
+  },
+  "mall": {
+    "seckill": {
+      "tag": "Flash Sale"
+    }
+  },
+  "points": {
+    "title": "My Points",
+    "reason": "Points detail",
+    "checkIn": "Check In",
+    "checkedIn": "Checked In",
+    "checkInSuccess": "Check-in success +{awarded} pts",
+    "alreadyCheckedIn": "Already checked in today",
+    "checkInFailed": "Check-in failed, please retry",
+    "consecutiveDays": "{days}-day streak"
+  },
+  "seckill": {
+    "tag": "Flash Sale"
+  },
+  "groupon": {
+    "tag": "Group Buy",
+    "tagSize": "{size} to form"
+  },
+  "tab": {
+    "home": "Home",
+    "category": "Category",
+    "cart": "Cart",
+    "mine": "Mine"
+  }
+}

@@ -1,0 +1,5 @@
+# aws-lc-sys needs NASM on Windows x64 MSVC; the official scoop source is
+# dead (nasm.us URL invalid), so the build rides the crate's prebuilt NASM
+# objects instead. Set once here, not per shell.
+[env]
+AWS_LC_SYS_PREBUILT_NASM = "1"

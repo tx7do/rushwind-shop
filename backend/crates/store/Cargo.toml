@@ -1,0 +1,21 @@
+[package]
+name = "store"
+description = "The shared data layer of the Shop deployments: the generated entity tree, the paging/filter select assembly, and the bootstrap migration (golden DDL), mirroring the reference's store crate."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+rushwind-password = { workspace = true }
+rushwind-password-argon2 = { workspace = true }
+rushwind-storage-seaorm-support = { workspace = true }
+sea-orm = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }

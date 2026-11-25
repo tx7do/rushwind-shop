@@ -1,0 +1,571 @@
+{
+  "moduleName": "商品管理",
+  "category": {
+    "moduleName": "类目管理",
+    "name": "类目名称",
+    "slug": "类目标识",
+    "description": "类目描述",
+    "fullPath": "完整路径",
+    "sortOrder": "排序",
+    "parent": "父级类目",
+    "createdAt": "创建时间",
+    "imageUrl": "图片地址",
+    "button": {
+      "create": "创建类目",
+      "update": "编辑类目"
+    }
+  },
+  "brand": {
+    "moduleName": "品牌管理",
+    "name": "品牌名称",
+    "slug": "品牌标识",
+    "description": "品牌描述",
+    "logoUrl": "品牌Logo地址",
+    "sortOrder": "排序",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "创建品牌",
+      "update": "编辑品牌"
+    }
+  },
+  "product": {
+    "moduleName": "商品管理",
+    "settings": "设置",
+    "name": "商品名称",
+    "slug": "商品标识",
+    "shortDescription": "商品简述",
+    "longDescription": "商品详情",
+    "status": "商品状态",
+    "category": "所属类目",
+    "brand": "所属品牌",
+    "sortOrder": "排序",
+    "imageUrl": "图片地址",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "创建商品",
+      "update": "编辑商品"
+    },
+    "aiGenerate": "AI 生成文案",
+    "aiNeedName": "请先填写商品名称（或至少填写简述提示）",
+    "aiGenerateSuccess": "文案已生成并填入表单",
+    "aiGenerateFailed": "AI 生成失败，请确认已在「AI 服务商」配置可用模型",
+    "aiOverwriteConfirm": "将覆盖已有的商品简述与详情，是否继续？",
+    "discardConfirm": "表单内容已修改，离开将丢失未保存的修改，是否离开？"
+  },
+  "productAttribute": {
+    "moduleName": "属性管理",
+    "name": "属性名称",
+    "sortOrder": "排序",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "创建属性",
+      "update": "编辑属性"
+    }
+  },
+  "productAttributeValue": {
+    "moduleName": "属性值管理",
+    "displayName": "属性值名称",
+    "sortOrder": "排序",
+    "createdAt": "创建时间",
+    "noAttributeContext": "属性值隶属于具体属性，请先从属性管理中选择一个属性",
+    "goAttributes": "前往属性管理",
+    "button": {
+      "create": "创建属性值",
+      "update": "编辑属性值"
+    },
+    "currentAttribute": "当前属性：{name}（管理该属性下的全部属性值）"
+  },
+  "sku": {
+    "moduleName": "SKU管理",
+    "skuCode": "SKU编码",
+    "stockQty": "库存数量",
+    "productId": "所属商品",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "创建SKU",
+      "update": "编辑SKU"
+    }
+  },
+  "lowStock": {
+    "moduleName": "低库存管理台",
+    "title": "低库存管理台",
+    "threshold": "库存阈值",
+    "alert": "此为低库存监控视图，展示库存量低于阈值的 SKU。该阈值与库存预警周期任务的扫描阈值一致，请据此定位并补货。"
+  },
+  "order": {
+    "moduleName": "订单管理",
+    "title": "订单管理",
+    "detailTitle": "订单详情",
+    "orderItemsTitle": "订单项明细",
+    "id": "订单ID",
+    "userId": "用户ID",
+    "totalAmount": "订单金额",
+    "originalAmount": "原始金额",
+    "discountAmount": "优惠抵扣",
+    "currency": "币种",
+    "status": "订单状态",
+    "recipientName": "收件人",
+    "recipientPhone": "收件电话",
+    "shippingAddress": "收货地址",
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "statusTransition": "状态操作",
+    "close": "关闭订单",
+    "cancel": "取消订单",
+    "cancelConfirm": "确定取消该未支付订单吗？取消后将释放占用的库存。",
+    "orderItems": {
+      "id": "订单项ID",
+      "skuId": "SKU ID",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "subtotal": "小计",
+      "skuSnapshot": "SKU快照",
+      "createdAt": "创建时间"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "PENDING_PAYMENT": "待支付",
+      "PAID": "已支付",
+      "CANCELLED": "已取消",
+      "FULFILLED": "已发货",
+      "CLOSED": "已关闭"
+    }
+  },
+  "paymentTransaction": {
+    "moduleName": "支付流水",
+    "title": "支付流水监控",
+    "id": "流水ID",
+    "orderId": "订单ID",
+    "userId": "用户ID",
+    "amount": "金额",
+    "currency": "币种",
+    "status": "支付状态",
+    "paymentMethod": "支付方式",
+    "businessType": "业务类型",
+    "createdAt": "创建时间",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "PENDING": "处理中",
+      "SUCCEEDED": "成功",
+      "FAILED": "失败",
+      "REFUNDED": "已退款"
+    },
+    "methodLabel": {
+      "ALIPAY": "支付宝",
+      "WECHAT": "微信支付",
+      "BALANCE": "余额支付",
+      "CARD": "银行卡",
+      "MOCK": "模拟支付"
+    },
+    "businessTypeLabel": {
+      "BUSINESS_TYPE_CONSUME": "消费",
+      "BUSINESS_TYPE_REFUND": "退款",
+      "BUSINESS_TYPE_RECHARGE": "充值"
+    }
+  },
+  "refund": {
+    "moduleName": "退款管理",
+    "title": "退款流水监控",
+    "id": "退款ID",
+    "transactionId": "关联流水ID",
+    "amount": "退款金额",
+    "currency": "币种",
+    "status": "退款状态",
+    "businessRefId": "业务单号",
+    "createdAt": "创建时间",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "PENDING": "处理中",
+      "SUCCEEDED": "成功",
+      "FAILED": "失败"
+    }
+  },
+  "financeOverview": {
+    "title": "财务总览",
+    "disclaimer": "提示：当前支付为模拟桩（强制成功），以下金额为展示样本而非真实结算依据，不可用作对账。",
+    "metricCardTransactionVolumeTitle": "交易总额（样本）",
+    "metricCardTransactionVolumeDesc": "近期成功支付流水金额求和",
+    "metricCardRefundVolumeTitle": "退款总额（样本）",
+    "metricCardRefundVolumeDesc": "近期成功退款金额求和",
+    "metricCardNetRevenueTitle": "净收入（样本）",
+    "metricCardNetRevenueDesc": "交易总额减退款总额",
+    "chartTrendTitle": "交易额趋势",
+    "chartTrendDesc": "按日聚合的成功支付流水金额",
+    "chartTxStatusTitle": "支付状态金额分布",
+    "chartTxStatusDesc": "按支付流水状态聚合的金额占比",
+    "exportOrders": "导出订单明细 (XLSX)"
+  },
+  "shipment": {
+    "moduleName": "物流管理",
+    "title": "物流单管理",
+    "id": "物流单ID",
+    "orderId": "关联订单",
+    "carrier": "承运商",
+    "trackingNumber": "运单号",
+    "status": "物流状态",
+    "createdAt": "创建时间",
+    "fulfill": "发货",
+    "deliver": "签收",
+    "create": {
+      "title": "创建物流单",
+      "orderId": "关联订单",
+      "orderIdPlaceholder": "请选择待发货订单",
+      "carrier": "承运商",
+      "carrierPlaceholder": "请输入承运商",
+      "trackingNumber": "运单号",
+      "trackingNumberPlaceholder": "请输入运单号"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "PENDING": "待发货",
+      "SHIPPED": "已发货",
+      "DELIVERED": "已签收"
+    },
+    "confirm": {
+      "fulfill": "确认对该物流单执行发货？发货后关联订单将标记为已发货。",
+      "deliver": "确认该物流单已签收？签收后物流流程结束。"
+    }
+  },
+  "couponTemplate": {
+    "moduleName": "优惠券模板",
+    "title": "优惠券模板管理",
+    "discountType": "抵扣类型",
+    "discountValue": "抵扣面额（分）",
+    "discountPercentage": "抵扣百分比",
+    "validFrom": "有效期起",
+    "validUntil": "有效期止",
+    "maxRedemptions": "核销上限",
+    "maxRedemptionsPerUser": "每人核销上限",
+    "redeemedCount": "已核销次数",
+    "status": "状态",
+    "claimable": "可领取",
+    "claimableLabel": {
+      "true": "可领取",
+      "false": "不可领取"
+    },
+    "currency": "币种",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "新建优惠券模板",
+      "update": "编辑优惠券模板"
+    },
+    "typeLabel": {
+      "DISCOUNT_TYPE_UNSPECIFIED": "未知",
+      "FIXED_AMOUNT": "固定金额",
+      "PERCENTAGE": "折扣百分比"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "ACTIVE": "生效",
+      "INACTIVE": "停用"
+    }
+  },
+  "shippingRate": {
+    "moduleName": "运费模板",
+    "title": "运费模板管理",
+    "region": "目的地区域",
+    "baseFee": "基础运费（分）",
+    "perUnitFee": "按件加收（分）",
+    "status": "状态",
+    "currency": "币种",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "新建运费模板",
+      "update": "编辑运费模板"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "ACTIVE": "生效",
+      "INACTIVE": "停用"
+    }
+  },
+  "stockAlert": {
+    "moduleName": "库存预警",
+    "title": "库存预警管理",
+    "skuId": "SKU ID",
+    "stockQtyAtTrigger": "触发时库存",
+    "threshold": "阈值",
+    "status": "状态",
+    "createdAt": "创建时间",
+    "alert": "此处展示库存预警周期任务落库的告警记录。仅可将告警标记为已解决，无法新建或删除。",
+    "statusLabel": {
+      "OPEN": "待处理",
+      "RESOLVED": "已解决"
+    },
+    "button": {
+      "update": "处置告警"
+    }
+  },
+  "taxRate": {
+    "moduleName": "税率规则",
+    "title": "税率规则管理",
+    "region": "目的地区域",
+    "taxRate": "税率（%）",
+    "status": "状态",
+    "currency": "币种",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "新建税率规则",
+      "update": "编辑税率规则"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",      "ACTIVE": "生效",
+      "INACTIVE": "停用"
+    }
+  },
+  "userCoupon": {
+    "moduleName": "用户优惠券",
+    "title": "用户优惠券发放管理",
+    "userId": "用户ID",
+    "couponTemplateId": "模板ID",
+    "status": "状态",
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "UNUSED": "未使用",
+      "USED": "已核销",
+      "EXPIRED": "已过期"
+    },
+    "statusTip": "发放默认为未使用；已核销/已过期用于线下补录",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "发放优惠券"
+    }
+  },
+  "comment": {
+    "moduleName": "评论",
+    "title": "评论审核",
+    "objectId": "对象ID",
+    "contentType": "内容类型",
+    "status": "状态",
+    "content": "内容",
+    "createdBy": "作者ID",
+    "createdAt": "创建时间",
+    "button": {
+      "update": "编辑评论"
+    },
+    "replySection": "回复管理",
+    "noReplies": "暂无回复",
+    "replyContent": "回复内容",
+    "replyPlaceholder": "以商家身份回复该评论（发布后直接展示给买家）",
+    "replyTip": "回复将创建为该评论的子评论，状态直接为已批准",
+    "replySubmit": "发布回复",
+    "replySuccess": "回复已发布",
+    "replyFailed": "回复发布失败",
+    "typeLabel": {
+      "CONTENT_TYPE_PRODUCT": "商品评论",
+      "CONTENT_TYPE_SHOP": "店铺",
+      "CONTENT_TYPE_POST": "文章"
+    },
+    "statusLabel": {
+      "STATUS_PENDING": "待审核",
+      "STATUS_APPROVED": "已批准",
+      "STATUS_REJECTED": "已拒绝",
+      "STATUS_SPAM": "垃圾"
+    }
+  },
+  "invoice": {
+    "moduleName": "发票",
+    "title": "发票管理",
+    "orderId": "订单ID",
+    "userId": "用户ID",
+    "invoiceNumber": "发票号",
+    "invoiceType": "发票类型",
+    "status": "状态",
+    "typeLabel": {
+      "INVOICE_TYPE_UNSPECIFIED": "未知",
+      "VAT_GENERAL": "增值税普通发票",
+      "VAT_SPECIAL": "增值税专用发票",
+      "ELECTRONIC": "电子发票"
+    },
+    "statusLabel": {
+      "STATUS_UNSPECIFIED": "未知",
+      "PENDING": "待开",
+      "ISSUED": "已开",
+      "CANCELLED": "已作废"
+    },
+    "buyerName": "购方名称",
+    "buyerTaxId": "购方税号",
+    "buyerAddress": "购方地址",
+    "buyerPhone": "购方电话",
+    "amount": "开票金额（分）",
+    "currency": "币种",
+    "createdAt": "创建时间",
+    "button": {
+      "create": "创建发票",
+      "update": "编辑发票"
+    }
+  },
+  "promotion": {
+    "moduleName": "促销活动管理",
+    "title": "促销活动管理",
+    "name": "活动名称",
+    "promoType": "促销类型",
+    "promoTypeLabel": {
+      "SPECIAL_PRICE": "商品专价",
+      "FULL_REDUCTION": "满减"
+    },
+    "productId": "生效商品",
+    "productIdTip": "仅专价活动需要填写商品ID，填写后该商品在活动期内按专价售出",
+    "storeWide": "全店",
+    "specialPrice": "专价",
+    "thresholdAmount": "满减门槛",
+    "reductionAmount": "减让金额",
+    "currency": "币种",
+    "validity": "有效窗口",
+    "validFrom": "开始时间",
+    "validUntil": "结束时间",
+    "priority": "优先级",
+    "priorityTip": "同商品多个专价活动并发时取优先级最高者",
+    "status": "状态",
+    "statusLabel": {
+      "ACTIVE": "生效中",
+      "INACTIVE": "已停用"
+    },
+    "amountUnitTip": "单位：元（后端以分存储，自动换算）",
+    "button": {
+      "create": "新建促销活动",
+      "update": "编辑促销活动"
+    }
+  },
+  "stockOpLog": {
+    "alert": "库存操作流水为 append-only 审计记录：下单扣减、取消/退款回补、手动调整均在此留痕，仅供查询。",
+    "skuId": "SKU ID",
+    "productId": "商品 ID",
+    "delta": "变动量",
+    "stockBefore": "变动前",
+    "stockAfter": "变动后",
+    "reason": "原因",
+    "reasonLabel": {
+      "ORDER_DEDUCT": "下单扣减",
+      "CANCEL_RESTORE": "取消回补",
+      "REFUND_RESTORE": "退款回补",
+      "MANUAL_ADJUST": "手动调整"
+    },
+    "refId": "关联单据",
+    "remark": "备注",
+    "createdBy": "操作人",
+    "createdAt": "操作时间"
+  },
+  "stockAdjust": {
+    "title": "调整库存",
+    "button": "调库存",
+    "skuId": "SKU ID",
+    "currentStock": "当前库存",
+    "delta": "变动量",
+    "deltaTip": "正数入库、负数出库；服务端行锁校验后库存不足将拒绝",
+    "deltaZero": "变动量不能为 0",
+    "remark": "备注"
+  },
+  "paymentChannel": {
+    "name": "渠道名称",
+    "channel": "渠道类型",
+    "channelType": {
+      "mock": "模拟支付（演示）",
+      "wechatNative": "微信支付 Native（扫码）",
+      "alipayPage": "支付宝（电脑网站支付）",
+      "wechatH5": "微信支付 H5（手机浏览器）"
+    },
+    "appId": "应用 ID（appid）",
+    "mchId": "商户号（mch_id）",
+    "sandbox": "沙箱模式",
+    "sandboxOn": "沙箱",
+    "sandboxOff": "生产",
+    "enabled": "启用状态",
+    "enabledOn": "已启用",
+    "enabledOff": "已停用",
+    "credentials": "网关凭据",
+    "credentialsConfigured": "已配置",
+    "credentialsMissing": "未配置",
+    "credentialsKeepPlaceholder": "已配置——留空保持不变，填入新值则替换",
+    "sectionCredentials": "网关凭据（部署方自有商户资质）",
+    "mchCertSerialNo": "商户证书序列号",
+    "apiV3Key": "APIv3 密钥",
+    "privateKeyPem": "商户私钥（apiclient_key.pem）",
+    "alipayPrivateKey": "应用私钥",
+    "alipayPublicKey": "支付宝公钥",
+    "mockNoCredentials": "模拟渠道无需凭据",
+    "mockHint": "模拟渠道不出真实资金，仅用于开发/演示；生产部署请保持停用并改用真实渠道。",
+    "wechatNoSandbox": "微信支付 V3 无沙箱环境，请以真实商户号小额验收",
+    "remark": "备注",
+    "button": {
+      "create": "新增支付渠道",
+      "update": "编辑支付渠道"
+    },
+    "updatedAt": "更新时间"
+  },
+  "seckill": {
+    "name": "活动名称",
+    "skuId": "SKU ID",
+    "seckillPrice": "秒杀价",
+    "totalStock": "总限量",
+    "soldProgress": "已抢/限量",
+    "perUserLimit": "每人限购",
+    "validFrom": "开始时间",
+    "validUntil": "结束时间",
+    "validRange": "活动窗口",
+    "status": "状态",
+    "statusLabel": {
+      "active": "生效",
+      "inactive": "停用"
+    },
+    "button": {
+      "create": "新增秒杀活动",
+      "update": "编辑秒杀活动"
+    }
+  },
+  "points": {
+    "userId": "用户ID",
+    "type": "类型",
+    "typeLabel": {
+      "earn": "入账",
+      "deduct": "回冲",
+      "redeem": "兑换",
+      "adjust": "调整",
+      "checkIn": "签到"
+    },
+    "delta": "变动",
+    "balanceAfter": "变动后余额",
+    "reason": "事由",
+    "refOrderId": "关联订单",
+    "createdAt": "时间"
+  },
+  "groupon": {
+    "name": "活动名称",
+    "skuId": "SKU ID",
+    "groupPrice": "成团价",
+    "groupSize": "成团人数",
+    "groupValidHours": "成团时限（小时）",
+    "status": "状态",
+    "statusLabel": {
+      "active": "生效",
+      "inactive": "停用"
+    },
+    "groups": "拼团列表",
+    "groupsOf": "拼团列表：{name}",
+    "noGroups": "暂无拼团",
+    "leaderOrder": "团长订单",
+    "paidProgress": "已支付/成团",
+    "groupStatus": "团状态",
+    "groupStatusLabel": {
+      "opening": "拼购中",
+      "success": "已成团",
+      "failed": "已失败"
+    },
+    "expireAt": "成团截止",
+    "button": {
+      "create": "新增拼团活动",
+      "update": "编辑拼团活动"
+    }
+  },
+  "memberTier": {
+    "name": "等级名称",
+    "level": "等级",
+    "minSpend": "累计消费门槛",
+    "pointsMultiplier": "积分倍率",
+    "status": "状态",
+    "button": {
+      "create": "新增等级",
+      "update": "编辑等级"
+    }
+  }
+}

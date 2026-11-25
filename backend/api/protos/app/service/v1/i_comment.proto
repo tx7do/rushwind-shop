@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package app.service.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pagination/v1/pagination.proto";
+
+import "comment/service/v1/comment.proto";
+
+// 评论 AI 摘要响应：AI 消化已审核评论后的购物洞察（一段短文）。
+message ProductReviewSummaryResponse {
+  // 摘要文本；商品评论不足（< minComments）时为空串且 available=false
+  string summary = 1;
+
+  // 参与摘要的评论条数
+  uint32 comment_count = 2 [json_name = "commentCount"];
+
+  // 是否有可用摘要（评论数不足/生成失败时 false，前端不渲染区块）
+  bool available = 3;
+}
+
+// 商品评论前台服务。
+// List/Get 在 BFF 层过滤 STATUS_APPROVED（未审核/拒绝/垃圾对前台不可见）；
+// Create 注入 CreatedBy（防作者伪造）；Update/Delete 做 ensureCommentOwner（IDOR 防护）。
+// 评论为公开内容，仅由 TenantPrivacy 做租户隔离（同租户内可见），
+// 不挂 UserPrivacy（详见 core Comment schema 文档）。
+service CommentService {
+  rpc List (pagination.PagingRequest) returns (comment.service.v1.ListCommentResponse) {
+    option (google.api.http) = {
+      get: "/app/v1/mall/comments"
+    };
+  }
+
+  rpc Get (comment.service.v1.GetCommentRequest) returns (comment.service.v1.Comment) {
+    option (google.api.http) = {
+      get: "/app/v1/mall/comments/{id}"
+    };
+  }
+
+  rpc Create (comment.service.v1.CreateCommentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/app/v1/mall/comments"
+      body: "*"
+    };
+  }
+
+  rpc Update (comment.service.v1.UpdateCommentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/app/v1/mall/comments/{id}"
+      body: "*"
+    };
+  }
+
+  rpc Delete (comment.service.v1.DeleteCommentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/app/v1/mall/comments"
+    };
+  }
+
+  // 商品评分聚合（只读，匿名可读——白名单登记）。
+  rpc GetProductRating (comment.service.v1.GetProductRatingRequest) returns (comment.service.v1.ProductRatingSummary) {
+    option (google.api.http) = {
+      get: "/app/v1/mall/products/{product_id}/rating"
+    };
+  }
+
+  // 评论 AI 摘要（只读，匿名可读——白名单登记；LLM 生成，服务端有缓存）。
+  rpc GetProductReviewSummary (GetProductReviewSummaryRequest) returns (ProductReviewSummaryResponse) {
+    option (google.api.http) = {
+      get: "/app/v1/mall/products/{product_id}/review-summary"
+    };
+  }
+}
+
+// 评论 AI 摘要 - 请求
+message GetProductReviewSummaryRequest {
+  int64 product_id = 1 [json_name = "productId"]; // 商品ID
+}

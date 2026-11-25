@@ -1,0 +1,97 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/auth",
+    "crates/proto",
+    "crates/store",
+    "app/admin/service",
+    "app/app/service",
+    "app/core/service",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.81"
+license = "MIT"
+repository = "https://github.com/tx7do/rushwind-shop"
+
+# RushWind 框架：开发期以本地路径依赖接入（与 rushwind 仓库同盘同级）。
+# 发布期切换为 git / registry 依赖。
+[workspace.dependencies]
+# --- 框架内核与装配 ---
+rushwind-core = { path = "../../rushwind/crates/rushwind-core", version = "0.0.1" }
+rushwind-bootstrap = { path = "../../rushwind/crates/rushwind-bootstrap", version = "0.0.1" }
+rushwind-transport = { path = "../../rushwind/crates/rushwind-transport", version = "0.0.1" }
+rushwind-transport-axum = { path = "../../rushwind/crates/rushwind-transport-axum", version = "0.0.1" }
+rushwind-transport-grpc = { path = "../../rushwind/crates/rushwind-transport-grpc", version = "0.0.1" }
+rushwind-transport-sse = { path = "../../rushwind/crates/rushwind-transport-sse", version = "0.0.1" }
+rushwind-http = { path = "../../rushwind/crates/rushwind-http", version = "0.0.1" }
+
+# --- 契约链路（buf → prost/pbjson → gen-http）---
+rushwind-proto-build = { path = "../../rushwind/crates/rushwind-proto-build", version = "0.0.1" }
+rushwind-gen-http = { path = "../../rushwind/crates/rushwind-gen-http", version = "0.1.0" }
+rushwind-http-binding = { path = "../../rushwind/crates/rushwind-http-binding", version = "0.1.0" }
+
+# --- 认证授权 ---
+rushwind-authn = { path = "../../rushwind/crates/rushwind-authn", version = "0.0.1" }
+rushwind-authn-jwt = { path = "../../rushwind/crates/rushwind-authn-jwt", version = "0.0.1" }
+rushwind-authn-gate = { path = "../../rushwind/crates/rushwind-authn-gate", version = "0.0.1" }
+rushwind-authz = { path = "../../rushwind/crates/rushwind-authz", version = "0.0.1" }
+rushwind-authz-rbac = { path = "../../rushwind/crates/rushwind-authz-rbac", version = "0.0.1" }
+rushwind-password = { path = "../../rushwind/crates/rushwind-password", version = "0.0.1" }
+rushwind-password-argon2 = { path = "../../rushwind/crates/rushwind-password-argon2", version = "0.0.1" }
+
+# --- 存储与缓存 ---
+rushwind-storage = { path = "../../rushwind/crates/rushwind-storage", version = "0.0.1" }
+rushwind-storage-seaorm = { path = "../../rushwind/crates/rushwind-storage-seaorm", version = "0.0.1" }
+rushwind-storage-seaorm-support = { path = "../../rushwind/crates/rushwind-storage-seaorm-support", version = "0.0.1" }
+rushwind-storage-soft-delete = { path = "../../rushwind/crates/rushwind-storage-soft-delete", version = "0.0.1" }
+rushwind-storage-cache = { path = "../../rushwind/crates/rushwind-storage-cache", version = "0.0.1" }
+rushwind-storage-observe = { path = "../../rushwind/crates/rushwind-storage-observe", version = "0.0.1" }
+rushwind-cache = { path = "../../rushwind/crates/rushwind-cache", version = "0.0.1" }
+rushwind-cache-redis = { path = "../../rushwind/crates/rushwind-cache-redis", version = "0.0.1" }
+
+# --- 异步任务 / 服务发现 / 可观测 ---
+rushwind-apalis-postgres = { path = "../../rushwind/crates/rushwind-apalis-postgres", version = "0.0.1" }
+rushwind-registry = { path = "../../rushwind/crates/rushwind-registry", version = "0.0.1" }
+rushwind-registry-etcd = { path = "../../rushwind/crates/rushwind-registry-etcd", version = "0.0.1" }
+rushwind-tracer = { path = "../../rushwind/crates/rushwind-tracer", version = "0.0.1" }
+rushwind-metrics-prometheus = { path = "../../rushwind/crates/rushwind-metrics-prometheus", version = "0.0.1" }
+rushwind-redact = { path = "../../rushwind/crates/rushwind-redact", version = "0.0.1" }
+rushwind-health = { path = "../../rushwind/crates/rushwind-health", version = "0.0.1" }
+
+sea-orm = { version = "2.0", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "sqlx-postgres",
+    "macros",
+    "with-json",
+    "with-chrono",
+] }
+tokio-stream = "0.1"
+
+# --- 契约编译（build 阶段）与生成类型 ---
+prost = "0.14"
+prost-types = "0.14"
+prost-reflect = { version = "0.16", features = ["serde"] }
+pbjson = "0.9"
+pbjson-types = "0.9"
+tonic = "0.14"
+
+# --- 通用 ---
+tokio = { version = "1", features = ["macros", "rt", "rt-multi-thread", "signal"] }
+axum = { version = "0.8", default-features = false, features = ["http1", "json", "query", "tokio", "form", "multipart", "matched-path"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+async-trait = "0.1"
+uuid = { version = "1", features = ["v4"] }
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }

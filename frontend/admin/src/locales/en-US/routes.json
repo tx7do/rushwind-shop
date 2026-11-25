@@ -1,0 +1,113 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "analytics": "Analytics",
+    "workspace": "Workbench"
+  },
+  "opm": {
+    "moduleName": "Organizational Personnel Management",
+    "orgUnit": "Organization Structure",
+    "position": "Position Management",
+    "user": "User Management",
+    "userDetail": "User Detail"
+  },
+  "permission": {
+    "moduleName": "Permission Management",
+    "code": "Permission Point Management",
+    "role": "Role Management",
+    "menu": "Menu Management",
+    "api": "API Management"
+  },
+  "internalMessage": {
+    "moduleName": "Internal Message Management",
+    "internalMessage": "Message List",
+    "internalMessageCategory": "Message Category"
+  },
+  "log": {
+    "moduleName": "Log Audit Management",
+    "loginAuditLog": "Login Audit Log",
+    "apiAuditLog": "API Audit Log",
+    "operationAuditLog": "Operation Audit Log",
+    "dataAccessAuditLog": "Data Access Audit Log",
+    "permissionAuditLog": "Permission Audit Log",
+    "policyEvaluationLog": "Policy Evaluation Log",
+    "redisCacheMonitor": "Redis Cache Monitor"
+  },
+  "ai": {
+    "moduleName": "AI Assistant",
+    "agents": "Agent Apps",
+    "chat": "AI Assistant",
+    "providers": "AI Providers",
+    "knowledge": "Knowledge Bases",
+    "query": "AI Query",
+    "usage": "Usage"
+  },
+  "system": {
+    "moduleName": "System Management",
+    "dict": "Dictionary Management",
+    "file": "File Management",
+    "task": "Task Management",
+    "loginPolicy": "Login Policy",
+    "language": "Language Management",
+    "onlineSessions": "Online Users",
+    "serverMonitor": "Server Monitor",
+    "scripts": "Scripts",
+    "config": "Config Management",
+    "accessKeys": "OpenAPI Credentials",
+    "monitorAlerts": "Monitor Alerts"
+  },
+  "notification": {
+    "moduleName": "Notifications",
+    "channels": "Notification Channels",
+    "rules": "Notification Routing Rules",
+    "deliveries": "Notification Deliveries",
+    "templates": "Templates"
+  },
+  "tenant": {
+    "moduleName": "Tenant Management",
+    "member": "Tenant Member",
+    "plan": "Subscription Plans"
+  },
+  "profile": {
+    "settings": "Profile Center",
+    "internalMessage": "Internal Message"
+  },
+  "mall": {
+    "moduleName": "Catalog Management",
+    "category": "Category Management",
+    "brand": "Brand Management",
+    "product": "Product Management",
+    "productCreate": "Create Product",
+    "productEdit": "Edit Product",
+    "productAttribute": "Attribute Management",
+    "productAttributeValue": "Attribute Value Management",
+    "sku": "SKU Management",
+    "comment": "Comment Moderation"
+  },
+  "trade": {
+    "moduleName": "Trade Management",
+    "orderFulfillment": "Orders & Fulfillment",
+    "paymentFinance": "Payments & Finance",
+    "marketingMember": "Marketing & Membership",
+    "inventoryLogistics": "Inventory & Logistics",
+    "order": "Order Management",
+    "paymentTransaction": "Payment Transaction",
+    "refund": "Refund Management",
+    "financeOverview": "Finance Overview",
+    "shipment": "Shipment Management",
+    "shippingRate": "Shipping Rate",
+    "taxRate": "Tax Rate",
+    "couponTemplate": "Coupon Template",
+    "userCoupon": "User Coupon",
+    "invoice": "Invoice",
+    "lowStock": "Low-Stock Management",
+    "stockAlert": "Stock Alert Management",
+    "promotion": "Promotion Management",
+    "paymentChannel": "Payment Channels",
+    "seckill": "Seckill Management",
+    "pointsLedger": "Points Ledger",
+    "groupon": "Groupon Management",
+    "memberTier": "Member Tiers",
+    "stockOpLog": "Stock Op Logs"
+  }
+}

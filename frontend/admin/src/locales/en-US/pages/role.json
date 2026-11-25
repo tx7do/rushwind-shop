@@ -1,0 +1,35 @@
+{
+  "moduleName": "Role",
+  "name": "Role Name",
+  "code": "Role Code",
+  "reservedCode": "This role code is reserved by the system (platform: / template: / tenant:manager)",
+  "tenantName": "Tenant",
+  "permissions": "Permissions",
+  "sortOrder": "Sort Order",
+  "status": "Status",
+  "description": "Description",
+  "remark": "Remark",
+  "createdAt": "Created At",
+  "dataScope": "Data Scope",
+  "orgUnits": "Authorized Org Units",
+  "noOrgUnitData": "No org unit data",
+  "fieldPerm": {
+    "title": "Field Permissions",
+    "hint": "Checked fields are hidden for users with this role: removed from list/detail views and stripped from create/update payloads (takes effect after re-login).",
+    "field": {
+      "email": "Email",
+      "mobile": "Mobile",
+      "telephone": "Telephone",
+      "address": "Address",
+      "region": "Region",
+      "lastLoginAt": "Last Login At",
+      "lastLoginIp": "Last Login IP"
+    }
+  },
+  "parentName": "Parent Role",
+  "parentId": "Parent Role",
+  "parentIdPlaceholder": "Select parent role (optional)",
+  "permCapHint": "Selectable permissions are limited to the parent role's grant",
+  "permTrimConfirmTitle": "Permission Trim Confirmation",
+  "permTrimConfirmContent": "{count} permission(s) of this role exceed the parent role's grant and will be removed on save. Continue?"
+}

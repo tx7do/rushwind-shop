@@ -1,0 +1,39 @@
+[package]
+name = "core-service"
+description = "核心业务服务：实现全部域 gRPC 面（tonic 生成），SeaORM 持久化，数据访问集中于此。"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+shop-proto = { path = "../../../crates/proto", version = "0.0.1" }
+store = { path = "../../../crates/store", version = "0.0.1" }
+rushwind-core = { workspace = true }
+rushwind-storage-seaorm-support = { workspace = true }
+rushwind-authn = { workspace = true }
+rushwind-authn-jwt = { workspace = true }
+rushwind-password = { workspace = true }
+rushwind-password-argon2 = { workspace = true }
+redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
+uuid = { workspace = true }
+base64 = "0.22"
+sea-orm = { workspace = true }
+async-trait = { workspace = true }
+tokio = { workspace = true }
+tokio-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = "0.9"
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tonic = { workspace = true }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+pbjson-types = { workspace = true }
+prost-types = { workspace = true }

@@ -1,0 +1,4 @@
+data:
+  # The core domain service's gRPC endpoint (static dial in dev; the
+  # cluster deployment resolves it through the registry).
+  core_addr: "http://127.0.0.1:10800"

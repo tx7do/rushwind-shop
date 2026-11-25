@@ -1,0 +1,64 @@
+-- The golden DDL of the Shop database — dumped style matches the Go
+-- reference's Ent-produced tables (mall_* prefix), applied statement by
+-- statement on a fresh database by the store bootstrap. The bootstrap
+-- splits on line-ending semicolons, so the file stays plain DDL — no
+-- functions, no DO blocks (constraint guards ride the IF NOT EXISTS
+-- forms). Domains accumulate here as they land (brand first).
+
+CREATE TABLE IF NOT EXISTS public.mall_brands (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sort_order integer NULL,
+    logo_url character varying(500) NULL,
+    CONSTRAINT mall_brands_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_brand_translations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    brand_id bigint NOT NULL,
+    language_code varchar(20) NOT NULL,
+    name varchar(255) NOT NULL,
+    slug varchar(255) NULL,
+    description text NULL,
+    CONSTRAINT mall_brand_translations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_brand_translations_brand
+        FOREIGN KEY (brand_id)
+        REFERENCES public.mall_brands (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_brand_translations_brand_language
+    ON public.mall_brand_translations (brand_id, language_code);
+
+CREATE TABLE IF NOT EXISTS public.sys_users (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    username character varying(191) NOT NULL,
+    nickname character varying(191) NULL,
+    realname character varying(191) NULL,
+    email character varying(191) NULL,
+    mobile character varying(20) NULL,
+    region character varying(50) NULL,
+    password character varying(255) NULL,
+    status character varying(20) NULL DEFAULT 'NORMAL',
+    CONSTRAINT sys_users_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sys_users_username
+    ON public.sys_users (username);

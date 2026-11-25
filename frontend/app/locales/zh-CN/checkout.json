@@ -1,0 +1,59 @@
+{
+  "recipientTitle": "收货信息",
+  "recipientDesc": "请填写真实的收货信息，以便商品顺利送达。",
+  "recipientName": "收货人姓名",
+  "recipientNamePlaceholder": "请输入收货人姓名",
+  "recipientPhone": "收货人电话",
+  "recipientPhonePlaceholder": "请输入收货人电话",
+  "shippingAddress": "收货地址",
+  "shippingAddressPlaceholder": "请输入详细收货地址",
+  "summary": "订单摘要",
+  "placeOrder": "提交订单",
+  "orderCreated": "订单已创建。",
+  "paymentSuccess": "支付完成。",
+  "disclaimer": "提交即表示你同意商城的交易条款。",
+  "errors": {
+    "invalidForm": "请完整填写收货信息。",
+    "emptyCart": "购物车为空，无法下单。",
+    "orderFailed": "下单失败，请稍后重试。",
+    "paymentFailed": "支付失败，请稍后重试。",
+    "noChannel": "请先选择支付方式。"
+  },
+  "steps": {
+    "cart": "购物车",
+    "confirm": "核对订单",
+    "pay": "线上支付",
+    "done": "完成"
+  },
+  "useSavedAddress": "从地址簿选择",
+  "noSavedAddress": "还没有地址，可在「我的-收货地址」添加",
+  "couponLabel": "优惠券",
+  "couponPlaceholder": "选择优惠券",
+  "couponNone": "不使用优惠券",
+  "couponItem": "优惠券 {id}",
+  "discount": "优惠抵扣",
+  "promotion": "促销优惠",
+  "payChannels": {
+    "label": "支付方式",
+    "mock": "模拟支付（演示）",
+    "wechat": "微信支付",
+    "alipay": "支付宝",
+    "sandboxBadge": "沙箱",
+    "empty": "商家暂未开通在线支付渠道，请联系客服或稍后再试。",
+    "wechatH5": "微信支付 H5（手机浏览器）"
+  },
+  "payDialog": {
+    "title": "收银台",
+    "qrHint": "请使用微信「扫一扫」支付",
+    "qrAlt": "微信支付二维码",
+    "redirectHint": "已在新窗口打开支付宝收银台，完成支付后本页会自动跳转。",
+    "reopenPayPage": "重新打开支付页面",
+    "mockHint": "当前为模拟渠道，不会产生真实资金。点击下方按钮即确认支付成功。",
+    "mockConfirm": "模拟支付成功",
+    "polling": "正在等待支付结果…",
+    "payLater": "暂不支付",
+    "laterHint": "订单已保留，可稍后在「我的订单」中继续支付。",
+    "timeout": "等待支付超时，订单仍在待支付，可稍后继续。",
+    "failed": "支付未完成，请重试。"
+  }
+}

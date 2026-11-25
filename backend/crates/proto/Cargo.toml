@@ -1,0 +1,31 @@
+[package]
+name = "shop-proto"
+description = "The Shop API contract crate: the api/protos tree compiled to prost types with the tonic domain-service trees, the buf-produced annotated descriptor pool, and the rushwind-gen-http-generated route/binding/trait/mount surface (the deployments' auth-free union rides here as AUTH_FREE)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+prost = { workspace = true }
+prost-reflect = { workspace = true }
+pbjson = { workspace = true }
+pbjson-types = { workspace = true }
+serde = { workspace = true }
+async-trait = { workspace = true }
+axum = { workspace = true }
+tonic = { workspace = true }
+tonic-prost = "0.14"
+rushwind-http-binding = { workspace = true }
+rushwind-storage-seaorm-support = { workspace = true }
+
+[build-dependencies]
+rushwind-proto-build = { workspace = true, features = ["tonic"] }
+
+[dev-dependencies]
+tokio = { workspace = true }

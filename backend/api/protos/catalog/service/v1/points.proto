@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package catalog.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "pagination/v1/pagination.proto";
+
+// 积分台账服务（append-only）
+//
+// 订单支付成功入账（1 积分/元），退款成功回冲（对订单已入账积分对冲，余额
+// 拖底为 0 不产生负积分）。余额 = 用户全部 delta 求和。
+service PointsLedgerService {
+  rpc List (pagination.PagingRequest) returns (ListPointsLedgerResponse) {}
+  rpc Count (pagination.PagingRequest) returns (CountPointsLedgerResponse) {}
+  rpc Get (GetPointsLedgerRequest) returns (PointsLedger) {}
+
+  // 用户积分余额
+  rpc GetUserPointsBalance (GetUserPointsBalanceRequest) returns (GetUserPointsBalanceResponse) {}
+
+  // 每日签到（幂等：同日同用户仅一次，+5 积分）
+  rpc CheckIn (CheckInRequest) returns (CheckInResponse) {}
+
+  // 签到状态（今日是否已签 + 连续签到天数）
+  rpc GetCheckInStatus (GetCheckInStatusRequest) returns (GetCheckInStatusResponse) {}
+
+  // 积分兑换优惠券（事务内扣积分+发券）
+  rpc ExchangePointsForCoupon (ExchangePointsForCouponRequest) returns (ExchangePointsForCouponResponse) {}
+}
+
+// 积分类型
+enum PointsLedgerType {
+  POINTS_TYPE_UNSPECIFIED = 0;
+  POINTS_TYPE_EARN = 1;    // 消费入账
+  POINTS_TYPE_DEDUCT = 2;  // 退款回冲
+  POINTS_TYPE_CHECK_IN = 3; // 每日签到
+}
+
+// 积分台账
+message PointsLedger {
+  optional int64 id = 1 [json_name = "id", (gnostic.openapi.v3.property) = {description: "台账ID"}];
+  optional int64 user_id = 2 [json_name = "userId", (gnostic.openapi.v3.property) = {description: "用户ID"}];
+  optional int64 delta = 3 [json_name = "delta", (gnostic.openapi.v3.property) = {description: "积分变动（±）"}];
+  optional int64 balance_after = 4 [json_name = "balanceAfter", (gnostic.openapi.v3.property) = {description: "变动后余额"}];
+  optional PointsLedgerType type = 5 [json_name = "type", (gnostic.openapi.v3.property) = {description: "类型"}];
+  optional string reason = 6 [json_name = "reason", (gnostic.openapi.v3.property) = {description: "事由"}];
+  optional int64 ref_order_id = 7 [json_name = "refOrderId", (gnostic.openapi.v3.property) = {description: "关联订单ID"}];
+  optional google.protobuf.Timestamp created_at = 200 [json_name = "createdAt", (gnostic.openapi.v3.property) = {description: "创建时间"}];
+}
+
+message ListPointsLedgerResponse { repeated PointsLedger items = 1; int64 total = 2; }
+message CountPointsLedgerResponse { int64 count = 1; }
+
+message GetPointsLedgerRequest {
+  int64 id = 1 [json_name = "id"];
+  optional google.protobuf.FieldMask view_mask = 100 [json_name = "viewMask"];
+}
+
+message GetUserPointsBalanceRequest {
+  int64 user_id = 1 [json_name = "userId"];
+}
+
+message GetUserPointsBalanceResponse {
+  int64 balance = 1 [json_name = "balance"];
+}
+
+
+message CheckInRequest {
+  int64 user_id = 1 [json_name = "userId"];
+}
+
+message CheckInResponse {
+  int64 awarded = 1 [json_name = "awarded", (gnostic.openapi.v3.property) = {description: "本次签到积分"}];
+  int64 balance = 2 [json_name = "balance", (gnostic.openapi.v3.property) = {description: "签到后余额"}];
+  bool already_checked_in = 3 [json_name = "alreadyCheckedIn", (gnostic.openapi.v3.property) = {description: "今日已签到（幂等返回）"}];
+}
+
+message GetCheckInStatusRequest {
+  int64 user_id = 1 [json_name = "userId"];
+}
+
+message GetCheckInStatusResponse {
+  bool checked_in_today = 1 [json_name = "checkedInToday"];
+  int32 consecutive_days = 2 [json_name = "consecutiveDays", (gnostic.openapi.v3.property) = {description: "连续签到天数"}];
+}
+
+
+message ExchangePointsForCouponRequest {
+  int64 user_id = 1 [json_name = "userId"];
+  int64 coupon_template_id = 2 [json_name = "couponTemplateId"];
+}
+
+message ExchangePointsForCouponResponse {
+  int64 coupon_id = 1 [json_name = "couponId"];
+  int64 points_deducted = 2 [json_name = "pointsDeducted"];
+  int64 balance = 3 [json_name = "balance"];
+}

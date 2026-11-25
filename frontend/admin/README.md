@@ -11,7 +11,7 @@
 
 ## 项目简介
 
-[RushWind Shop Admin - Element Plus](https://github.com/tx7do/rushwind-shop) 是一个基于 Vue3、Vite 8、TypeScript 和 Element Plus 构建的企业级后台管理系统，适配 Go-Wind 后端 gRPC 服务。
+[RushWind Shop Admin - Element Plus](https://github.com/tx7do/rushwind-shop) 是一个基于 Vue3、Vite 8、TypeScript 和 Element Plus 构建的企业级后台管理系统，适配 RushWind 微服务框架的 core gRPC 服务。
 
 **核心技术栈：**
 

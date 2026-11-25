@@ -3,6 +3,9 @@
 pub mod brand_translations;
 pub mod cart_items;
 pub mod order_items;
+pub mod payment_channel_configs;
+pub mod payment_refunds;
+pub mod payment_transactions;
 pub mod orders;
 pub mod carts;
 pub mod brands;

@@ -280,3 +280,65 @@ CREATE TABLE IF NOT EXISTS public.mall_order_items (
 );
 
 CREATE INDEX IF NOT EXISTS idx_order_items_order ON public.mall_order_items (order_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_payment_transactions (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    business_ref_id varchar(100) NULL,
+    idempotency_key varchar(100) NULL,
+    payment_method varchar(50) NULL,
+    business_type varchar(50) NULL,
+    order_id bigint NOT NULL,
+    user_id bigint NULL,
+    amount bigint NOT NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'PENDING',
+    gateway_trade_no varchar(100) NULL,
+    CONSTRAINT mall_payment_transactions_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_payment_tx_order ON public.mall_payment_transactions (order_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_payment_refunds (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    transaction_id bigint NOT NULL,
+    amount bigint NOT NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'PENDING',
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    business_ref_id varchar(100) NULL,
+    idempotency_key varchar(100) NULL,
+    user_id bigint NULL,
+    CONSTRAINT mall_payment_refunds_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_payment_channel_configs (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(191) NOT NULL,
+    channel varchar(50) NOT NULL,
+    app_id varchar(191) NULL,
+    mch_id varchar(191) NULL,
+    sandbox boolean NULL DEFAULT true,
+    enabled boolean NULL DEFAULT true,
+    credentials text NULL,
+    remark text NULL,
+    CONSTRAINT mall_payment_channel_configs_pkey PRIMARY KEY (id)
+);

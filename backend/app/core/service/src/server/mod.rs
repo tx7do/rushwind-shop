@@ -5,9 +5,15 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
-    order_service as order, product_service as product, sku_service as sku};
+    order_service as order, payment_service as payment, product_service as product,
+    sku_service as sku};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::payment::service::v1::{
+    payment_channel_config_service_server::PaymentChannelConfigServiceServer,
+    payment_refund_service_server::PaymentRefundServiceServer,
+    payment_transaction_service_server::PaymentTransactionServiceServer,
+};
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
 };
@@ -58,5 +64,18 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(OrderServiceServer::new(order::OrderService {
             state: std::sync::Arc::clone(&state),
         }))
-        .add_service(OrderItemServiceServer::new(order::OrderItemService { state }))
+        .add_service(OrderItemServiceServer::new(order::OrderItemService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(PaymentTransactionServiceServer::new(payment::PaymentTransactionService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(PaymentRefundServiceServer::new(payment::PaymentRefundService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(PaymentChannelConfigServiceServer::new(
+            payment::PaymentChannelConfigService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
 }

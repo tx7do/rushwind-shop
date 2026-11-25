@@ -1,28 +1,28 @@
-feat(order): the trade state machine joins — 16 RPCs across the order and its line items
+feat(payment): the payment ledger joins — intent, confirm, and the bridge into the trade machine
 
-OrderService (9 RPCs) and OrderItemService (7) over the two golden-DDL
-tables (the 24-column order — the four amount fields, the recipient
-triple, the groupon links, the idempotency/business-ref keys — and the
-items with the sku_snapshot jsonb). The lifecycle is the only write
-path for status: Create lands as PENDING_PAYMENT, CancelOrder walks
-PENDING_PAYMENT to CANCELLED, ConfirmReceipt walks PAID/FULFILLED to
-FULFILLED, ExpireOrderByTimeout sweeps a stale pending row (the
-Asynq task's face — the task_id/trace_id ride for idempotency), and
-the transition helper refuses any move off a non-matching state with
-FailedPrecondition. Terminal states never move again.
+Three services in one drop: PaymentTransactionService (8 RPCs — the
+ledger plus the intent/confirm faces), PaymentRefundService (6), and
+PaymentChannelConfigService (3 read faces; the credentials leave the
+responses with only the credentials_configured flag). The golden DDL
+grows the three tables.
 
-The status enum maps both ways between the proto values and the bare
-member-name spellings the reference's demo data stores (CANCELLED,
-PENDING_PAYMENT, ...).
+The confirm face is the bridge into the trade machine: the
+transaction walks PENDING to SUCCEEDED (the transition guard makes
+the replay a FailedPrecondition — the ledger's idempotency is the
+state machine's), and the owning order walks PENDING_PAYMENT to PAID
+through mark_order_paid (its replay stays silent — already-PAID is a
+no-op, the ledger replay never double-walks the order). The intent
+face materializes a PENDING transaction off the channel config
+(disabled channels refuse) and answers the transaction message plus
+the channel (the real channels plug their SDKs in place of the mock
+trade-no) plus the gateway subject line.
 
-Known gap (the sku drop recorded its first case): the colon-verb
-routes (`{id}:cancel`, `{id}:confirm-receipt`, `{id}:adjust-stock`)
-answer 405 at the axum 0.8 mount — the gen-http route table carries
-the Go-style verb spelling but the adapter's method routing does not
-reach it; the framework side is the follow-up. The state machine
-itself verified live over the gRPC face: cancel lands CANCELLED, and
-the second cancel answers FailedPrecondition with the exact guard
-message.
+The stored spellings follow the reference's demo data: the bare
+enum-member names (PENDING/SUCCEEDED/REFUNDED, PAYMENT_CHANNEL_MOCK,
+BALANCE/WECHAT/MOCK), mapped both ways at the service boundary.
 
-verified: app create order (gated) lands PENDING_PAYMENT; the grpcurl
-matrix — cancel, get reads CANCELLED, double-cancel refused — green
+verified over the live stack: the intent materializes the PENDING
+ledger row off the seeded mock channel, the confirm answers
+SUCCEEDED/first_success and the order reads PAID, and the replayed
+confirm answers FailedPrecondition — the ledger replay can never
+double-walk the order

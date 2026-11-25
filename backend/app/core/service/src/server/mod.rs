@@ -7,7 +7,8 @@ use std::sync::Arc;
 use crate::service::{
     self, api_service as api, audit_service as audit, authentication_service as authentication,
     brand_service as brand, cart_service as cart, category_service as category,
-    comment_service as comment, coupon_service as coupon, dict_entry_service as dict_entry,
+    comment_service as comment, coupon_service as coupon,
+    file_service as file, file_transfer_service as file_transfer, oss_service as oss, dict_entry_service as dict_entry,
     dict_type_service as dict_type, groupon_service as groupon, identity_service as identity,
     interaction_service as interaction, internal_message_service as internal_message,
     invoice_service as invoice, language_service as language, login_policy_service as login_policy,
@@ -36,6 +37,10 @@ use shop_proto::proto::audit::service::v1::{
     permission_audit_log_service_server::PermissionAuditLogServiceServer,
 };
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::storage::service::v1::{
+    file_service_server::FileServiceServer, file_transfer_service_server::FileTransferServiceServer,
+    oss_service_server::OssServiceServer,
+};
 use shop_proto::proto::authentication::service::v1::login_policy_service_server::LoginPolicyServiceServer;
 use shop_proto::proto::authentication::service::v1::mfa_service_server::MfaServiceServer;
 use shop_proto::proto::authentication::service::v1::user_credential_service_server::UserCredentialServiceServer;
@@ -142,6 +147,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(LoginPolicyServiceServer::new(login_policy::LoginPolicyService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(FileServiceServer::new(file::FileService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(OssServiceServer::new(oss::OssService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(FileTransferServiceServer::new(file_transfer::FileTransferService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(BrandServiceServer::new(brand::BrandService {

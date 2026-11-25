@@ -16,6 +16,8 @@ shop-proto = { path = "../../../crates/proto", version = "0.0.1" }
 store = { path = "../../../crates/store", version = "0.0.1" }
 rushwind-core = { workspace = true }
 rushwind-storage-seaorm-support = { workspace = true }
+rushwind-oss = { workspace = true }
+rushwind-oss-s3 = { workspace = true }
 rushwind-authn = { workspace = true }
 rushwind-authn-jwt = { workspace = true }
 rushwind-password = { workspace = true }

@@ -10,3 +10,11 @@ data:
   access_token_expires: 5400
   refresh_token_expires: 43200
   app_access_token_expires: 900
+  oss:
+    endpoint: "127.0.0.1:9000"
+    region: "us-east-1"
+    access_key: "root"
+    secret_key: "*Abcd123456"
+    use_ssl: false
+    force_path_style: true
+    bucket: "rushwind-shop"

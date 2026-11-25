@@ -21,6 +21,32 @@ pub struct Config {
     pub access_token_expires_secs: i64,
     pub refresh_token_expires_secs: i64,
     pub app_access_token_expires_secs: i64,
+    /// The object store settings; `None` falls the storage faces to
+    /// their not-configured answers.
+    pub oss: Option<OssSettings>,
+}
+
+/// The S3-compatible object store settings (the rushwind-oss-s3 wire).
+#[derive(Debug, Clone, Deserialize)]
+pub struct OssSettings {
+    pub endpoint: String,
+    #[serde(default = "default_region")]
+    pub region: String,
+    pub access_key: String,
+    pub secret_key: String,
+    #[serde(default)]
+    pub use_ssl: bool,
+    #[serde(default = "default_true")]
+    pub force_path_style: bool,
+    pub bucket: String,
+}
+
+fn default_region() -> String {
+    "us-east-1".to_string()
+}
+
+fn default_true() -> bool {
+    true
 }
 
 #[derive(Debug, Deserialize)]
@@ -44,6 +70,8 @@ struct DataSection {
     refresh_token_expires: Option<i64>,
     #[serde(default)]
     app_access_token_expires: Option<i64>,
+    #[serde(default)]
+    oss: Option<OssSettings>,
 }
 
 #[derive(Debug, Default, Deserialize)]
@@ -106,6 +134,7 @@ impl Config {
             access_token_expires_secs: section.access_token_expires.unwrap_or(5400),
             refresh_token_expires_secs: section.refresh_token_expires.unwrap_or(43200),
             app_access_token_expires_secs: section.app_access_token_expires.unwrap_or(900),
+            oss: section.oss,
         })
     }
 }

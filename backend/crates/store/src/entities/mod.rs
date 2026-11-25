@@ -70,6 +70,7 @@ pub mod sys_user_credentials;
 pub mod sys_user_mfa_factors;
 pub mod sys_user_roles;
 pub mod sys_users;
+pub mod files;
 pub mod tasks;
 pub mod tax_rates;
 pub mod user_coupons;

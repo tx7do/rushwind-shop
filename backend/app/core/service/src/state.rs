@@ -17,6 +17,10 @@ pub struct AppState {
     /// The per-client session stores (admin ct=0, app ct=1).
     pub admin_tokens: TokenStore,
     pub app_tokens: TokenStore,
+    /// The object store (the config-selected S3 engine); `None` when
+    /// the config carries no oss section — the storage faces answer
+    /// FAILED_PRECONDITION then.
+    pub oss: Option<std::sync::Arc<dyn rushwind_oss::ObjectStorage>>,
 }
 
 impl AppState {
@@ -72,6 +76,30 @@ impl AppState {
             0,
         );
 
+        let oss: Option<std::sync::Arc<dyn rushwind_oss::ObjectStorage>> = match &cfg.oss {
+            Some(o) => {
+                let engine = rushwind_oss_s3::S3Storage::new(rushwind_oss::StorageConfig {
+                    endpoint: o.endpoint.clone(),
+                    region: o.region.clone(),
+                    access_key: o.access_key.clone(),
+                    secret_key: o.secret_key.clone(),
+                    token: None,
+                    use_ssl: o.use_ssl,
+                    force_path_style: o.force_path_style,
+                    bucket: o.bucket.clone(),
+                })
+                .map_err(|e| format!("oss engine: {e:?}"))?;
+                // Best-effort bucket setup (idempotent against an
+                // existing bucket) — an empty MinIO otherwise refuses
+                // the first put.
+                if let Err(e) = engine.create_bucket().await {
+                    tracing::warn!("oss bucket setup: {e:?} (continuing)");
+                }
+                Some(std::sync::Arc::new(engine) as _)
+            }
+            None => None,
+        };
+
         Ok(Self {
             cfg,
             db,
@@ -79,6 +107,7 @@ impl AppState {
             jwt,
             admin_tokens,
             app_tokens,
+            oss,
         })
     }
 }

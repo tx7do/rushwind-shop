@@ -1461,3 +1461,27 @@ CREATE TABLE IF NOT EXISTS public.sys_login_policies (
     method varchar(30) NULL DEFAULT 'IP',
     CONSTRAINT sys_login_policies_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.files (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    remark varchar(255) NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    provider varchar(30) NULL DEFAULT 'MINIO',
+    bucket_name varchar(255) NULL,
+    file_directory varchar(500) NULL,
+    file_guid varchar(255) NULL,
+    save_file_name varchar(255) NULL,
+    file_name varchar(255) NULL,
+    extension varchar(50) NULL,
+    size bigint NULL,
+    size_format varchar(30) NULL,
+    link_url varchar(1000) NULL,
+    content_hash varchar(255) NULL,
+    CONSTRAINT files_pkey PRIMARY KEY (id)
+);

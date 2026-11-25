@@ -34,9 +34,9 @@ passthrough_proxy! {
         behaviors: public,
         methods: [
             stub chat(ai_v1::ChatRequest) -> ai_v1::ChatResponse,
-            stub rewrite_search_query(
+            hand rewrite_search_query(
                 shop_proto::proto::app::service::v1::RewriteSearchQueryRequest
-            ) -> shop_proto::proto::app::service::v1::RewriteSearchQueryResponse,
+            ) -> shop_proto::proto::app::service::v1::RewriteSearchQueryResponse => rewrite_search_query,
         ]
     }
 }
@@ -135,9 +135,9 @@ passthrough_proxy! {
             pass delete(comment_v1::DeleteCommentRequest) -> pbjson_types::Empty,
             pass get_product_rating(comment_v1::GetProductRatingRequest)
                 -> comment_v1::ProductRatingSummary,
-            stub get_product_review_summary(
+            hand get_product_review_summary(
                 shop_proto::proto::app::service::v1::GetProductReviewSummaryRequest
-            ) -> shop_proto::proto::app::service::v1::ProductReviewSummaryResponse,
+            ) -> shop_proto::proto::app::service::v1::ProductReviewSummaryResponse => get_product_review_summary,
         ]
     }
 }

@@ -49,6 +49,14 @@ export default defineNuxtConfig({
     app: {
         baseURL: '/',
         buildAssetsDir: '_nuxt',
+        // Tab 图标：app.html 的 <link> 在 Nuxt 4 不参与服务端 HTML，icon
+        // 必须经 app.head 声明。SVG 优先、ico 兜底。
+        head: {
+            link: [
+                {rel: 'icon', type: 'image/svg+xml', href: '/logo.svg'},
+                {rel: 'alternate icon', href: '/favicon.ico', sizes: 'any'},
+            ],
+        },
     },
     components: [
         {

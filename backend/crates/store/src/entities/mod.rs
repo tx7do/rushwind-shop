@@ -3,6 +3,8 @@
 pub mod brand_translations;
 pub mod cart_items;
 pub mod comments;
+pub mod interaction_counters;
+pub mod interaction_likes;
 pub mod coupon_templates;
 pub mod user_coupons;
 pub mod order_items;

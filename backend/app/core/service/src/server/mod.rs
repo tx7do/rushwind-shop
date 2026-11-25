@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
-    coupon_service as coupon, groupon_service as groupon, identity_service as identity,
+    coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, wishlist_service as wishlist};
 use crate::state::AppState;
@@ -25,6 +25,10 @@ use shop_proto::proto::order::service::v1::{
 };
 use shop_proto::proto::address::service::v1::shipping_address_service_server::ShippingAddressServiceServer;
 use shop_proto::proto::catalog::service::v1::groupon_activity_service_server::GrouponActivityServiceServer;
+use shop_proto::proto::interaction::service::v1::{
+    interaction_admin_service_server::InteractionAdminServiceServer,
+    interaction_service_server::InteractionServiceServer,
+};
 use shop_proto::proto::identity::service::v1::{
     user_profile_service_server::UserProfileServiceServer, user_service_server::UserServiceServer,
 };
@@ -124,4 +128,12 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(CommentServiceServer::new(comment::CommentService {
             state: std::sync::Arc::clone(&state),
         }))
+        .add_service(InteractionServiceServer::new(interaction::InteractionService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(InteractionAdminServiceServer::new(
+            interaction::InteractionAdminService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
 }

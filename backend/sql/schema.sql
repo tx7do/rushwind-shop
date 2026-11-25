@@ -527,3 +527,40 @@ CREATE TABLE IF NOT EXISTS public.mall_comments (
 
 CREATE INDEX IF NOT EXISTS idx_comments_object
     ON public.mall_comments (content_type, object_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_interaction_likes (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    target_type varchar(40) NOT NULL DEFAULT 'TARGET_TYPE_COMMENT',
+    target_id bigint NOT NULL,
+    CONSTRAINT mall_interaction_likes_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_interaction_likes_unique
+    ON public.mall_interaction_likes (user_id, target_type, target_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_interaction_counters (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    target_type varchar(40) NOT NULL,
+    target_id bigint NOT NULL,
+    metric varchar(40) NOT NULL DEFAULT 'COUNTER_METRIC_LIKE',
+    count bigint NOT NULL DEFAULT 0,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    CONSTRAINT mall_interaction_counters_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_interaction_counters_unique
+    ON public.mall_interaction_counters (target_type, target_id, metric);

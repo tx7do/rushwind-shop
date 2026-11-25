@@ -7,7 +7,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, AppState, StatusResult};
@@ -16,10 +16,11 @@ use store::entities::sys_users;
 use shop_proto::proto::authentication::service::v1 as authv1;
 use shop_proto::proto::authentication::service::v1::{
     login_request, BlockTokenRequest, BlockTokenResponse, GenerateCaptchaResponse,
-    GetAccessTokensRequest, GetAccessTokensResponse, GrantType, LoginRequest, LoginResponse,
-    LogoutRequest, RegisterUserRequest, RegisterUserResponse, RevokeTokenByIdRequest, TokenType,
-    UnblockTokenRequest, UserTokenPayload, ValidateTokenRequest, ValidateTokenResponse,
-    VerifyCaptchaRequest, VerifyCaptchaResponse, WhoAmIResponse,
+    ChangePasswordRequest, GetAccessTokensRequest, GetAccessTokensResponse, GrantType,
+    LoginRequest, LoginResponse, LogoutRequest, RegisterUserRequest, RegisterUserResponse,
+    RevokeTokenByIdRequest, TokenType, UnblockTokenRequest, UserTokenPayload,
+    ValidateTokenRequest, ValidateTokenResponse, VerifyCaptchaRequest, VerifyCaptchaResponse,
+    WhoAmIResponse,
 };
 
 type ResponseResult<T> = Result<Response<T>, Status>;
@@ -291,6 +292,53 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
         Ok(Response::new(pbjson_types::Empty {}))
     }
 
+    /// The self-service password change: the storefront posts the
+    /// AES-encrypted old/new pair; the old one is verified with the
+    /// same decrypt-first path as login (wrong old → unauthenticated),
+    /// the new one is decrypted then hashed into the row.
+    async fn change_password(
+        &self,
+        request: Request<ChangePasswordRequest>,
+    ) -> ResponseResult<pbjson_types::Empty> {
+        let req = request.into_inner();
+        if req.user_id <= 0 {
+            return Err(bad("user_id required"));
+        }
+        let row = sys_users::Entity::find_by_id(req.user_id)
+            .one(&self.state.db)
+            .await
+            .map_err(db_status)?
+            .ok_or_else(|| Status::unauthenticated("user not found"))?;
+        // Decrypt-first (the wire carries the AES envelope); the raw
+        // spelling stays a fallback for plaintext probes.
+        let old_plain = store::crypto::decrypt_login_credential(&req.old_password)
+            .unwrap_or_else(|_| req.old_password.clone());
+        let new_plain = store::crypto::decrypt_login_credential(&req.new_password)
+            .unwrap_or_else(|_| req.new_password.clone());
+        let stored = row.password.as_deref().unwrap_or("");
+        let old_ok = rushwind_password::PasswordHasher::verify(
+            &rushwind_password_argon2::Argon2Hasher::new(),
+            &old_plain,
+            stored,
+        )
+        .unwrap_or(false)
+            || (stored == old_plain && !old_plain.is_empty());
+        if !old_ok {
+            crate::crypto::dummy_verify();
+            return Err(Status::unauthenticated("old password incorrect"));
+        }
+        let hash = rushwind_password::PasswordHasher::hash(
+            &rushwind_password_argon2::Argon2Hasher::new(),
+            &new_plain,
+        )
+        .map_err(|_| Status::internal("hash failed"))?;
+        let mut active: sys_users::ActiveModel = row.into();
+        active.password = Set(Some(hash));
+        active.updated_at = Set(Some(store::now().into()));
+        active.update(&self.state.db).await.map_err(db_status)?;
+        Ok(Response::new(pbjson_types::Empty {}))
+    }
+
     async fn register_user(
         &self,
         request: Request<RegisterUserRequest>,
@@ -300,9 +348,13 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
         if username.is_empty() {
             return Err(bad("username required"));
         }
+        // Decrypt-first (the storefront registers through the same AES
+        // envelope as login); plaintext probes keep working.
+        let plain = store::crypto::decrypt_login_credential(&req.password)
+            .unwrap_or_else(|_| req.password.clone());
         let hash = rushwind_password::PasswordHasher::hash(
             &rushwind_password_argon2::Argon2Hasher::new(),
-            req.password.as_str(),
+            &plain,
         )
         .map_err(|_| Status::internal("hash failed"))?;
         let taken = sys_users::Entity::find()

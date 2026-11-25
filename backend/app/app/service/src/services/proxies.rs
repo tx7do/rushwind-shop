@@ -50,8 +50,8 @@ passthrough_proxy! {
         behaviors: public,
         methods: [
             pass login(authentication_v1::LoginRequest) -> authentication_v1::LoginResponse,
-            stub register(authentication_v1::RegisterUserRequest)
-                -> authentication_v1::RegisterUserResponse,
+            renamed register(authentication_v1::RegisterUserRequest)
+                -> authentication_v1::RegisterUserResponse => register_user,
             stub logout(pbjson_types::Empty) -> pbjson_types::Empty,
             pass refresh_token(authentication_v1::LoginRequest) -> authentication_v1::LoginResponse,
             stub send_reset_code(shop_proto::proto::app::service::v1::SendResetCodeRequest)
@@ -512,7 +512,7 @@ passthrough_proxy! {
         methods: [
             pass get_user(pbjson_types::Empty) -> identity_v1::User,
             pass update_user(identity_v1::UpdateUserRequest) -> pbjson_types::Empty,
-            stub change_password(identity_v1::ChangePasswordRequest) -> pbjson_types::Empty,
+            hand change_password(identity_v1::ChangePasswordRequest) -> pbjson_types::Empty => change_password,
             stub upload_avatar(identity_v1::UploadAvatarRequest)
                 -> identity_v1::UploadAvatarResponse,
             stub delete_avatar(pbjson_types::Empty) -> pbjson_types::Empty,

@@ -28,6 +28,9 @@ service AuthenticationService {
   // 注册用户
   rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {}
 
+  // 修改密码（登录态：核验旧密码后更新；user_id 由 BFF 从登录态注入）
+  rpc ChangePassword (ChangePasswordRequest) returns (google.protobuf.Empty) {}
+
 
   // 刷新认证令牌
   rpc RefreshToken (LoginRequest) returns (LoginResponse) {}
@@ -563,4 +566,23 @@ message VerifyCaptchaResponse {
       description: "验证码验证结果，true表示验证成功，false表示验证失败"
     }
   ]; // 验证码验证结果，true表示验证成功，false表示验证失败
+}
+
+// 修改密码 - 请求
+message ChangePasswordRequest {
+  int64 user_id = 1 [
+    json_name = "userId",
+    (google.api.field_behavior) = REQUIRED,
+    (gnostic.openapi.v3.property) = { description: "用户ID（BFF 从登录态注入）" }
+  ]; // 用户ID
+  string old_password = 2 [
+    json_name = "oldPassword",
+    (google.api.field_behavior) = REQUIRED,
+    (gnostic.openapi.v3.property) = { description: "旧密码（AES 加密传输）" }
+  ]; // 旧密码
+  string new_password = 3 [
+    json_name = "newPassword",
+    (google.api.field_behavior) = REQUIRED,
+    (gnostic.openapi.v3.property) = { description: "新密码（AES 加密传输）" }
+  ]; // 新密码
 }

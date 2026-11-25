@@ -8,6 +8,8 @@ use tonic::Status;
 
 use crate::state::AppState;
 use shop_proto::proto::catalog::service::v1 as catalog_v1;
+use shop_proto::proto::identity::service::v1 as identity_v1;
+use shop_proto::proto::authentication::service::v1 as auth_v1;
 use shop_proto::proto::payment::service::v1 as payment_v1;
 
 /// The acquiring-channel enum → the dialog's pay-type enum
@@ -142,4 +144,36 @@ pub async fn list_tiers(
         .collect();
     let total = items.len() as i64;
     Ok(catalog_v1::ListMemberTierResponse { items, total })
+}
+
+/// The storefront's change-password: the old pair is verified by the
+/// core (which decrypts the AES envelopes and checks the stored hash),
+/// the user_id rides the login claim — the query string cannot rename
+/// the caller.
+pub async fn change_password(
+    state: &std::sync::Arc<AppState>,
+    ctx: &rushwind_http_binding::ctx::RequestContext,
+    msg: identity_v1::ChangePasswordRequest,
+) -> Result<pbjson_types::Empty, StatusError> {
+    use auth_v1::authentication_service_client::AuthenticationServiceClient;
+    // The login claim is the only source of user_id — the query body
+    // cannot name the caller.
+    let user_id = ctx
+        .claims
+        .as_ref()
+        .and_then(|c| c.get("uid"))
+        .and_then(|v| v.as_u64())
+        .map(|v| v as i64)
+        .ok_or_else(|| StatusError::new(401, "UNAUTHORIZED", "user identity required"))?;
+    let mut core = AuthenticationServiceClient::new(state.core_channel.clone());
+    let resp = core
+        .change_password(tonic::Request::new(auth_v1::ChangePasswordRequest {
+            user_id,
+            old_password: msg.old_password,
+            new_password: msg.new_password,
+        }))
+        .await
+        .map_err(crate::services::map_status)?
+        .into_inner();
+    Ok(resp)
 }

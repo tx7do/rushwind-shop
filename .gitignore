@@ -23,7 +23,7 @@ rustc-ice-*.txt
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Node / pnpm（frontend 复用 go-wind-shop，构建产物一律不进库）
+# Node / pnpm（frontend 构建产物一律不进库）
 node_modules/
 .nuxt/
 .output/

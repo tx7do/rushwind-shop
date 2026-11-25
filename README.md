@@ -20,10 +20,6 @@ RushWind Shop（风行商城）是一套面向出海场景的企业级多语言�
 **Protobuf-first（契约驱动）** 工作流；前端后台基于 Vue 3 + TypeScript，店铺前台基于
 Nuxt + Vue 3。
 
-本仓库是 [go-wind-shop](https://github.com/tx7do/go-wind-shop)（go-kratos 版风行商城）
-的 Rust 复刻：**复用同一套 proto 契约、同一套前端**，后端从 Go/go-kratos 换为
-Rust/RushWind——前端零改动即可在两个后端之间切换。
-
 ## 项目亮点
 
 - **契约驱动（Protobuf-first）**：接口、数据模型、错误码均以 proto 为单一事实源；
@@ -35,7 +31,7 @@ Rust/RushWind——前端零改动即可在两个后端之间切换。
   registry 服务发现、OpenTelemetry 链路追踪、SSE 推送
 - **broker 引擎抽象**：订单/库存事件走 RushWind 的 14 引擎消息契约，
   开发环境 memory，生产环境一行配置切换 kafka/rabbitmq/…
-- **前端零改动复用**：店铺前台与管理后台直接复用 go-wind-shop 的前端
+- **双端前端**：管理后台（Vue 3 + Element Plus）与店铺前台（Nuxt）同仓共演进，全部走同一套契约生成的 TS 客户端
 - **生产就绪**：JWT 鉴权、RBAC 授权、Docker 一键部署
 
 ## 系统架构
@@ -113,7 +109,7 @@ cd frontend/app && pnpm install && pnpm dev      # 店铺前台
 ```
 rushwind-shop/
 ├── backend/               # Rust 工作区
-│   ├── api/               # proto 契约（buf workspace，与 go-wind-shop 同源同构）
+│   ├── api/               # proto 契约（buf workspace，契约单一事实源）
 │   ├── crates/proto/      # 契约 crate：buf → prost/pbjson 类型 + gen-http 路由面
 │   ├── app/
 │   │   ├── admin/service/ # 后台网关 BFF
@@ -121,7 +117,7 @@ rushwind-shop/
 │   │   └── core/service/  # 核心业务（gRPC + SeaORM）
 │   ├── pkg/               # 共享库（中间件装配、错误映射、配置）
 │   └── sql/               # 数据库初始化与演示数据
-├── frontend/              # 前端（复用 go-wind-shop）
+├── frontend/              # 前端（契约生成的 TS 客户端驱动）
 │   ├── admin/             # 管理后台（Vue 3 + Element Plus）
 │   └── app/               # 店铺前台（Nuxt 3）
 ├── docs/                  # 文档与品牌资产

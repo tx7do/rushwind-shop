@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
-    product_service as product};
+    product_service as product, sku_service as sku};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
 use shop_proto::proto::cart::service::v1::{
@@ -13,7 +13,8 @@ use shop_proto::proto::cart::service::v1::{
 };
 use shop_proto::proto::catalog::service::v1::{
     brand_service_server::BrandServiceServer, category_service_server::CategoryServiceServer,
-    product_service_server::ProductServiceServer,
+    product_service_server::ProductServiceServer, sku_attribute_combination_service_server::SkuAttributeCombinationServiceServer,
+    sku_price_service_server::SkuPriceServiceServer, sku_service_server::SkuServiceServer,
 };
 
 /// The served domain services — one `add_service` per landed module;
@@ -40,4 +41,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         .add_service(ProductServiceServer::new(product::ProductService {
             state: std::sync::Arc::clone(&state),
         }))
+        .add_service(SkuServiceServer::new(sku::SkuService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(SkuPriceServiceServer::new(sku::SkuPriceService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(SkuAttributeCombinationServiceServer::new(
+            sku::SkuAttributeCombinationService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
 }

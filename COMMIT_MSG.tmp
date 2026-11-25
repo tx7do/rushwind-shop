@@ -1,20 +1,20 @@
-feat(catalog-product): the product domain joins — 14 RPCs with the storefront search face
+feat(catalog-sku): the sku domain joins — three services, 22 RPCs, the stock-adjustment face included
 
-The biggest catalog domain: the main table (status as the stored
-PRODUCT_STATUS_* spelling, the category/brand links, the image), the
-translation table (short/long descriptions), the 12 standard CRUD
-RPCs, and the two anonymous search RPCs the storefront whitelist
-carries — SearchProducts (an ILIKE over the requested language's
-translation names joined to ACTIVE-status main rows, paged off the
-request's own page/page_size with the server cap 50) and
-SearchProductSuggestions (the same face capped at five). The status
-enum maps both ways between the proto ProductStatus values and the
-stored spellings the reference's demo data pins.
+Three services in one drop: SkuService (the sellable unit — product
+link, code, stock quantity, plus AdjustStock with the negative-stock
+guard), SkuPriceService (per-currency prices carrying the exact
+amount string the reference stores — no float round-trips), and
+SkuAttributeCombinationService (the sku-attribute-value links). The
+golden DDL grows the three tables (prices and combinations cascade
+off the sku), and the bootstrap gate grew with them.
 
-The proxy side needed nothing (Product was already grounded as pass);
-the bootstrap gate grew the two product tables.
+Known gap, recorded: the AdjustStock route is a Go-style colon verb
+(`/admin/v1/mall/skus/{id}:adjust-stock`, no body declaration — the
+delta rides the query string); the gen-http route table handles the
+spelling but the axum 0.8 mount answers 405 on the POST — the
+framework's route-table verb handling is the follow-up. The other 21
+RPCs of the domain answer live.
 
-verified: admin login + product create (status/category/brand/
-bilingual translation), the anonymous product-search hitting the new
-row (productId/name/imageUrl carried), the suggestions face, and the
-storefront detail GET answering 200
+verified: admin create sku + price (CNY 5900), the anonymous sku list
+reading both back with stockQty, the cart add consuming the new sku —
+the storefront sellable chain complete end to end

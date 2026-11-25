@@ -178,3 +178,51 @@ CREATE TABLE IF NOT EXISTS public.mall_product_translations (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_product_translations_product_language
     ON public.mall_product_translations (product_id, language_code);
+
+CREATE TABLE IF NOT EXISTS public.mall_skus (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    product_id bigint NOT NULL,
+    sku_code varchar(100) NOT NULL,
+    stock_qty integer NOT NULL DEFAULT 0,
+    CONSTRAINT mall_skus_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_sku_prices (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sku_id bigint NOT NULL,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    amount varchar(20) NOT NULL,
+    CONSTRAINT mall_sku_prices_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_sku_prices_sku
+        FOREIGN KEY (sku_id)
+        REFERENCES public.mall_skus (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_sku_attribute_combinations (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    sku_id bigint NOT NULL,
+    attribute_id bigint NOT NULL,
+    attribute_value_id bigint NULL,
+    CONSTRAINT mall_sku_attribute_combinations_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_sku_combinations_sku
+        FOREIGN KEY (sku_id)
+        REFERENCES public.mall_skus (id) ON DELETE CASCADE
+);

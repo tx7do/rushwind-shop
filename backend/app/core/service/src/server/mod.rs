@@ -4,7 +4,7 @@
 
 use std::sync::Arc;
 
-use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
+use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
     notification_service as notification,
     order_service as order, payment_service as payment, product_service as product,
@@ -30,6 +30,13 @@ use shop_proto::proto::notification::service::v1::{
 };
 use shop_proto::proto::order::service::v1::{
     order_item_service_server::OrderItemServiceServer, order_service_server::OrderServiceServer,
+};
+use shop_proto::proto::audit::service::v1::{
+    api_audit_log_service_server::ApiAuditLogServiceServer,
+    data_access_audit_log_service_server::DataAccessAuditLogServiceServer,
+    login_audit_log_service_server::LoginAuditLogServiceServer,
+    operation_audit_log_service_server::OperationAuditLogServiceServer,
+    permission_audit_log_service_server::PermissionAuditLogServiceServer,
 };
 use shop_proto::proto::address::service::v1::shipping_address_service_server::ShippingAddressServiceServer;
 use shop_proto::proto::catalog::service::v1::groupon_activity_service_server::GrouponActivityServiceServer;
@@ -162,6 +169,25 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         }))
         .add_service(NotificationPreferenceServiceServer::new(
             notification::NotificationPreferenceService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(ApiAuditLogServiceServer::new(audit::ApiAuditLogService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(LoginAuditLogServiceServer::new(audit::LoginAuditLogService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(OperationAuditLogServiceServer::new(audit::OperationAuditLogService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(DataAccessAuditLogServiceServer::new(
+            audit::DataAccessAuditLogService {
+                state: std::sync::Arc::clone(&state),
+            },
+        ))
+        .add_service(PermissionAuditLogServiceServer::new(
+            audit::PermissionAuditLogService {
                 state: std::sync::Arc::clone(&state),
             },
         ))

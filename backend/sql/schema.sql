@@ -649,3 +649,88 @@ CREATE TABLE IF NOT EXISTS public.mall_notification_deliveries (
 
 CREATE INDEX IF NOT EXISTS idx_notification_deliveries_recipient
     ON public.mall_notification_deliveries (recipient_user_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_api_audit_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    username varchar(191) NULL,
+    ip_address varchar(64) NULL,
+    http_method varchar(10) NULL,
+    path varchar(500) NULL,
+    request_uri varchar(500) NULL,
+    api_module varchar(100) NULL,
+    status_code int NULL,
+    payload jsonb NULL,
+    CONSTRAINT sys_api_audit_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_login_audit_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    username varchar(191) NULL,
+    ip_address varchar(64) NULL,
+    session_id varchar(191) NULL,
+    request_id varchar(100) NULL,
+    trace_id varchar(100) NULL,
+    action_type varchar(30) NULL,
+    status varchar(20) NULL,
+    failure_reason text NULL,
+    payload jsonb NULL,
+    CONSTRAINT sys_login_audit_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_operation_audit_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    username varchar(191) NULL,
+    resource_type varchar(100) NULL,
+    resource_id varchar(100) NULL,
+    action varchar(30) NULL,
+    before_data jsonb NULL,
+    after_data jsonb NULL,
+    sensitive_level varchar(30) NULL,
+    request_id varchar(100) NULL,
+    payload jsonb NULL,
+    CONSTRAINT sys_operation_audit_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_data_access_audit_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NULL,
+    username varchar(191) NULL,
+    ip_address varchar(64) NULL,
+    request_id varchar(100) NULL,
+    data_source varchar(100) NULL,
+    table_name varchar(191) NULL,
+    data_id varchar(100) NULL,
+    access_type varchar(30) NULL,
+    sql_digest varchar(191) NULL,
+    payload jsonb NULL,
+    CONSTRAINT sys_data_access_audit_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_permission_audit_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    operator_id bigint NULL,
+    operator_name varchar(191) NULL,
+    target_type varchar(100) NULL,
+    target_id varchar(100) NULL,
+    target_name varchar(191) NULL,
+    action varchar(30) NULL,
+    old_value jsonb NULL,
+    new_value jsonb NULL,
+    ip_address varchar(64) NULL,
+    request_id varchar(100) NULL,
+    payload jsonb NULL,
+    CONSTRAINT sys_permission_audit_logs_pkey PRIMARY KEY (id)
+);

@@ -1,7 +1,12 @@
 //! The entity tree over the golden DDL — one module per table.
 
 pub mod brand_translations;
+pub mod api_audit_logs;
 pub mod cart_items;
+pub mod data_access_audit_logs;
+pub mod login_audit_logs;
+pub mod operation_audit_logs;
+pub mod permission_audit_logs;
 pub mod comments;
 pub mod interaction_counters;
 pub mod notification_channels;

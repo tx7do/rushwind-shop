@@ -14,4 +14,5 @@ pub mod order_service;
 pub mod payment_service;
 pub mod product_service;
 pub mod shipping_service;
+pub mod wishlist_service;
 pub mod sku_service;

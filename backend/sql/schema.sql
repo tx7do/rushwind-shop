@@ -490,3 +490,19 @@ CREATE TABLE IF NOT EXISTS public.mall_groupon_groups (
         FOREIGN KEY (activity_id)
         REFERENCES public.mall_groupon_activities (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_wishlist (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    CONSTRAINT mall_wishlist_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_wishlist_user ON public.mall_wishlist (user_id);

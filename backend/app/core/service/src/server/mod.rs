@@ -6,7 +6,8 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
     coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
-    internal_message_service as internal_message, notification_service as notification, online_session_service as online_session,
+    internal_message_service as internal_message, notification_service as notification,
+    org_unit_service as org_unit, position_service as position, tenant_service as tenant, online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
     shipping_service as shipping, sku_service as sku, task_service as task,
     wishlist_service as wishlist};
@@ -27,6 +28,10 @@ use shop_proto::proto::internal_message::service::v1::{
     internal_message_category_service_server::InternalMessageCategoryServiceServer,
     internal_message_recipient_service_server::InternalMessageRecipientServiceServer,
     internal_message_service_server::InternalMessageServiceServer,
+};
+use shop_proto::proto::identity::service::v1::{
+    org_unit_service_server::OrgUnitServiceServer, position_service_server::PositionServiceServer,
+    tenant_service_server::TenantServiceServer,
 };
 use shop_proto::proto::notification::service::v1::{
     notification_channel_service_server::NotificationChannelServiceServer,
@@ -188,6 +193,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
                 state: std::sync::Arc::clone(&state),
             },
         ))
+        .add_service(TenantServiceServer::new(tenant::TenantService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(OrgUnitServiceServer::new(org_unit::OrgUnitService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(PositionServiceServer::new(position::PositionService {
+            state: std::sync::Arc::clone(&state),
+        }))
         .add_service(ApiAuditLogServiceServer::new(audit::ApiAuditLogService {
             state: std::sync::Arc::clone(&state),
         }))

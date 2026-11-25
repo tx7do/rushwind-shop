@@ -114,3 +114,13 @@ pub type StatusResult<T> = Result<T, tonic::Status>;
 pub fn not_found_status(what: &str) -> tonic::Status {
     tonic::Status::not_found(format!("{what} not found"))
 }
+
+/// protojson Timestamp → timestamptz (the entity column form).
+pub fn ts_from_proto(v: pbjson_types::Timestamp) -> chrono::DateTime<chrono::FixedOffset> {
+    use chrono::TimeZone as _;
+    chrono::Utc
+        .timestamp_opt(v.seconds, v.nanos.max(0) as u32)
+        .single()
+        .unwrap_or_else(chrono::Utc::now)
+        .fixed_offset()
+}

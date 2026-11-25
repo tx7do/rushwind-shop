@@ -309,10 +309,10 @@ passthrough_proxy! {
             pass count(pagination::PagingRequest) -> payment_v1::CountPaymentTransactionResponse,
             pass get(payment_v1::GetPaymentTransactionRequest) -> payment_v1::PaymentTransaction,
             pass create(payment_v1::CreatePaymentTransactionRequest) -> pbjson_types::Empty,
-            stub create_payment_intent(payment_v1::CreatePaymentIntentRequest)
-                -> payment_v1::CreatePaymentIntentAppResponse,
-            stub mock_confirm_payment(payment_v1::MockConfirmPaymentRequest)
-                -> payment_v1::MockConfirmPaymentResponse,
+            hand create_payment_intent(payment_v1::CreatePaymentIntentRequest)
+                -> payment_v1::CreatePaymentIntentAppResponse => create_payment_intent,
+            hand mock_confirm_payment(payment_v1::MockConfirmPaymentRequest)
+                -> payment_v1::MockConfirmPaymentResponse => mock_confirm_payment,
         ]
     }
 }

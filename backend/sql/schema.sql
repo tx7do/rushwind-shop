@@ -1161,3 +1161,50 @@ CREATE TABLE IF NOT EXISTS public.mall_invoices (
 );
 
 CREATE INDEX IF NOT EXISTS idx_invoices_order ON public.mall_invoices (order_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_dict_types (
+  id bigserial,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone,
+  deleted_at timestamp with time zone,
+  created_by bigint,
+  updated_by bigint,
+  deleted_by bigint,
+  is_enabled boolean DEFAULT true,
+  sort_order bigint DEFAULT 0,
+  tenant_id bigint DEFAULT 0,
+  type_code character varying,
+  type_name character varying
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_dict_entries (
+  id bigserial,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone,
+  deleted_at timestamp with time zone,
+  created_by bigint,
+  updated_by bigint,
+  deleted_by bigint,
+  sort_order bigint DEFAULT 0,
+  is_enabled boolean DEFAULT true,
+  tenant_id bigint DEFAULT 0,
+  entry_value character varying NOT NULL,
+  numeric_value integer,
+  type_id bigint
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_languages (
+  id bigserial,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone,
+  deleted_at timestamp with time zone,
+  created_by bigint,
+  updated_by bigint,
+  deleted_by bigint,
+  sort_order bigint DEFAULT 0,
+  is_enabled boolean DEFAULT true,
+  language_code character varying,
+  language_name character varying,
+  native_name character varying,
+  is_default boolean DEFAULT false
+);

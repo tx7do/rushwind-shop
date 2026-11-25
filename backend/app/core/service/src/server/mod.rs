@@ -5,12 +5,14 @@
 use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, audit_service as audit, brand_service as brand, cart_service as cart, comment_service as comment, category_service as category,
-    coupon_service as coupon, groupon_service as groupon, identity_service as identity, interaction_service as interaction,
+    coupon_service as coupon, groupon_service as groupon, dict_entry_service as dict_entry, dict_type_service as dict_type,
+    identity_service as identity, interaction_service as interaction,
     internal_message_service as internal_message, invoice_service as invoice, monitor_alert_service as monitor, notification_service as notification,
     api_service as api, menu_service as menu, org_unit_service as org_unit,
     permission_group_service as perm_group, permission_service as perm_svc,
     policy_evaluation_log_service as policy_log, position_service as position,
-    redis_cache_service as redis_cache, role_service as role,
+    language_service as language, redis_cache_service as redis_cache,
+    role_service as role,
     server_monitor_service as server_monitor, tenant_service as tenant,
     online_session_service as online_session,
     order_service as order, payment_service as payment, product_service as product,
@@ -45,6 +47,10 @@ use shop_proto::proto::permission::service::v1::{
     permission_service_server::PermissionServiceServer,
     policy_evaluation_log_service_server::PolicyEvaluationLogServiceServer,
     role_service_server::RoleServiceServer,
+};
+use shop_proto::proto::dict::service::v1::{
+    dict_entry_service_server::DictEntryServiceServer,
+    dict_type_service_server::DictTypeServiceServer, language_service_server::LanguageServiceServer,
 };
 use shop_proto::proto::invoice::service::v1::invoice_service_server::InvoiceServiceServer;
 use shop_proto::proto::notification::service::v1::{
@@ -292,6 +298,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             },
         ))
         .add_service(InvoiceServiceServer::new(invoice::InvoiceService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(DictTypeServiceServer::new(dict_type::DictTypeService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(DictEntryServiceServer::new(dict_entry::DictEntryService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(LanguageServiceServer::new(language::LanguageService {
             state: std::sync::Arc::clone(&state),
         }))
 }

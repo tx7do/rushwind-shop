@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
 
+
     // 静态站点生成配置
     ssr: true,
     nitro: {

@@ -50,6 +50,7 @@ pub mod product_service;
 pub mod promotion_service;
 pub mod redis_cache_service;
 pub mod role_service;
+pub mod script_service;
 pub mod seckill_service;
 pub mod server_monitor_service;
 pub mod shipping_service;

@@ -1573,3 +1573,41 @@ CREATE TABLE IF NOT EXISTS public.sys_access_keys (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_sys_access_keys_ak ON public.sys_access_keys (access_key);
+
+CREATE TABLE IF NOT EXISTS public.sys_scripts (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    name varchar(200) NULL,
+    language varchar(30) NULL DEFAULT 'LUA',
+    hook_point varchar(200) NULL,
+    source text NULL,
+    priority int NULL DEFAULT 0,
+    description varchar(500) NULL,
+    critical boolean NULL DEFAULT false,
+    version int NULL DEFAULT 1,
+    is_enabled boolean NULL DEFAULT false,
+    CONSTRAINT sys_scripts_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_script_logs (
+    id bigserial,
+    created_at timestamptz NULL,
+    script_id bigint NULL,
+    script_name varchar(200) NULL,
+    language varchar(30) NULL,
+    trigger_type varchar(50) NULL,
+    hook_point varchar(200) NULL,
+    version int NULL DEFAULT 0,
+    success boolean NULL,
+    duration_ms bigint NULL,
+    error text NULL,
+    context jsonb NULL,
+    CONSTRAINT sys_script_logs_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_script_logs_script ON public.sys_script_logs (script_id);

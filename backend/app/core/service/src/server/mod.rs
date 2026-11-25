@@ -22,7 +22,7 @@ use crate::service::{
     product_attribute_service as product_attribute,
     product_attribute_value_service as product_attribute_value, product_service as product,
     promotion_service as promotion, redis_cache_service as redis_cache, role_service as role,
-    seckill_service as seckill, server_monitor_service as server_monitor,
+    script_service as script, seckill_service as seckill, server_monitor_service as server_monitor,
     shipping_service as shipping, sku_service as sku, stock_service as stock, task_service as task,
     tax_service as tax, tenant_service as tenant, user_credential_service as user_credential,
     wishlist_service as wishlist,
@@ -43,6 +43,9 @@ use shop_proto::proto::identity::service::v1::{
 };
 use shop_proto::proto::access_key::service::v1::access_key_service_server::AccessKeyServiceServer;
 use shop_proto::proto::config::service::v1::config_service_server::ConfigServiceServer;
+use shop_proto::proto::script::service::v1::{
+    script_log_service_server::ScriptLogServiceServer, script_service_server::ScriptServiceServer,
+};
 use shop_proto::proto::storage::service::v1::{
     file_service_server::FileServiceServer, file_transfer_service_server::FileTransferServiceServer,
     oss_service_server::OssServiceServer,
@@ -171,6 +174,12 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(ConfigServiceServer::new(config::ConfigService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(ScriptServiceServer::new(script::ScriptService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(ScriptLogServiceServer::new(script::ScriptLogService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(PlanQuotaServiceServer::new(plan::PlanQuotaService {

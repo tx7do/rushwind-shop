@@ -25,6 +25,9 @@ rushwind-password-argon2 = { workspace = true }
 redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
 hmac = "0.12"
 sha2 = "0.10"
+rushwind-script = { workspace = true }
+rushwind-script-lua = { workspace = true }
+rushwind-script-javascript = { workspace = true }
 sha1 = "0.10"
 qrcode = { version = "0.14", default-features = false }
 png = "0.17"

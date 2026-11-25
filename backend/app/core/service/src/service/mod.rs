@@ -38,6 +38,7 @@ pub mod payment_service;
 pub mod permission_group_service;
 pub mod permission_service;
 pub mod permission_sync;
+pub mod plan_service;
 pub mod points_service;
 pub mod policy_evaluation_log_service;
 pub mod position_service;

@@ -16,7 +16,7 @@ use crate::service::{
     menu_service as menu, mfa_service as mfa, monitor_alert_service as monitor,
     notification_service as notification,
     online_session_service as online_session, order_service as order, org_unit_service as org_unit,
-    payment_service as payment, permission_group_service as perm_group,
+    payment_service as payment, plan_service as plan, permission_group_service as perm_group,
     permission_service as perm_svc, points_service as points,
     policy_evaluation_log_service as policy_log, position_service as position,
     product_attribute_service as product_attribute,
@@ -37,6 +37,10 @@ use shop_proto::proto::audit::service::v1::{
     permission_audit_log_service_server::PermissionAuditLogServiceServer,
 };
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::identity::service::v1::{
+    plan_module_service_server::PlanModuleServiceServer,
+    plan_quota_service_server::PlanQuotaServiceServer, plan_service_server::PlanServiceServer,
+};
 use shop_proto::proto::storage::service::v1::{
     file_service_server::FileServiceServer, file_transfer_service_server::FileTransferServiceServer,
     oss_service_server::OssServiceServer,
@@ -156,6 +160,15 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(FileTransferServiceServer::new(file_transfer::FileTransferService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(PlanServiceServer::new(plan::PlanService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(PlanQuotaServiceServer::new(plan::PlanQuotaService {
+        state: std::sync::Arc::clone(&state),
+    }))
+    .add_service(PlanModuleServiceServer::new(plan::PlanModuleService {
         state: std::sync::Arc::clone(&state),
     }))
     .add_service(BrandServiceServer::new(brand::BrandService {

@@ -1485,3 +1485,53 @@ CREATE TABLE IF NOT EXISTS public.files (
     content_hash varchar(255) NULL,
     CONSTRAINT files_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.sys_plans (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    remark varchar(255) NULL,
+    name varchar(100) NULL,
+    version varchar(30) NULL DEFAULT 'FREE',
+    expiry_policy varchar(30) NULL DEFAULT 'READONLY',
+    data_retention_days bigint NULL,
+    description text NULL,
+    CONSTRAINT sys_plans_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_sys_plans_name ON public.sys_plans (name);
+
+CREATE TABLE IF NOT EXISTS public.sys_plan_quotas (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    plan_id bigint NOT NULL,
+    quota_type varchar(30) NULL,
+    quota_value bigint NULL,
+    CONSTRAINT sys_plan_quotas_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_plan_quotas_plan ON public.sys_plan_quotas (plan_id);
+
+CREATE TABLE IF NOT EXISTS public.sys_plan_modules (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    plan_id bigint NOT NULL,
+    module varchar(30) NULL,
+    CONSTRAINT sys_plan_modules_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_plan_modules_plan ON public.sys_plan_modules (plan_id);

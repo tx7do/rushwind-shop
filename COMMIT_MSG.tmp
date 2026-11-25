@@ -1,23 +1,16 @@
-feat(coupon): the coupon domain joins — templates, user-held instances, the claim caps, and the quote math
+feat(shipping): the shipping domain joins — rate cards and the shipment tracking rows
 
-Two services in one drop: CouponTemplateService (6 RPCs — the
-discount type FIXED_AMOUNT/PERCENTAGE, the validity window, the
-redemption caps, the claimable kill-switch, the points price) and
-UserCouponService (8 RPCs — the instances plus the Claim and Quote
-faces). The golden DDL grows the two tables.
+Two services, 12 standard RPCs: ShippingRateService (the per-region
+fee cards — base fee, per-unit fee, the ACTIVE/INACTIVE status) and
+ShipmentService (the per-order tracking rows — carrier, tracking
+number, the PENDING/SHIPPED/DELIVERED walk, the tracking-events
+text). The golden DDL grows the two tables (shipments indexed by
+order).
 
-Claim enforces the caps before the instance lands UNUSED: the
-claimable flag and the ACTIVE status gate, the template-wide
-redemption counter (which ticks on the successful claim), and the
-per-user cap over the holder's live rows. The claimant's identity
-rides the forwarded x-user-id metadata — the same stamp the cart
-write face reads.
+The status spellings follow the demo data on both sides of the
+mapping (the stored bare-member names, the proto values at the
+boundary).
 
-Quote walks the discount math: the applicability verdict (UNUSED +
-ACTIVE + inside the validity window) and the FIXED_AMOUNT face
-value; the PERCENTAGE branch joins the caller's pre-discount total
-with the storefront cart phase.
-
-verified over the live stack: the admin template lands (CNY 1000 off,
-cap 100/2), the claim mints the UNUSED instance for user 1, and the
-quote answers applicable=true with the 1000 face discount
+verified over the live stack: the admin rate card lands (北京
+800+200/CNY, ACTIVE), the shipment for the PAID test order lands
+(SF Express, SHIPPED), and both rows read back from the database

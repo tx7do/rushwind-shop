@@ -386,3 +386,40 @@ CREATE TABLE IF NOT EXISTS public.mall_user_coupons (
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_coupons_user ON public.mall_user_coupons (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_shipping_rates (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    region varchar(100) NOT NULL,
+    base_fee bigint NOT NULL DEFAULT 0,
+    per_unit_fee bigint NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_shipping_rates_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_shipments (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    order_id bigint NOT NULL,
+    user_id bigint NULL,
+    carrier varchar(100) NULL,
+    tracking_number varchar(100) NULL,
+    status varchar(20) NOT NULL DEFAULT 'PENDING',
+    tracking_events text NULL,
+    CONSTRAINT mall_shipments_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_shipments_order ON public.mall_shipments (order_id);

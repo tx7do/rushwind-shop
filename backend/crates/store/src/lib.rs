@@ -44,6 +44,8 @@ pub async fn tables_present(db: &DatabaseConnection) -> Result<bool, sea_orm::Db
         "mall_payment_channel_configs",
         "mall_coupon_templates",
         "mall_user_coupons",
+        "mall_shipping_rates",
+        "mall_shipments",
         "mall_carts",
         "mall_cart_items",
         "sys_users",

@@ -15,6 +15,8 @@ pub mod categories;
 pub mod product_translations;
 pub mod products;
 pub mod sku_attribute_combinations;
+pub mod shipping_rates;
+pub mod shipments;
 pub mod sku_prices;
 pub mod skus;
 pub mod category_translations;

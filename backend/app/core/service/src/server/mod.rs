@@ -6,9 +6,13 @@ use std::sync::Arc;
 
 use crate::service::{self, authentication_service as authentication, brand_service as brand, cart_service as cart, category_service as category,
     coupon_service as coupon, order_service as order, payment_service as payment, product_service as product,
-    sku_service as sku};
+    shipping_service as shipping, sku_service as sku};
 use crate::state::AppState;
 use shop_proto::proto::authentication::service::v1::authentication_service_server::AuthenticationServiceServer;
+use shop_proto::proto::shipping::service::v1::{
+    shipment_service_server::ShipmentServiceServer,
+    shipping_rate_service_server::ShippingRateServiceServer,
+};
 use shop_proto::proto::payment::service::v1::{
     payment_channel_config_service_server::PaymentChannelConfigServiceServer,
     payment_refund_service_server::PaymentRefundServiceServer,
@@ -88,4 +92,10 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
                 state: std::sync::Arc::clone(&state),
             },
         ))
+        .add_service(ShippingRateServiceServer::new(shipping::ShippingRateService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(ShipmentServiceServer::new(shipping::ShipmentService {
+            state: std::sync::Arc::clone(&state),
+        }))
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
     <transition enter-active-class="animate__animated animate__fadeInLeft">
-      <router-link :key="+collapse" class="wh-full flex-center" to="/">
+      <router-link :key="+collapse" class="wh-full flex-y-center" to="/">
         <img :src="logo" class="logo-icon" />
         <span v-if="!collapse" class="title">
           {{ preferences.app.name }}
@@ -33,10 +33,12 @@ defineProps({
     width: 32px;
     height: 32px;
     flex-shrink: 0;
+    margin-left: 12px;
   }
 
   .title {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
     margin-left: 12px;
     padding-right: 8px;
     font-size: 16px;
@@ -44,6 +46,8 @@ defineProps({
     letter-spacing: 0.5px;
     color: $sidebar-logo-text-color;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

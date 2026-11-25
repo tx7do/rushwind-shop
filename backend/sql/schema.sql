@@ -1353,3 +1353,42 @@ CREATE TABLE IF NOT EXISTS public.mall_seckill_activities (
     status varchar(20) NOT NULL DEFAULT 'ACTIVE',
     CONSTRAINT mall_seckill_activities_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_points_ledgers (
+    id bigserial,
+    created_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    delta bigint NOT NULL DEFAULT 0,
+    balance_after bigint NOT NULL DEFAULT 0,
+    type varchar(40) NOT NULL DEFAULT 'POINTS_TYPE_EARN',
+    reason varchar(255) NULL,
+    ref_order_id bigint NULL,
+    updated_by bigint NULL,
+    created_by bigint NULL,
+    deleted_by bigint NULL,
+    updated_at timestamptz NULL,
+    CONSTRAINT mall_points_ledgers_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_points_ledgers_user ON public.mall_points_ledgers (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_member_tiers (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    name varchar(100) NOT NULL,
+    level int NOT NULL DEFAULT 1,
+    min_spend bigint NOT NULL DEFAULT 0,
+    points_multiplier int NULL DEFAULT 1,
+    badge_icon varchar(255) NULL,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    CONSTRAINT mall_member_tiers_pkey PRIMARY KEY (id)
+);

@@ -43,6 +43,8 @@ pub mod server_monitor_service;
 pub mod promotion_service;
 pub mod stock_service;
 pub mod seckill_service;
+pub mod points_service;
+pub mod member_tier_service;
 pub mod shipping_service;
 pub mod tax_service;
 pub mod task_service;

@@ -17,7 +17,8 @@ use crate::service::{self, authentication_service as authentication, audit_servi
     seckill_service as seckill,
     server_monitor_service as server_monitor, tenant_service as tenant,
     online_session_service as online_session,
-    order_service as order, payment_service as payment, product_service as product,
+    order_service as order, member_tier_service as member_tier, payment_service as payment, points_service as points,
+    product_service as product,
     promotion_service as promotion, stock_service as stock,
     shipping_service as shipping, sku_service as sku, tax_service as tax, task_service as task,
     wishlist_service as wishlist};
@@ -70,7 +71,11 @@ use shop_proto::proto::catalog::service::v1::{
     stock_alert_service_server::StockAlertServiceServer,
     stock_op_log_service_server::StockOpLogServiceServer,
 };
-use shop_proto::proto::catalog::service::v1::seckill_activity_service_server::SeckillActivityServiceServer;
+use shop_proto::proto::catalog::service::v1::{
+    member_tier_service_server::MemberTierServiceServer,
+    points_ledger_service_server::PointsLedgerServiceServer,
+    seckill_activity_service_server::SeckillActivityServiceServer,
+};
 use shop_proto::proto::redis_cache::service::v1::redis_cache_monitor_service_server::RedisCacheMonitorServiceServer;
 use shop_proto::proto::online_session::service::v1::online_session_service_server::OnlineSessionServiceServer;
 use shop_proto::proto::order::service::v1::{
@@ -212,6 +217,12 @@ pub fn registry(state: Arc<AppState>) -> tonic::service::Routes {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(SeckillActivityServiceServer::new(seckill::SeckillActivityService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(PointsLedgerServiceServer::new(points::PointsLedgerService {
+            state: std::sync::Arc::clone(&state),
+        }))
+        .add_service(MemberTierServiceServer::new(member_tier::MemberTierService {
             state: std::sync::Arc::clone(&state),
         }))
         .add_service(StockAlertServiceServer::new(stock::StockAlertService {

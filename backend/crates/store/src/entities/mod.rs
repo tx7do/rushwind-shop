@@ -36,6 +36,8 @@ pub mod product_attribute_translations;
 pub mod product_attribute_value_translations;
 pub mod product_attribute_values;
 pub mod product_attributes;
+pub mod member_tiers;
+pub mod points_ledgers;
 pub mod products;
 pub mod sku_attribute_combinations;
 pub mod groupon_activities;

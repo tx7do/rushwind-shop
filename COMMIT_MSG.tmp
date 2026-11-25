@@ -1,28 +1,23 @@
-feat(payment): the payment ledger joins — intent, confirm, and the bridge into the trade machine
+feat(coupon): the coupon domain joins — templates, user-held instances, the claim caps, and the quote math
 
-Three services in one drop: PaymentTransactionService (8 RPCs — the
-ledger plus the intent/confirm faces), PaymentRefundService (6), and
-PaymentChannelConfigService (3 read faces; the credentials leave the
-responses with only the credentials_configured flag). The golden DDL
-grows the three tables.
+Two services in one drop: CouponTemplateService (6 RPCs — the
+discount type FIXED_AMOUNT/PERCENTAGE, the validity window, the
+redemption caps, the claimable kill-switch, the points price) and
+UserCouponService (8 RPCs — the instances plus the Claim and Quote
+faces). The golden DDL grows the two tables.
 
-The confirm face is the bridge into the trade machine: the
-transaction walks PENDING to SUCCEEDED (the transition guard makes
-the replay a FailedPrecondition — the ledger's idempotency is the
-state machine's), and the owning order walks PENDING_PAYMENT to PAID
-through mark_order_paid (its replay stays silent — already-PAID is a
-no-op, the ledger replay never double-walks the order). The intent
-face materializes a PENDING transaction off the channel config
-(disabled channels refuse) and answers the transaction message plus
-the channel (the real channels plug their SDKs in place of the mock
-trade-no) plus the gateway subject line.
+Claim enforces the caps before the instance lands UNUSED: the
+claimable flag and the ACTIVE status gate, the template-wide
+redemption counter (which ticks on the successful claim), and the
+per-user cap over the holder's live rows. The claimant's identity
+rides the forwarded x-user-id metadata — the same stamp the cart
+write face reads.
 
-The stored spellings follow the reference's demo data: the bare
-enum-member names (PENDING/SUCCEEDED/REFUNDED, PAYMENT_CHANNEL_MOCK,
-BALANCE/WECHAT/MOCK), mapped both ways at the service boundary.
+Quote walks the discount math: the applicability verdict (UNUSED +
+ACTIVE + inside the validity window) and the FIXED_AMOUNT face
+value; the PERCENTAGE branch joins the caller's pre-discount total
+with the storefront cart phase.
 
-verified over the live stack: the intent materializes the PENDING
-ledger row off the seeded mock channel, the confirm answers
-SUCCEEDED/first_success and the order reads PAID, and the replayed
-confirm answers FailedPrecondition — the ledger replay can never
-double-walk the order
+verified over the live stack: the admin template lands (CNY 1000 off,
+cap 100/2), the claim mints the UNUSED instance for user 1, and the
+quote answers applicable=true with the 1000 face discount

@@ -2,6 +2,8 @@
 
 pub mod brand_translations;
 pub mod cart_items;
+pub mod coupon_templates;
+pub mod user_coupons;
 pub mod order_items;
 pub mod payment_channel_configs;
 pub mod payment_refunds;

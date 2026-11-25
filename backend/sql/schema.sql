@@ -342,3 +342,47 @@ CREATE TABLE IF NOT EXISTS public.mall_payment_channel_configs (
     remark text NULL,
     CONSTRAINT mall_payment_channel_configs_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.mall_coupon_templates (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    currency varchar(10) NOT NULL DEFAULT 'CNY',
+    discount_type varchar(30) NOT NULL DEFAULT 'FIXED_AMOUNT',
+    discount_value bigint NULL DEFAULT 0,
+    discount_percentage int NULL DEFAULT 0,
+    valid_from timestamptz NULL,
+    valid_until timestamptz NULL,
+    max_redemptions int NULL DEFAULT 0,
+    max_redemptions_per_user int NULL DEFAULT 1,
+    redeemed_count int NULL DEFAULT 0,
+    status varchar(20) NOT NULL DEFAULT 'ACTIVE',
+    claimable boolean NULL DEFAULT true,
+    points_price bigint NULL DEFAULT 0,
+    CONSTRAINT mall_coupon_templates_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.mall_user_coupons (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    coupon_template_id bigint NOT NULL,
+    status varchar(20) NOT NULL DEFAULT 'UNUSED',
+    redeemed_at timestamptz NULL,
+    redeemed_order_id bigint NULL,
+    applied_discount_amount bigint NULL DEFAULT 0,
+    CONSTRAINT mall_user_coupons_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_coupons_user ON public.mall_user_coupons (user_id);

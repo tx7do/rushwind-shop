@@ -1392,3 +1392,34 @@ CREATE TABLE IF NOT EXISTS public.mall_member_tiers (
     status varchar(20) NOT NULL DEFAULT 'ACTIVE',
     CONSTRAINT mall_member_tiers_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.sys_user_credentials (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    identity_type varchar(30) NULL,
+    identifier varchar(255) NOT NULL,
+    credential_type varchar(30) NULL,
+    credential text NOT NULL,
+    is_primary boolean NULL DEFAULT false,
+    status varchar(20) NULL DEFAULT 'ACTIVE',
+    extra_info jsonb NULL,
+    provider varchar(50) NULL,
+    provider_account_id varchar(255) NULL,
+    activate_token_hash varchar(255) NULL,
+    activate_token_expires_at timestamptz NULL,
+    activate_token_used_at timestamptz NULL,
+    reset_token_hash varchar(255) NULL,
+    reset_token_expires_at timestamptz NULL,
+    reset_token_used_at timestamptz NULL,
+    CONSTRAINT sys_user_credentials_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_credentials_identifier
+    ON public.sys_user_credentials (identifier);

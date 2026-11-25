@@ -8,6 +8,7 @@
 //! spellings); regenerate the pair together, never let them drift.
 
 pub mod bootstrap;
+pub mod crypto;
 pub mod entities;
 pub mod paging;
 
@@ -83,6 +84,7 @@ pub async fn tables_present(db: &DatabaseConnection) -> Result<bool, sea_orm::Db
         "mall_shipments",
         "mall_carts",
         "mall_cart_items",
+        "sys_user_credentials",
         "sys_users",
     ];
     for table in TABLES {

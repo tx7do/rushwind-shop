@@ -5,4 +5,5 @@
 
 pub mod authentication_service;
 pub mod brand_service;
+pub mod cart_service;
 pub mod category_service;

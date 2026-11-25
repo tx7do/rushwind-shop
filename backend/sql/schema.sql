@@ -101,3 +101,41 @@ CREATE TABLE IF NOT EXISTS public.mall_category_translations (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_category_translations_cat_language
     ON public.mall_category_translations (category_id, language_code);
+
+CREATE TABLE IF NOT EXISTS public.mall_carts (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    user_id bigint NOT NULL,
+    CONSTRAINT mall_carts_pkey PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_carts_user
+    ON public.mall_carts (user_id);
+
+CREATE TABLE IF NOT EXISTS public.mall_cart_items (
+    id bigserial,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    deleted_at timestamptz NULL,
+    created_by bigint NULL,
+    updated_by bigint NULL,
+    deleted_by bigint NULL,
+    tenant_id bigint NULL DEFAULT 0,
+    cart_id bigint NOT NULL,
+    user_id bigint NULL,
+    sku_id bigint NOT NULL,
+    quantity integer NOT NULL DEFAULT 1,
+    CONSTRAINT mall_cart_items_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_mall_cart_items_cart
+        FOREIGN KEY (cart_id)
+        REFERENCES public.mall_carts (id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_cart_items_cart
+    ON public.mall_cart_items (cart_id);

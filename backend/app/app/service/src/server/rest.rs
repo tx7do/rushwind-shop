@@ -48,6 +48,10 @@ impl auth::AccessTokenChecker for CoreTokenChecker {
             .validate_token(tonic::Request::new(
                 shop_proto::proto::authentication::service::v1::ValidateTokenRequest {
                     token: token.to_string(),
+                    // The app BFF's session store is the ct=1 side — the
+                    // validation dials the same client the token was
+                    // minted against.
+                    client_type: shop_proto::proto::authentication::service::v1::ClientType::App as i32,
                     ..Default::default()
                 },
             ))

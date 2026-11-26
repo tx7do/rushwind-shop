@@ -8,7 +8,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{db_status, AppState};
@@ -23,10 +23,6 @@ use shop_proto::proto::pagination::PagingRequest;
 
 fn json_of(v: Option<String>) -> Option<serde_json::Value> {
     v.and_then(|s| serde_json::from_str(&s).ok())
-}
-
-fn s_of(v: Option<serde_json::Value>) -> Option<String> {
-    v.map(|j| j.to_string())
 }
 
 // ── ApiAuditLogService ──────────────────────────────────────────────
@@ -114,7 +110,7 @@ impl auditv1::api_audit_log_service_server::ApiAuditLogService for ApiAuditLogSe
             request_uri: Set(data.request_uri.clone()),
             api_module: Set(data.api_module.clone()),
             payload: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -207,7 +203,7 @@ impl auditv1::login_audit_log_service_server::LoginAuditLogService for LoginAudi
             trace_id: Set(data.trace_id.clone()),
             failure_reason: Set(data.failure_reason.clone()),
             payload: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -302,7 +298,7 @@ impl auditv1::operation_audit_log_service_server::OperationAuditLogService
             after_data: Set(json_of(data.after_data.clone())),
             request_id: Set(data.request_id.clone()),
             payload: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -400,7 +396,7 @@ impl auditv1::data_access_audit_log_service_server::DataAccessAuditLogService
             data_id: Set(data.data_id.clone()),
             sql_digest: Set(data.sql_digest.clone()),
             payload: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -501,7 +497,7 @@ impl auditv1::permission_audit_log_service_server::PermissionAuditLogService
             ip_address: Set(data.ip_address.clone()),
             request_id: Set(data.request_id.clone()),
             payload: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;

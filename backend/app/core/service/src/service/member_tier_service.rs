@@ -22,9 +22,9 @@ fn tier_proto(r: member_tiers::Model) -> catalogv1::MemberTier {
     catalogv1::MemberTier {
         id: Some(r.id),
         name: Some(r.name.clone()),
-        level: Some(r.level as i32),
+        level: Some(r.level),
         min_spend: Some(r.min_spend),
-        points_multiplier: Some(r.points_multiplier.unwrap_or(1) as i32),
+        points_multiplier: Some(r.points_multiplier.unwrap_or(1)),
         badge_icon: r.badge_icon.clone(),
         currency: Some(r.currency.clone()),
         status: Some(if r.status == "ACTIVE" {
@@ -34,8 +34,6 @@ fn tier_proto(r: member_tiers::Model) -> catalogv1::MemberTier {
         } as i32),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
-
-        ..Default::default()
     }
 }
 
@@ -105,9 +103,9 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
             .ok_or_else(|| bad("data.name required"))?;
         let active = member_tiers::ActiveModel {
             name: Set(name),
-            level: Set(data.level.unwrap_or(1) as i32),
+            level: Set(data.level.unwrap_or(1)),
             min_spend: Set(data.min_spend.unwrap_or(0)),
-            points_multiplier: Set(Some(data.points_multiplier.unwrap_or(1) as i32)),
+            points_multiplier: Set(Some(data.points_multiplier.unwrap_or(1))),
             badge_icon: Set(data.badge_icon.clone()),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
             status: Set(
@@ -119,7 +117,7 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
                 .to_string(),
             ),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -142,13 +140,13 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
             active.name = Set(v);
         }
         if let Some(v) = data.level {
-            active.level = Set(v as i32);
+            active.level = Set(v);
         }
         if let Some(v) = data.min_spend {
             active.min_spend = Set(v);
         }
         if let Some(v) = data.points_multiplier {
-            active.points_multiplier = Set(Some(v as i32));
+            active.points_multiplier = Set(Some(v));
         }
         if let Some(v) = data.status {
             active.status = Set(if v == catalogv1::member_tier::Status::Active as i32 {
@@ -158,7 +156,7 @@ impl catalogv1::member_tier_service_server::MemberTierService for MemberTierServ
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

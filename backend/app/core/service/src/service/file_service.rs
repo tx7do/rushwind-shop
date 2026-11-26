@@ -150,7 +150,7 @@ impl storagev1::file_service_server::FileService for FileService {
             size_format: Set(data.size.map(size_format_of)),
             link_url: Set(data.link_url),
             content_hash: Set(data.content_hash),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         }
         .insert(&self.state.db)
@@ -182,7 +182,7 @@ impl storagev1::file_service_server::FileService for FileService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

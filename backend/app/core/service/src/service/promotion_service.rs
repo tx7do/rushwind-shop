@@ -127,7 +127,7 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
             special_price: Set(Some(data.special_price.unwrap_or(0))),
             threshold_amount: Set(Some(data.threshold_amount.unwrap_or(0))),
             reduction_amount: Set(Some(data.reduction_amount.unwrap_or(0))),
-            priority: Set(data.priority.map(|v| v as i32)),
+            priority: Set(data.priority),
             valid_from: Set(data.valid_from.map(ts_from_proto)),
             valid_until: Set(data.valid_until.map(ts_from_proto)),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
@@ -140,7 +140,7 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
                 .to_string(),
             ),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -176,7 +176,7 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -209,7 +209,7 @@ impl catalogv1::promotion_service_server::PromotionService for PromotionService 
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
+        let now: chrono::DateTime<chrono::FixedOffset> = store::now();
         let items: Vec<catalogv1::Promotion> = rows
             .into_iter()
             .filter(|r| {

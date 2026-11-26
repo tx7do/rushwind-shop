@@ -171,7 +171,7 @@ impl identityv1::user_service_server::UserService for UserService {
                     .to_string(),
             )),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -215,7 +215,7 @@ impl identityv1::user_service_server::UserService for UserService {
                         .to_string(),
                 )),
                 tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -264,7 +264,7 @@ impl identityv1::user_service_server::UserService for UserService {
             .map_err(|_| Status::internal("hash failed"))?;
             active.password = Set(Some(hash));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -358,7 +358,7 @@ impl identityv1::user_profile_service_server::UserProfileService for UserProfile
         if let Some(v) = data.mobile.clone() {
             active.mobile = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -488,7 +488,7 @@ impl addressv1::shipping_address_service_server::ShippingAddressService for Ship
             tag: Set(data.tag.clone()),
             is_default: Set(Some(data.is_default.unwrap_or(false))),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -532,7 +532,7 @@ impl addressv1::shipping_address_service_server::ShippingAddressService for Ship
         if let Some(v) = data.is_default {
             active.is_default = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         if data.is_default.unwrap_or(false) {
             clear_other_defaults(&self.state.db, user_id, req.id).await?;

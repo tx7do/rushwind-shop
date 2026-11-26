@@ -113,7 +113,7 @@ pub async fn create_totp_factor(
         secret_hash: Set(Some(enc_secret)),
         display_name: Set(Some(display_name.to_string())),
         status: Set(Some("ENABLED".to_string())),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     }
     .insert(db)
@@ -196,8 +196,8 @@ pub async fn update_last_used(
     if let Ok(Some(row)) = entity::Entity::find_by_id(factor_id).one(db).await {
         if row.tenant_id == Some(tenant_id) && row.user_id == Some(user_id) {
             let mut active: entity::ActiveModel = row.into();
-            active.last_used_at = Set(Some(store::now().into()));
-            active.updated_at = Set(Some(store::now().into()));
+            active.last_used_at = Set(Some(store::now()));
+            active.updated_at = Set(Some(store::now()));
             let _ = active.update(db).await;
         }
     }

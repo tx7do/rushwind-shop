@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, Set};
+use sea_orm::{EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::attr_repo as repo;
@@ -82,7 +82,7 @@ fn attribute_active(
             .sort_order
             .map(|v| Set(Some(v as i32)))
             .unwrap_or(Set(None::<i32>)),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     }
 }
@@ -193,7 +193,7 @@ impl catalogv1::product_attribute_service_server::ProductAttributeService
         if let Some(v) = data.sort_order {
             active.sort_order = Set(Some(v as i32));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_attribute(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -273,7 +273,7 @@ impl catalogv1::product_attribute_service_server::ProductAttributeService
         if let Some(v) = data.name {
             active.name = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = repo::update_translation(&self.state.db, active).await?;
         Ok(Response::new(attr_translation_proto(row)))
     }
@@ -323,7 +323,7 @@ fn attr_translation_active(
         attribute_id: Set(attribute_id),
         language_code: Set(language_code),
         name: Set(name),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     })
 }

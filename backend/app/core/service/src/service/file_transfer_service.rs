@@ -105,7 +105,7 @@ impl FileTransferService {
             size_format: Set(Some(size_format_of(bytes.len() as u64))),
             link_url: Set(Some(format!("/api/v1/storage/oss/download/{key}"))),
             content_hash: Set(Some(format!("{:x}", md5ish(bytes)))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         }
         .insert(&self.state.db)

@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
@@ -129,7 +129,7 @@ impl shippingv1::shipping_rate_service_server::ShippingRateService for ShippingR
                 .map(|v| if v == 1 { "ACTIVE" } else { "INACTIVE" }.to_string())
                 .unwrap_or_else(|| "ACTIVE".to_string())),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -160,7 +160,7 @@ impl shippingv1::shipping_rate_service_server::ShippingRateService for ShippingR
         if let Some(v) = data.status {
             active.status = Set(if v == 1 { "ACTIVE" } else { "INACTIVE" }.to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -261,7 +261,7 @@ impl shippingv1::shipment_service_server::ShipmentService for ShipmentService {
                 .unwrap_or_else(|| "PENDING".to_string())),
             tracking_events: Set(data.tracking_events),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -297,7 +297,7 @@ impl shippingv1::shipment_service_server::ShipmentService for ShipmentService {
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

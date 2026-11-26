@@ -41,7 +41,3 @@ pub async fn delete_languages(db: &DatabaseConnection, id: i64) -> StatusResult<
 }
 
 // ── the language-code → column-value helper ──────────────────────────
-
-pub(crate) fn language_of(code: &Option<String>) -> &str {
-    code.as_deref().unwrap_or("")
-}

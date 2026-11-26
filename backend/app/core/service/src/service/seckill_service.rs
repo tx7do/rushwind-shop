@@ -110,10 +110,10 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService for Seck
             name: Set(name),
             sku_id: Set(sku_id),
             seckill_price: Set(data.seckill_price.unwrap_or(0)),
-            total_stock: Set(data.total_stock.unwrap_or(0) as i32),
+            total_stock: Set(data.total_stock.unwrap_or(0)),
             sold_count: Set(0),
-            per_user_limit: Set(data.per_user_limit.map(|v| v as i32)),
-            priority: Set(data.priority.map(|v| v as i32)),
+            per_user_limit: Set(data.per_user_limit),
+            priority: Set(data.priority),
             valid_from: Set(data.valid_from.map(ts_from_proto)),
             valid_until: Set(data.valid_until.map(ts_from_proto)),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
@@ -126,7 +126,7 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService for Seck
                 .to_string(),
             ),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -152,7 +152,7 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService for Seck
             active.seckill_price = Set(v);
         }
         if let Some(v) = data.total_stock {
-            active.total_stock = Set(v as i32);
+            active.total_stock = Set(v);
         }
         if let Some(v) = data.status {
             active.status = Set(if v == catalogv1::seckill_activity::Status::Active as i32 {
@@ -162,7 +162,7 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService for Seck
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -192,7 +192,7 @@ impl catalogv1::seckill_activity_service_server::SeckillActivityService for Seck
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
+        let now: chrono::DateTime<chrono::FixedOffset> = store::now();
         let items: Vec<catalogv1::SeckillActivity> = rows
             .into_iter()
             .filter(|r| {

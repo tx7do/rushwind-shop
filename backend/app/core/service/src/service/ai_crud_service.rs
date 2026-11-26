@@ -45,8 +45,8 @@ fn provider_proto(r: sys_ai_providers::Model) -> aiv1::AiProvider {
         api_key: None, // the key never rides back — the masked hint does
         api_key_hint: r.api_key_hint,
         local_host: r.local_host,
-        local_port: r.local_port.map(|v| v as i32),
-        timeout_seconds: r.timeout_seconds.map(|v| v as i32),
+        local_port: r.local_port,
+        timeout_seconds: r.timeout_seconds,
         system_prompt: r.system_prompt,
         is_default: r.is_default,
         remark: r.remark,
@@ -154,13 +154,13 @@ impl aiv1::ai_provider_service_server::AiProviderService for AiProviderService {
             api_key: Set(api_key.clone()),
             api_key_hint: Set(api_key.as_deref().map(key_hint_of)),
             local_host: Set(data.local_host),
-            local_port: Set(data.local_port.map(|v| v as i32)),
-            timeout_seconds: Set(data.timeout_seconds.map(|v| v as i32)),
+            local_port: Set(data.local_port),
+            timeout_seconds: Set(data.timeout_seconds),
             system_prompt: Set(data.system_prompt),
             is_default: Set(data.is_default),
             remark: Set(data.remark),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -200,10 +200,10 @@ impl aiv1::ai_provider_service_server::AiProviderService for AiProviderService {
             active.local_host = Set(Some(v));
         }
         if let Some(v) = data.local_port {
-            active.local_port = Set(Some(v as i32));
+            active.local_port = Set(Some(v));
         }
         if let Some(v) = data.timeout_seconds {
-            active.timeout_seconds = Set(Some(v as i32));
+            active.timeout_seconds = Set(Some(v));
         }
         if let Some(v) = data.system_prompt {
             active.system_prompt = Set(Some(v));
@@ -217,7 +217,7 @@ impl aiv1::ai_provider_service_server::AiProviderService for AiProviderService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -333,7 +333,7 @@ impl aiv1::ai_conversation_service_server::AiConversationService for AiConversat
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -361,14 +361,6 @@ impl aiv1::ai_conversation_service_server::AiConversationService for AiConversat
 }
 
 // ── Message ──────────────────────────────────────────────────────────
-
-fn role_name(v: i32) -> Option<&'static str> {
-    Some(match aiv1::AiRole::try_from(v).ok()? {
-        aiv1::AiRole::Assistant => "ASSISTANT",
-        aiv1::AiRole::System => "SYSTEM",
-        _ => "USER",
-    })
-}
 
 fn role_proto(name: Option<&str>) -> Option<i32> {
     Some(match name? {
@@ -466,7 +458,6 @@ fn usage_proto(r: sys_ai_usage_logs::Model) -> aiv1::AiUsageLog {
         total_tokens: r.total_tokens.map(|v| v as u32),
         duration_ms: r.duration_ms.map(|v| v as u32),
         created_at: r.created_at.and_then(ts_to_proto),
-        ..Default::default()
     }
 }
 

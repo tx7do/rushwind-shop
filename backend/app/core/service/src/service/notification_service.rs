@@ -20,15 +20,6 @@ use store::paging::fetch_paged;
 use shop_proto::proto::notification::service::v1 as notifv1;
 use shop_proto::proto::pagination::PagingRequest;
 
-fn ts_from(v: pbjson_types::Timestamp) -> sea_orm::prelude::DateTimeWithTimeZone {
-    use chrono::TimeZone as _;
-    chrono::Utc
-        .timestamp_opt(v.seconds, v.nanos.max(0) as u32)
-        .single()
-        .unwrap_or_else(chrono::Utc::now)
-        .fixed_offset()
-}
-
 fn channel_type_to_str(v: i32) -> &'static str {
     use notifv1::notification_channel::Type;
     match notifv1::notification_channel::Type::try_from(v).ok() {
@@ -138,7 +129,6 @@ fn template_proto(r: notification_templates::Model) -> notifv1::NotificationTemp
         remark: r.remark.clone(),
         created_at: r.created_at.and_then(ts_to_proto),
         updated_at: r.updated_at.and_then(ts_to_proto),
-        ..Default::default()
     }
 }
 
@@ -251,7 +241,7 @@ impl notifv1::notification_channel_service_server::NotificationChannelService
             smtp_from_name: Set(data.smtp_from_name.clone()),
             webhook_url: Set(data.webhook_url.clone()),
             webhook_secret: Set(req.webhook_secret.clone()),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -279,7 +269,7 @@ impl notifv1::notification_channel_service_server::NotificationChannelService
         if let Some(v) = data.smtp_port {
             active.smtp_port = Set(Some(v as i32));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(channel_proto(row)))
     }
@@ -312,12 +302,12 @@ impl notifv1::notification_channel_service_server::NotificationChannelService
             recipient_user_id: Set(None),
             target: Set(Some(target.clone())),
             status: Set("SENT".to_string()),
-            sent_at: Set(Some(store::now().into())),
+            sent_at: Set(Some(store::now())),
             attempts: Set(Some(1)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
-        let row = active.insert(&self.state.db).await.map_err(db_status)?;
+        let _row = active.insert(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(notifv1::SendTestEmailResponse {
             success: true,
             error: String::new(),
@@ -394,7 +384,7 @@ impl notifv1::notification_rule_service_server::NotificationRuleService
             is_async: Set(Some(data.is_async.unwrap_or(true))),
             is_enabled: Set(Some(data.is_enabled.unwrap_or(true))),
             remark: Set(data.remark.clone()),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -419,7 +409,7 @@ impl notifv1::notification_rule_service_server::NotificationRuleService
         if let Some(v) = data.remark.clone() {
             active.remark = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(rule_proto(row)))
     }
@@ -516,7 +506,7 @@ impl notifv1::notification_template_service_server::NotificationTemplateService
             content_template: Set(data.content_template.clone()),
             is_enabled: Set(Some(data.is_enabled.unwrap_or(true))),
             remark: Set(data.remark.clone()),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -544,7 +534,7 @@ impl notifv1::notification_template_service_server::NotificationTemplateService
         if let Some(v) = data.is_enabled {
             active.is_enabled = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(template_proto(row)))
     }
@@ -628,7 +618,7 @@ impl notifv1::notification_service_server::NotificationService for NotificationS
                 status: Set("SENT".to_string()),
                 sender_id: Set(req.operator_user_id),
                 sender_name: Set(Some("system".to_string())),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             }
             .insert(&self.state.db)
@@ -639,10 +629,10 @@ impl notifv1::notification_service_server::NotificationService for NotificationS
                 message_id: Set(msg.id),
                 recipient_user_id: Set(req.recipient_user_id.unwrap_or(0)),
                 status: Set("SENT".to_string()),
-                received_at: Set(Some(store::now().into())),
+                received_at: Set(Some(store::now())),
                 title: Set(Some(req.title.clone())),
                 content: Set(Some(req.content.clone())),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             }
             .insert(&self.state.db)
@@ -656,11 +646,11 @@ impl notifv1::notification_service_server::NotificationService for NotificationS
             recipient_user_id: Set(req.recipient_user_id),
             target: Set(Some(req.target.clone())),
             status: Set("SENT".to_string()),
-            sent_at: Set(Some(store::now().into())),
+            sent_at: Set(Some(store::now())),
             attempts: Set(Some(1)),
             request_id: Set(req.request_id.clone()),
             related_id: Set(req.related_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;

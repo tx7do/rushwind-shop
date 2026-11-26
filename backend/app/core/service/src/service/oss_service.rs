@@ -139,7 +139,7 @@ impl storagev1::oss_service_server::OssService for OssService {
     ) -> Result<Response<storagev1::GetDownloadInfoResponse>, Status> {
         use rushwind_oss::PresignMethod;
         let req = request.into_inner();
-        let mut req_bucket: Option<String> = None;
+        let req_bucket: Option<String> = None;
         let key = match req.selector {
             Some(storagev1::get_download_info_request::Selector::FileId(id)) => {
                 use sea_orm::EntityTrait;
@@ -195,7 +195,7 @@ impl storagev1::oss_service_server::OssService for OssService {
                 .unwrap_or(600)
                 .clamp(1, 60 * 60 * 24) as u64,
         );
-        let (engine, bucket) = self.engine_for(req_bucket.as_deref()).await?;
+        let (engine, _bucket) = self.engine_for(req_bucket.as_deref()).await?;
         let url = engine
             .presign(&key, PresignMethod::Get, expires)
             .map_err(|e| Status::internal(format!("presign: {e:?}")))?;

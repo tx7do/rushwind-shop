@@ -202,7 +202,7 @@ impl authv1::mfa_service_server::MfaService for MfaService {
             .map_err(Status::internal)?;
         let url = mfa_totp::otpauth_url(&secret, uid);
         let qr = mfa_totp::qr_png_data_uri(&url).unwrap_or_default();
-        let now: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
+        let now: chrono::DateTime<chrono::FixedOffset> = store::now();
         Ok(Response::new(authv1::StartEnrollMethodResponse {
             result: Some(authv1::start_enroll_method_response::Result::Totp(
                 authv1::TotpResult {

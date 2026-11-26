@@ -155,7 +155,7 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
             remark: Set(data.remark.clone()),
             last_firing: Set(false),
             last_value: Set(0.0),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -189,7 +189,7 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
         if let Some(v) = data.remark.clone() {
             active.remark = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -219,7 +219,6 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let mut fired = 0i32;
         let mut results = Vec::with_capacity(rules.len());
         for r in rules {
             let value = sample_metric(&r.metric);
@@ -230,24 +229,18 @@ impl mav1::monitor_alert_service_server::MonitorAlertService for MonitorAlertSer
             };
             let in_cooldown = r
                 .last_alerted_at
-                .map(|t| {
-                    (chrono::DateTime::<chrono::FixedOffset>::from(store::now()) - t).num_minutes()
-                        < r.cooldown_minutes.unwrap_or(30) as i64
-                })
+                .map(|t| (store::now() - t).num_minutes() < r.cooldown_minutes.unwrap_or(30) as i64)
                 .unwrap_or(false);
             let notified = firing
                 && !in_cooldown
                 && r.target.as_deref().map(|t| !t.is_empty()).unwrap_or(false);
-            if notified {
-                fired += 1;
-            }
             let mut active: monitor_alert_rules::ActiveModel = r.clone().into();
             active.last_firing = Set(firing);
             active.last_value = Set(value);
             if notified {
-                active.last_alerted_at = Set(Some(store::now().into()));
+                active.last_alerted_at = Set(Some(store::now()));
             }
-            active.updated_at = Set(Some(store::now().into()));
+            active.updated_at = Set(Some(store::now()));
             active.update(&self.state.db).await.map_err(db_status)?;
             results.push(mav1::evaluate_monitor_alerts_response::RuleOutcome {
                 rule_id: r.id,

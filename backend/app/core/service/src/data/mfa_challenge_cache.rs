@@ -101,9 +101,7 @@ impl MfaChallengeCache {
             Ok(n) => n,
             Err(_) => return true,
         };
-        let _: Result<(), _> = con
-            .expire(fail_key(op_id), MFA_CHALLENGE_TTL_SECS as i64)
-            .await;
+        let _: Result<(), _> = con.expire(fail_key(op_id), MFA_CHALLENGE_TTL_SECS).await;
         if n >= MAX_LOGIN_CHALLENGE_FAILURES {
             let _: Result<(), _> = con.del(login_key(op_id)).await;
             return true;

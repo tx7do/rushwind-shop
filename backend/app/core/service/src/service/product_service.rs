@@ -89,7 +89,7 @@ fn product_active(
         status: Set(data.status.map(product_status_to_str)),
         category_id: Set(data.category_id),
         brand_id: Set(data.brand_id),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     }
 }
@@ -207,7 +207,7 @@ impl catalogv1::product_service_server::ProductService for ProductService {
         active.status = Set(data.status.map(product_status_to_str));
         active.category_id = Set(data.category_id);
         active.brand_id = Set(data.brand_id);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_product(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -282,7 +282,7 @@ impl catalogv1::product_service_server::ProductService for ProductService {
         active.slug = Set(data.slug);
         active.short_description = Set(data.short_description);
         active.long_description = Set(data.long_description);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = repo::update_translation(&self.state.db, active).await?;
         Ok(Response::new(product_translation_proto(row)))
     }
@@ -434,7 +434,7 @@ fn product_translation_active(
         slug: Set(data.slug),
         short_description: Set(data.short_description),
         long_description: Set(data.long_description),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     })
 }

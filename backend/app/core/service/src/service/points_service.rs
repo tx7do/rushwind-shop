@@ -11,21 +11,11 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{member_tiers, points_ledgers};
+use store::entities::points_ledgers;
 use store::paging::fetch_paged;
 
 use shop_proto::proto::catalog::service::v1 as catalogv1;
 use shop_proto::proto::pagination::PagingRequest;
-
-fn ledger_type_to_str(v: i32) -> Option<&'static str> {
-    use catalogv1::PointsLedgerType;
-    Some(match PointsLedgerType::try_from(v).ok()? {
-        PointsLedgerType::PointsTypeEarn => "POINTS_TYPE_EARN",
-        PointsLedgerType::PointsTypeDeduct => "POINTS_TYPE_DEDUCT",
-        PointsLedgerType::PointsTypeCheckIn => "POINTS_TYPE_CHECK_IN",
-        _ => return None,
-    })
-}
 
 fn ledger_proto(r: points_ledgers::Model) -> catalogv1::PointsLedger {
     catalogv1::PointsLedger {
@@ -44,27 +34,6 @@ fn ledger_proto(r: points_ledgers::Model) -> catalogv1::PointsLedger {
         reason: r.reason.clone(),
         ref_order_id: r.ref_order_id,
         created_at: r.created_at.and_then(ts_to_proto),
-        ..Default::default()
-    }
-}
-
-fn tier_proto(r: member_tiers::Model) -> catalogv1::MemberTier {
-    catalogv1::MemberTier {
-        id: Some(r.id),
-        name: Some(r.name.clone()),
-        level: Some(r.level),
-        min_spend: Some(r.min_spend),
-        points_multiplier: r.points_multiplier,
-        badge_icon: r.badge_icon.clone(),
-        currency: Some(r.currency.clone()),
-        status: Some(if r.status == "ACTIVE" {
-            catalogv1::member_tier::Status::Active
-        } else {
-            catalogv1::member_tier::Status::Inactive
-        } as i32),
-        tenant_id: r.tenant_id,
-        created_at: r.created_at.and_then(ts_to_proto),
-        ..Default::default()
     }
 }
 
@@ -95,7 +64,7 @@ async fn append_ledger(
         r#type: Set(type_str.to_string()),
         reason: Set(Some(reason.to_string())),
         ref_order_id: Set(ref_order_id),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     };
     active.insert(&state.db).await.map_err(db_status)?;
@@ -299,7 +268,7 @@ impl catalogv1::points_ledger_service_server::PointsLedgerService for PointsLedg
             coupon_template_id: Set(template_id),
             status: Set("UNUSED".to_string()),
             tenant_id: Set(template.tenant_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let coupon = active.insert(&self.state.db).await.map_err(db_status)?;

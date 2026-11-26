@@ -82,7 +82,7 @@ fn hotp(secret: &[u8], counter: u64) -> u32 {
         digest[offset + 2],
         digest[offset + 3],
     ]);
-    (code % 1_000_000) as u32
+    code % 1_000_000
 }
 
 fn counter_at(now_secs: i64) -> u64 {
@@ -145,8 +145,8 @@ pub fn qr_png_data_uri(text: &str) -> Option<String> {
     let mut px = vec![255u8; dim * dim];
     for (i, c) in colors.iter().enumerate() {
         if *c == qrcode::Color::Dark {
-            let x = (i % width) as usize + quiet;
-            let y = i / width as usize + quiet;
+            let x = (i % width) + quiet;
+            let y = i / width + quiet;
             for dy in 0..scale {
                 for dx in 0..scale {
                     px[(y * scale + dy) * dim + x * scale + dx] = 0;

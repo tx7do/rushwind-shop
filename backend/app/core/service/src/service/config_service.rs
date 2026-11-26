@@ -122,7 +122,7 @@ impl configv1::config_service_server::ConfigService for ConfigService {
             value_type: Set(data.value_type.and_then(value_type_name).map(String::from)),
             is_built_in: Set(data.is_built_in),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -145,7 +145,7 @@ impl configv1::config_service_server::ConfigService for ConfigService {
             if let Some(v) = data.name {
                 active.name = Set(Some(v));
             }
-            active.updated_at = Set(Some(store::now().into()));
+            active.updated_at = Set(Some(store::now()));
             active.update(&self.state.db).await.map_err(db_status)?;
             return Ok(Response::new(pbjson_types::Empty {}));
         }
@@ -168,7 +168,7 @@ impl configv1::config_service_server::ConfigService for ConfigService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

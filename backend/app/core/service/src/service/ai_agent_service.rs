@@ -118,7 +118,7 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
             graph: Set(data.graph),
             enabled: Set(data.enabled),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -150,7 +150,7 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -190,7 +190,7 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
             app_id: Set(Some(app.id)),
             status: Set(Some("RUNNING".to_string())),
             input: Set(Some(serde_json::to_string(&req.input).unwrap_or_default())),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         }
         .insert(&self.state.db)
@@ -205,21 +205,6 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
             .await
         {
             Ok((output, pt, ct, trace)) => {
-                let row = finish_run(
-                    &self.state.db,
-                    run_id,
-                    "SUCCEEDED",
-                    None,
-                    output,
-                    pt,
-                    ct,
-                    Some(trace),
-                    started,
-                )
-                .await?;
-                Ok(Response::new(run_proto(row)))
-            }
-            Err(WalkOutcome::Done(output, pt, ct, trace)) => {
                 let row = finish_run(
                     &self.state.db,
                     run_id,
@@ -344,21 +329,6 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
                 .await?;
                 Ok(Response::new(run_proto(updated)))
             }
-            Err(WalkOutcome::Done(output, pt, ct, trace)) => {
-                let updated = finish_run(
-                    &self.state.db,
-                    row.id,
-                    "SUCCEEDED",
-                    None,
-                    output,
-                    pt,
-                    ct,
-                    Some(trace),
-                    started,
-                )
-                .await?;
-                Ok(Response::new(run_proto(updated)))
-            }
             Err(WalkOutcome::Paused {
                 pending_node,
                 resume_state,
@@ -438,7 +408,6 @@ impl aiv1::ai_agent_service_server::AiAgentService for AiAgentService {
 /// The walk's outcomes: done with the accumulated output, paused at an
 /// approval node, or failed with the provider error.
 enum WalkOutcome {
-    Done(String, i64, i64, String),
     Paused {
         pending_node: String,
         resume_state: String,
@@ -496,6 +465,7 @@ impl crate::service::ai_agent_service::AiAgentService {
     /// Walks `nodes` from `start`, one LLM call per node, accumulating
     /// the context; an approval node pauses. Returns the final output
     /// (the last node's answer) plus token counts for the ledger.
+    #[allow(clippy::too_many_arguments)]
     async fn walk(
         &self,
         nodes: &[serde_json::Value],
@@ -504,7 +474,7 @@ impl crate::service::ai_agent_service::AiAgentService {
         input: &str,
         app: &sys_ai_agent_apps::Model,
         run_id: i64,
-        started: std::time::Instant,
+        _started: std::time::Instant,
     ) -> Result<(String, i64, i64, String), WalkOutcome> {
         let arr: &[serde_json::Value] = nodes;
         if arr.is_empty() {
@@ -560,10 +530,7 @@ impl crate::service::ai_agent_service::AiAgentService {
             if context.len() > 8000 {
                 context = format!("…{}…", &context[context.len() - 4000..]);
             }
-            context.push_str(
-                "
-",
-            );
+            context.push('\n');
             context.push_str(&answer);
         }
         let _ = run_id;
@@ -591,7 +558,7 @@ async fn pause_run(
     active.pending_node_id = Set(Some(pending_node.to_string()));
     active.resume_state = Set(Some(resume_state.to_string()));
     active.trace = Set(Some(trace.to_string()));
-    active.updated_at = Set(Some(store::now().into()));
+    active.updated_at = Set(Some(store::now()));
     active.update(db).await.map_err(db_status)
 }
 
@@ -628,6 +595,6 @@ async fn finish_run(
     if let Some(t) = trace.filter(|t| !t.is_empty()) {
         active.trace = Set(Some(t));
     }
-    active.updated_at = Set(Some(store::now().into()));
+    active.updated_at = Set(Some(store::now()));
     active.update(db).await.map_err(db_status)
 }

@@ -107,7 +107,7 @@ impl aiv1::ai_knowledge_base_service_server::AiKnowledgeBaseService for AiKnowle
             embedding_model: Set(data.embedding_model),
             user_id: Set(data.user_id),
             created_by: Set(data.user_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -136,7 +136,7 @@ impl aiv1::ai_knowledge_base_service_server::AiKnowledgeBaseService for AiKnowle
         if let Some(v) = data.embedding_model {
             active.embedding_model = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -177,7 +177,7 @@ impl aiv1::ai_knowledge_base_service_server::AiKnowledgeBaseService for AiKnowle
             name: Set(Some(req.name)),
             status: Set(Some("READY".to_string())),
             user_id: Set(None),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         }
         .insert(&self.state.db)

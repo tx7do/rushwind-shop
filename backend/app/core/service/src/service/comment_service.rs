@@ -130,7 +130,7 @@ impl commentv1::comment_service_server::CommentService for CommentService {
             rating: Set(data.rating.map(|v| v as i32)),
             parent_id: Set(data.parent_id.filter(|v| *v != 0)),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -158,7 +158,7 @@ impl commentv1::comment_service_server::CommentService for CommentService {
         if let Some(v) = data.rating {
             active.rating = Set(Some(v as i32));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

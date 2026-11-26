@@ -111,7 +111,7 @@ async fn transition(
     }
     let mut active: orders::ActiveModel = existing.into();
     active.status = Set(to.to_string());
-    active.updated_at = Set(Some(store::now().into()));
+    active.updated_at = Set(Some(store::now()));
     let row = active.update(&state.db).await.map_err(db_status)?;
     Ok(row)
 }
@@ -192,7 +192,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
         // off sku_prices, snapshot + insert order items, deduct stock
         // with a ledger row each, clear the cart, and stamp the computed
         // total back onto the order — all inside one transaction.
-        let mut txn = self.state.db.begin().await.map_err(db_status)?;
+        let txn = self.state.db.begin().await.map_err(db_status)?;
 
         let cart = carts::Entity::find()
             .filter(carts::Column::TenantId.eq(tenant_id))
@@ -228,7 +228,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
             shipping_address: Set(data.shipping_address),
             groupon_activity_id: Set(data.groupon_activity_id),
             groupon_group_id: Set(data.groupon_group_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let order = active.insert(&txn).await.map_err(db_status)?;
@@ -275,7 +275,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
                 quantity: Set(item.quantity.max(1)),
                 unit_price: Set(Some(unit_price)),
                 subtotal: Set(Some(subtotal)),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             }
             .insert(&txn)
@@ -299,7 +299,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
                 stock_after: Set(Some(new_stock)),
                 reason: Set(Some("ORDER_DEDUCT".to_string())),
                 ref_id: Set(Some(order_id)),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             }
             .insert(&txn)
@@ -347,7 +347,7 @@ impl orderv1::order_service_server::OrderService for OrderService {
         if let Some(v) = data.status.and_then(status_to_str) {
             active.status = Set(v.to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -470,7 +470,7 @@ impl orderv1::order_item_service_server::OrderItemService for OrderItemService {
             quantity: Set(data.quantity.unwrap_or(1).max(1)),
             unit_price: Set(Some(data.unit_price.unwrap_or(0))),
             subtotal: Set(Some(data.subtotal.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -496,7 +496,7 @@ impl orderv1::order_item_service_server::OrderItemService for OrderItemService {
                 quantity: Set(data.quantity.unwrap_or(1).max(1)),
                 unit_price: Set(Some(data.unit_price.unwrap_or(0))),
                 subtotal: Set(Some(data.subtotal.unwrap_or(0))),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -525,7 +525,7 @@ impl orderv1::order_item_service_server::OrderItemService for OrderItemService {
         if let Some(v) = data.subtotal {
             active.subtotal = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

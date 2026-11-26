@@ -3,7 +3,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, Set};
+use sea_orm::{EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::brand_repo as repo;
@@ -77,7 +77,7 @@ fn brand_active(
             .map(|v| Set(Some(v as i32)))
             .unwrap_or(Set(None::<i32>)),
         logo_url: Set(data.logo_url),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     }
 }
@@ -192,7 +192,7 @@ impl catalogv1::brand_service_server::BrandService for BrandService {
             active.sort_order = Set(Some(v as i32));
         }
         active.logo_url = Set(data.logo_url);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_brand(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -264,7 +264,7 @@ impl catalogv1::brand_service_server::BrandService for BrandService {
         }
         active.slug = Set(data.slug);
         active.description = Set(data.description);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = repo::update_translation(&self.state.db, active).await?;
         Ok(Response::new(brand_translation_proto(row)))
     }
@@ -314,7 +314,7 @@ fn brand_translation_active(
         name: Set(name),
         slug: Set(data.slug),
         description: Set(data.description),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     })
 }

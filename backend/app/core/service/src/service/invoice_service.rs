@@ -5,7 +5,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
@@ -157,7 +157,7 @@ impl invoicev1::invoice_service_server::InvoiceService for InvoiceService {
             amount: Set(data.amount.unwrap_or(0)),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -188,7 +188,7 @@ impl invoicev1::invoice_service_server::InvoiceService for InvoiceService {
         if let Some(v) = data.buyer_tax_id.clone() {
             active.buyer_tax_id = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

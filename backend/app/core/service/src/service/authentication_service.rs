@@ -88,7 +88,7 @@ impl AuthenticationService {
             stored,
         )
         .unwrap_or(false)
-            || (stored == &plain && !plain.is_empty());
+            || (stored == plain && !plain.is_empty());
         if !ok {
             crate::crypto::dummy_verify();
             return Err(Status::unauthenticated("user not found"));
@@ -333,7 +333,7 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
         .map_err(|_| Status::internal("hash failed"))?;
         let mut active: sys_users::ActiveModel = row.into();
         active.password = Set(Some(hash));
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -370,7 +370,7 @@ impl authv1::authentication_service_server::AuthenticationService for Authentica
             email: sea_orm::Set(req.email.clone()),
             password: sea_orm::Set(Some(hash)),
             status: sea_orm::Set(Some("NORMAL".to_string())),
-            created_at: sea_orm::Set(Some(store::now().into())),
+            created_at: sea_orm::Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;

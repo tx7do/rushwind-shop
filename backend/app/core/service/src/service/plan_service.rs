@@ -139,7 +139,7 @@ impl identityv1::plan_service_server::PlanService for PlanService {
             description: Set(data.description),
             remark: Set(data.remark),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -177,7 +177,7 @@ impl identityv1::plan_service_server::PlanService for PlanService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -333,7 +333,7 @@ impl identityv1::plan_quota_service_server::PlanQuotaService for PlanQuotaServic
             quota_type: Set(data.quota_type.and_then(quota_type_name).map(String::from)),
             quota_value: Set(data.quota_value.map(|v| v as i64)),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -366,7 +366,7 @@ impl identityv1::plan_quota_service_server::PlanQuotaService for PlanQuotaServic
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -502,7 +502,7 @@ impl identityv1::plan_module_service_server::PlanModuleService for PlanModuleSer
             plan_id: Set(plan_id),
             module: Set(data.module.and_then(module_name).map(String::from)),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -532,7 +532,7 @@ impl identityv1::plan_module_service_server::PlanModuleService for PlanModuleSer
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

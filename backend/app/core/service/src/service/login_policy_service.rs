@@ -41,15 +41,15 @@ fn login_policy_proto(r: sys_login_policies::Model) -> authv1::LoginPolicy {
     authv1::LoginPolicy {
         id: Some(r.id),
         target_id: r.target_id,
-        r#type: r.r#type.as_deref().and_then(|name| match name {
-            "WHITELIST" => Some(authv1::login_policy::Type::Whitelist as i32),
-            _ => Some(authv1::login_policy::Type::Blacklist as i32),
+        r#type: r.r#type.as_deref().map(|name| match name {
+            "WHITELIST" => authv1::login_policy::Type::Whitelist as i32,
+            _ => authv1::login_policy::Type::Blacklist as i32,
         }),
-        method: r.method.as_deref().and_then(|name| match name {
-            "MAC" => Some(authv1::login_policy::Method::Mac as i32),
-            "REGION" => Some(authv1::login_policy::Method::Region as i32),
-            "TIME" => Some(authv1::login_policy::Method::Time as i32),
-            _ => Some(authv1::login_policy::Method::Ip as i32),
+        method: r.method.as_deref().map(|name| match name {
+            "MAC" => authv1::login_policy::Method::Mac as i32,
+            "REGION" => authv1::login_policy::Method::Region as i32,
+            "TIME" => authv1::login_policy::Method::Time as i32,
+            _ => authv1::login_policy::Method::Ip as i32,
         }),
         value: r.value,
         reason: r.reason,
@@ -125,7 +125,7 @@ impl authv1::login_policy_service_server::LoginPolicyService for LoginPolicyServ
             value: Set(data.value),
             reason: Set(data.reason),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         if let Some(name) = data.r#type.and_then(type_name) {
@@ -181,7 +181,7 @@ impl authv1::login_policy_service_server::LoginPolicyService for LoginPolicyServ
         if let Some(v) = data.updated_by {
             a.updated_by = Set(Some(v));
         }
-        a.updated_at = Set(Some(store::now().into()));
+        a.updated_at = Set(Some(store::now()));
         a.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

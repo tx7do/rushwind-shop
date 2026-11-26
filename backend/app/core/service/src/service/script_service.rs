@@ -149,6 +149,7 @@ impl ScriptService {
 
     /// The log row a run leaves (best-effort — a logging failure never
     /// fails the run's caller).
+    #[allow(clippy::too_many_arguments)]
     async fn record_run(
         &self,
         script_id: i64,
@@ -173,7 +174,7 @@ impl ScriptService {
             duration_ms: Set(Some(duration_ms)),
             error: Set(error),
             context: Set(Some(ctx)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         }
         .insert(&self.state.db)
@@ -278,7 +279,7 @@ impl scriptv1::script_service_server::ScriptService for ScriptService {
             version: Set(Some(1)),
             is_enabled: Set(data.is_enabled),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -325,7 +326,7 @@ impl scriptv1::script_service_server::ScriptService for ScriptService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -454,7 +455,6 @@ fn log_proto(r: sys_script_logs::Model) -> scriptv1::ScriptLog {
         duration_ms: r.duration_ms,
         error: r.error,
         created_at: r.created_at.and_then(ts_to_proto),
-        ..Default::default()
     }
 }
 
@@ -504,8 +504,7 @@ impl scriptv1::script_log_service_server::ScriptLogService for ScriptLogService 
         let req = request.into_inner();
         let mut delete = sys_script_logs::Entity::delete_many();
         if let Some(before) = req.before {
-            let cutoff: chrono::DateTime<chrono::FixedOffset> =
-                chrono::DateTime::from(ts_from_proto(before));
+            let cutoff: chrono::DateTime<chrono::FixedOffset> = ts_from_proto(before);
             delete = delete.filter(sys_script_logs::Column::CreatedAt.lt(cutoff));
         }
         let res = delete.exec(&self.state.db).await.map_err(db_status)?;

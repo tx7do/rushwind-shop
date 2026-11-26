@@ -37,14 +37,8 @@ fn tx_proto(r: payment_transactions::Model) -> paymentv1::PaymentTransaction {
         currency: Some(r.currency.clone()),
         business_ref_id: r.business_ref_id.clone(),
         idempotency_key: r.idempotency_key.clone(),
-        payment_method: r
-            .payment_method
-            .as_deref()
-            .and_then(|v| payment_method_to_i32(v)),
-        business_type: r
-            .business_type
-            .as_deref()
-            .and_then(|v| business_type_to_i32(v)),
+        payment_method: r.payment_method.as_deref().and_then(payment_method_to_i32),
+        business_type: r.business_type.as_deref().and_then(business_type_to_i32),
         gateway_trade_no: r.gateway_trade_no.clone(),
         tenant_id: r.tenant_id,
         created_at: r.created_at.and_then(ts_to_proto),
@@ -118,7 +112,7 @@ async fn transition_tx(
     if let Some(no) = gateway_trade_no {
         active.gateway_trade_no = Set(Some(no));
     }
-    active.updated_at = Set(Some(store::now().into()));
+    active.updated_at = Set(Some(store::now()));
     let row = active.update(&state.db).await.map_err(db_status)?;
     Ok(row)
 }
@@ -136,7 +130,7 @@ async fn mark_order_paid(state: &AppState, order_id: i64) -> Result<(), Status> 
     }
     let mut active: orders::ActiveModel = existing.into();
     active.status = Set("PAID".to_string());
-    active.updated_at = Set(Some(store::now().into()));
+    active.updated_at = Set(Some(store::now()));
     active.update(&state.db).await.map_err(db_status)?;
     Ok(())
 }
@@ -220,7 +214,7 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
             business_type: Set(data.business_type.and_then(business_type_to_str)),
             gateway_trade_no: Set(data.gateway_trade_no.clone()),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -251,7 +245,7 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
                     .unwrap_or_else(|| "PENDING".into())
             }));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -302,7 +296,7 @@ impl paymentv1::payment_transaction_service_server::PaymentTransactionService
             idempotency_key: Set(Some(req.idempotency_key)),
             payment_method: Set(Some(channel.channel.clone())),
             business_type: Set(Some("ORDER".to_string())),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -497,7 +491,7 @@ impl paymentv1::payment_refund_service_server::PaymentRefundService for PaymentR
             business_ref_id: Set(data.business_ref_id.clone()),
             idempotency_key: Set(data.idempotency_key.clone()),
             user_id: Set(data.user_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -522,7 +516,7 @@ impl paymentv1::payment_refund_service_server::PaymentRefundService for PaymentR
         if let Some(v) = data.amount {
             active.amount = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

@@ -127,7 +127,7 @@ impl taskv1::task_service_server::TaskService for TaskService {
             enable: Set(Some(data.enable.unwrap_or(true))),
             remark: Set(data.remark.clone()),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -158,7 +158,7 @@ impl taskv1::task_service_server::TaskService for TaskService {
         if let Some(v) = data.remark.clone() {
             active.remark = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

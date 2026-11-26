@@ -61,7 +61,7 @@ async fn bump_counter(
         let mut active: interaction_counters::ActiveModel = row.into();
         let next = (active.count.clone().take().unwrap_or(0) + delta).max(0);
         active.count = Set(next);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(db).await.map_err(db_status)?;
         Ok(next)
     } else {
@@ -71,7 +71,7 @@ async fn bump_counter(
             metric: Set(metric.to_string()),
             count: Set(delta.max(0)),
             tenant_id: Set(Some(0)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(db).await.map_err(db_status)?;
@@ -120,7 +120,7 @@ impl interv1::interaction_service_server::InteractionService for InteractionServ
                 user_id: Set(op),
                 target_type: Set(target_type.to_string()),
                 target_id: Set(target_id),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -345,7 +345,7 @@ impl interv1::interaction_admin_service_server::InteractionAdminService
             Some(row) => {
                 let mut active: interaction_counters::ActiveModel = row.into();
                 active.count = Set(0);
-                active.updated_at = Set(Some(store::now().into()));
+                active.updated_at = Set(Some(store::now()));
                 active.update(&self.state.db).await.map_err(db_status)?;
                 0
             }

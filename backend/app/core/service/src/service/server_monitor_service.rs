@@ -75,12 +75,8 @@ impl smv1::server_monitor_service_server::ServerMonitorService for ServerMonitor
                 arch: Some(std::env::consts::ARCH.to_string()),
                 num_cpu: Some(num_cpu),
                 hostname,
-                ..Default::default()
             }),
-            collected_at: Some(
-                crate::state::ts_to_proto(store::now())
-                    .unwrap_or(pbjson_types::Timestamp::default()),
-            ),
+            collected_at: Some(crate::state::ts_to_proto(store::now()).unwrap_or_default()),
         }))
     }
 }

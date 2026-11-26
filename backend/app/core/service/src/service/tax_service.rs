@@ -101,7 +101,7 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
             .ok_or_else(|| bad("data.region required"))?;
         let active = tax_rates::ActiveModel {
             region: Set(region),
-            tax_rate: Set(data.tax_rate.unwrap_or(0) as i32),
+            tax_rate: Set(data.tax_rate.unwrap_or(0)),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
             status: Set(
                 if data.status == Some(taxv1::tax_rate::Status::Inactive as i32) {
@@ -112,7 +112,7 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
                 .to_string(),
             ),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -135,7 +135,7 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
             active.region = Set(v);
         }
         if let Some(v) = data.tax_rate {
-            active.tax_rate = Set(v as i32);
+            active.tax_rate = Set(v);
         }
         if let Some(v) = data.currency.clone() {
             active.currency = Set(v);
@@ -148,7 +148,7 @@ impl taxv1::tax_rate_service_server::TaxRateService for TaxRateService {
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

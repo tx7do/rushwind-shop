@@ -216,7 +216,7 @@ impl couponv1::coupon_template_service_server::CouponTemplateService for CouponT
             claimable: Set(Some(data.claimable.unwrap_or(true))),
             points_price: Set(Some(data.points_price.unwrap_or(0))),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -247,7 +247,7 @@ impl couponv1::coupon_template_service_server::CouponTemplateService for CouponT
         if let Some(v) = data.claimable {
             active.claimable = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -341,7 +341,7 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
                 .and_then(user_status_to_str)
                 .unwrap_or_else(|| "UNUSED".to_string())),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -369,7 +369,7 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
         if let Some(v) = data.redeemed_order_id {
             active.redeemed_order_id = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -432,7 +432,7 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
             coupon_template_id: Set(template_id),
             status: Set("UNUSED".to_string()),
             tenant_id: Set(tenant),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -469,7 +469,7 @@ impl couponv1::user_coupon_service_server::UserCouponService for UserCouponServi
             && template.status == "ACTIVE"
             && template
                 .valid_until
-                .map(|v| v > chrono::DateTime::<chrono::FixedOffset>::from(store::now()))
+                .map(|v| v > store::now())
                 .unwrap_or(true);
         let discount = if applicable && template.discount_type == "FIXED_AMOUNT" {
             template.discount_value.unwrap_or(0)

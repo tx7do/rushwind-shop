@@ -226,7 +226,7 @@ impl TokenStore {
             .query_async(&mut conn)
             .await
             .map_err(|e| e.to_string())?;
-        for (key, stored) in keys.into_iter().zip(values.into_iter()) {
+        for (key, stored) in keys.into_iter().zip(values) {
             if stored == refresh {
                 // rws:rt:{ct}:{uid}:{jti}
                 let jti = key.rsplit(':').next().unwrap_or("").to_string();
@@ -259,7 +259,7 @@ impl TokenStore {
             .await
             .map_err(|e| e.to_string())?;
         let mut sessions = Vec::new();
-        for (key, token) in keys.into_iter().zip(values.into_iter()) {
+        for (key, token) in keys.into_iter().zip(values) {
             // rws:at:{ct}:{uid}:{jti}
             let parts: Vec<&str> = key.split(':').collect();
             if parts.len() != 5 {

@@ -173,7 +173,7 @@ impl imv1::internal_message_service_server::InternalMessageService for InternalM
             sender_name: Set(data.sender_name.clone()),
             category_id: Set(data.category_id),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -201,7 +201,7 @@ impl imv1::internal_message_service_server::InternalMessageService for InternalM
         if let Some(v) = data.status.and_then(message_status_to_str) {
             active.status = Set(v.to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -313,7 +313,7 @@ impl imv1::internal_message_recipient_service_server::InternalMessageRecipientSe
                 .unwrap_or("SENT")
                 .to_string()),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -335,7 +335,7 @@ impl imv1::internal_message_recipient_service_server::InternalMessageRecipientSe
         if let Some(v) = data.status.and_then(recipient_status_to_str) {
             active.status = Set(v.to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -562,7 +562,7 @@ impl imv1::internal_message_category_service_server::InternalMessageCategoryServ
             icon_url: Set(data.icon_url.clone()),
             sort_order: Set(data.sort_order.map(|v| v as i32)),
             is_enabled: Set(data.is_enabled.unwrap_or(true)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -587,7 +587,7 @@ impl imv1::internal_message_category_service_server::InternalMessageCategoryServ
         if let Some(v) = data.is_enabled {
             active.is_enabled = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

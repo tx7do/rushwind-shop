@@ -142,7 +142,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         let active = product_attribute_values::ActiveModel {
             attribute_id: Set(attribute_id),
             sort_order: Set(data.sort_order.map(|v| v as i32)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -151,7 +151,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
                 value_id: Set(row.id),
                 language_code: Set(t.language_code.clone().unwrap_or_default()),
                 display_name: Set(t.display_name.clone().unwrap_or_default()),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             repo::insert_value_translation(&self.state.db, active).await?;
@@ -171,7 +171,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
             let active = product_attribute_values::ActiveModel {
                 attribute_id: Set(attribute_id),
                 sort_order: Set(data.sort_order.map(|v| v as i32)),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -190,7 +190,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         if let Some(v) = data.sort_order {
             active.sort_order = Set(Some(v as i32));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_value(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -252,7 +252,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
             value_id: Set(value_id),
             language_code: Set(data.language_code.clone().unwrap_or_default()),
             display_name: Set(data.display_name.clone().unwrap_or_default()),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = repo::insert_value_translation(&self.state.db, active).await?;
@@ -277,7 +277,7 @@ impl catalogv1::product_attribute_value_service_server::ProductAttributeValueSer
         if let Some(v) = data.display_name.clone() {
             active.display_name = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = repo::update_value_translation(&self.state.db, active).await?;
         Ok(Response::new(value_translation_proto(row)))
     }

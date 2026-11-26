@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
@@ -115,7 +115,7 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
             product_id: Set(product_id),
             sku_code: Set(data.sku_code.unwrap_or_default()),
             stock_qty: Set(data.stock_qty.unwrap_or(0)),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -135,7 +135,7 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
                 product_id: Set(product_id),
                 sku_code: Set(data.sku_code.unwrap_or_default()),
                 stock_qty: Set(data.stock_qty.unwrap_or(0)),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -164,7 +164,7 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
         if let Some(v) = data.product_id {
             active.product_id = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -200,7 +200,7 @@ impl catalogv1::sku_service_server::SkuService for SkuService {
             return Err(bad("stock would go negative"));
         }
         active.stock_qty = Set(next);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -274,7 +274,7 @@ impl catalogv1::sku_price_service_server::SkuPriceService for SkuPriceService {
             sku_id: Set(sku_id),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
             amount: Set(data.amount.unwrap_or_else(|| "0".to_string())),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -294,7 +294,7 @@ impl catalogv1::sku_price_service_server::SkuPriceService for SkuPriceService {
                 sku_id: Set(sku_id),
                 currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
                 amount: Set(data.amount.unwrap_or_else(|| "0".to_string())),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -320,7 +320,7 @@ impl catalogv1::sku_price_service_server::SkuPriceService for SkuPriceService {
         if let Some(v) = data.amount {
             active.amount = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -419,7 +419,7 @@ impl catalogv1::sku_attribute_combination_service_server::SkuAttributeCombinatio
             sku_id: Set(sku_id),
             attribute_id: Set(attribute_id),
             attribute_value_id: Set(data.attribute_value_id),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -442,7 +442,7 @@ impl catalogv1::sku_attribute_combination_service_server::SkuAttributeCombinatio
                 sku_id: Set(sku_id),
                 attribute_id: Set(attribute_id),
                 attribute_value_id: Set(data.attribute_value_id),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             active.insert(&self.state.db).await.map_err(db_status)?;
@@ -466,7 +466,7 @@ impl catalogv1::sku_attribute_combination_service_server::SkuAttributeCombinatio
             active.attribute_id = Set(v);
         }
         active.attribute_value_id = Set(data.attribute_value_id);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

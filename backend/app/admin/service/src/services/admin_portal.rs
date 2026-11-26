@@ -48,10 +48,7 @@ async fn role_codes_of(
     if !role_ids.is_empty() {
         let mut roles = RoleServiceClient::new(state.core_channel.clone());
         let resp = roles
-            .list_role_codes_by_ids(tonic::Request::new(ListRoleCodesByIdsRequest {
-                role_ids,
-                ..Default::default()
-            }))
+            .list_role_codes_by_ids(tonic::Request::new(ListRoleCodesByIdsRequest { role_ids }))
             .await
             .map_err(crate::services::map_status)?
             .into_inner();
@@ -151,7 +148,6 @@ pub async fn get_initial_context(
         menus,
         permissions,
         hidden_fields: Vec::new(),
-        ..Default::default()
     })
 }
 

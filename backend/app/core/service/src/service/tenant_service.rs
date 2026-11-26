@@ -14,10 +14,6 @@ use store::paging::fetch_paged;
 
 use shop_proto::proto::identity::service::v1 as identityv1;
 
-const TENANT_ADMIN_TEMPLATE_ROLE_CODE: &str = "template:tenant:manager";
-const TENANT_ADMIN_ROLE_CODE: &str = "tenant:manager";
-const TENANT_ADMIN_ROLE_NAME: &str = "租户管理员";
-
 pub(crate) fn tenant_proto(r: sys_tenants::Model) -> identityv1::Tenant {
     identityv1::Tenant {
         id: Some(r.id),

@@ -56,7 +56,6 @@ fn group_proto(r: groupon_groups::Model) -> catalogv1::GrouponGroup {
         } as i32),
         expire_at: r.expire_at.and_then(ts_to_proto),
         created_at: r.created_at.and_then(ts_to_proto),
-        ..Default::default()
     }
 }
 
@@ -136,9 +135,9 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService for Grou
             name: Set(name),
             sku_id: Set(sku_id),
             group_price: Set(data.group_price.unwrap_or(0)),
-            group_size: Set(data.group_size.unwrap_or(2).max(2) as i32),
-            group_valid_hours: Set(data.group_valid_hours.map(|v| v as i32)),
-            per_user_limit: Set(data.per_user_limit.map(|v| v as i32)),
+            group_size: Set(data.group_size.unwrap_or(2).max(2)),
+            group_valid_hours: Set(data.group_valid_hours),
+            per_user_limit: Set(data.per_user_limit),
             valid_from: Set(data.valid_from.map(ts_from)),
             valid_until: Set(data.valid_until.map(ts_from)),
             currency: Set(data.currency.unwrap_or_else(|| "CNY".to_string())),
@@ -151,7 +150,7 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService for Grou
                 .to_string(),
             ),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         active.insert(&self.state.db).await.map_err(db_status)?;
@@ -184,7 +183,7 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService for Grou
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -213,7 +212,7 @@ impl catalogv1::groupon_activity_service_server::GrouponActivityService for Grou
             .all(&self.state.db)
             .await
             .map_err(db_status)?;
-        let now_tz: chrono::DateTime<chrono::FixedOffset> = chrono::DateTime::from(store::now());
+        let now_tz: chrono::DateTime<chrono::FixedOffset> = store::now();
         let items: Vec<catalogv1::GrouponActivity> = rows
             .into_iter()
             .filter(|r| {

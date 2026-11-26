@@ -155,6 +155,7 @@ pub(crate) async fn chat_completion(
 
 /// The ledger rows a chat exchange lands (the user's question, the
 /// assistant's answer, the usage).
+#[allow(clippy::too_many_arguments)]
 async fn record_exchange(
     state: &AppState,
     conversation_id: i64,
@@ -167,7 +168,7 @@ async fn record_exchange(
     completion_tokens: i64,
     duration_ms: i64,
 ) -> Result<(), Status> {
-    let now = store::now().into();
+    let now = store::now();
     sys_ai_messages::ActiveModel {
         tenant_id: Set(Some(tenant_id)),
         conversation_id: Set(Some(conversation_id)),
@@ -190,7 +191,7 @@ async fn record_exchange(
         completion_tokens: Set(Some(completion_tokens)),
         duration_ms: Set(Some(duration_ms)),
         user_id: Set(Some(user_id)),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     }
     .insert(&state.db)
@@ -205,7 +206,7 @@ async fn record_exchange(
         completion_tokens: Set(Some(completion_tokens)),
         total_tokens: Set(Some(prompt_tokens + completion_tokens)),
         duration_ms: Set(Some(duration_ms)),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     }
     .insert(&state.db)
@@ -217,7 +218,7 @@ async fn record_exchange(
         .await
     {
         let mut active: sys_ai_conversations::ActiveModel = row.into();
-        active.last_message_at = Set(Some(store::now().into()));
+        active.last_message_at = Set(Some(store::now()));
         let _ = active.update(&state.db).await;
     }
     Ok(())
@@ -299,8 +300,8 @@ async fn chat_completion_stream(
             let line = buf[..idx].trim_end_matches('\r').to_string();
             buf.drain(..=idx);
             // The usage rides the final SSE frame (include_usage).
-            if line.starts_with("data: ") {
-                if let Ok(value) = serde_json::from_str::<serde_json::Value>(line[6..].trim()) {
+            if let Some(payload) = line.strip_prefix("data: ") {
+                if let Ok(value) = serde_json::from_str::<serde_json::Value>(payload.trim()) {
                     if let Some(usage) = value.get("usage") {
                         if usage["prompt_tokens"].is_i64() {
                             captured_prompt = usage["prompt_tokens"].as_i64().unwrap_or(0);
@@ -407,7 +408,7 @@ impl aiv1::ai_chat_service_server::AiChatService for AiChatService {
                     provider_id: Set(req.provider_id),
                     user_id: Set(Some(user_id)),
                     created_by: Set(Some(user_id)),
-                    created_at: Set(Some(store::now().into())),
+                    created_at: Set(Some(store::now())),
                     ..Default::default()
                 }
                 .insert(&self.state.db)
@@ -448,7 +449,7 @@ impl aiv1::ai_chat_service_server::AiChatService for AiChatService {
                         .await
                         .ok()
                         .flatten()
-                        .map(|row| crate::service::ai_crud_service::conversation_proto(row));
+                        .map(crate::service::ai_crud_service::conversation_proto);
                     let message = aiv1::AiMessage {
                         conversation_id: Some(conversation_id),
                         role: Some(aiv1::AiRole::Assistant as i32),

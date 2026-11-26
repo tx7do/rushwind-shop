@@ -145,7 +145,7 @@ impl akv1::access_key_service_server::AccessKeyService for AccessKeyService {
             status: Set(Some("ON".to_string())),
             expires_at: Set(data.expires_at.map(ts_from_proto)),
             created_by: Set(data.created_by),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         let row = active.insert(&self.state.db).await.map_err(db_status)?;
@@ -177,7 +177,7 @@ impl akv1::access_key_service_server::AccessKeyService for AccessKeyService {
         if let Some(v) = data.updated_by {
             active.updated_by = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -213,7 +213,7 @@ impl akv1::access_key_service_server::AccessKeyService for AccessKeyService {
         let existing = by_id(&self.state.db, id).await?;
         let mut active: sys_access_keys::ActiveModel = existing.into();
         active.secret_hash = Set(Some(secret_hash));
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(akv1::CreateAccessKeyResponse {
             data: None,
@@ -248,7 +248,7 @@ impl akv1::access_key_service_server::AccessKeyService for AccessKeyService {
             return Err(bad("access key is disabled"));
         }
         if let Some(expires) = row.expires_at {
-            if expires < chrono::DateTime::<chrono::FixedOffset>::from(store::now()) {
+            if expires < store::now() {
                 return Err(bad("access key is expired"));
             }
         }
@@ -259,7 +259,7 @@ impl akv1::access_key_service_server::AccessKeyService for AccessKeyService {
         }
         // Best-effort last-used stamp (the exchange's only write).
         let mut active: sys_access_keys::ActiveModel = row.clone().into();
-        active.last_used_at = Set(Some(store::now().into()));
+        active.last_used_at = Set(Some(store::now()));
         let _ = active.update(&self.state.db).await;
 
         let store = self.state.tokens(crate::token::ClientKind::Admin);

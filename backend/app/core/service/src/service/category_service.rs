@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, Set};
+use sea_orm::{EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::category_repo as repo;
@@ -88,7 +88,7 @@ fn category_active(
         depth: Set(data.depth),
         parent_id: Set(data.parent_id),
         image_url: Set(data.image_url),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     }
 }
@@ -206,7 +206,7 @@ impl catalogv1::category_service_server::CategoryService for CategoryService {
         active.depth = Set(data.depth);
         active.parent_id = Set(data.parent_id);
         active.image_url = Set(data.image_url);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_category(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -283,7 +283,7 @@ impl catalogv1::category_service_server::CategoryService for CategoryService {
         active.slug = Set(data.slug);
         active.description = Set(data.description);
         active.full_path = Set(data.full_path);
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         let row = repo::update_translation(&self.state.db, active).await?;
         Ok(Response::new(category_translation_proto(row)))
     }
@@ -336,7 +336,7 @@ fn category_translation_active(
         slug: Set(data.slug),
         description: Set(data.description),
         full_path: Set(data.full_path),
-        created_at: Set(Some(now.into())),
+        created_at: Set(Some(now)),
         ..Default::default()
     })
 }

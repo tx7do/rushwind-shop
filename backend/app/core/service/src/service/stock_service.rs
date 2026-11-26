@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
@@ -115,7 +115,7 @@ impl catalogv1::stock_alert_service_server::StockAlertService for StockAlertServ
             }
             .to_string());
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         active.update(&self.state.db).await.map_err(db_status)?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -124,6 +124,7 @@ impl catalogv1::stock_alert_service_server::StockAlertService for StockAlertServ
 /// The internal append face (the sku AdjustStock flow calls this when
 /// the ledger wiring lands; the service trait carries List/Count/Get
 /// only).
+#[allow(clippy::too_many_arguments)]
 pub async fn append_op_log(
     db: &sea_orm::DatabaseConnection,
     sku_id: i64,
@@ -142,7 +143,7 @@ pub async fn append_op_log(
         stock_after: Set(Some(stock_after)),
         reason: Set(Some(reason.to_string())),
         remark: Set(remark),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     };
     active.insert(db).await.map_err(db_status)?;

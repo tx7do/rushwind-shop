@@ -117,7 +117,7 @@ impl cartv1::cart_service_server::CartService for CartService {
         let active = carts::ActiveModel {
             user_id: Set(Some(user_id)),
             tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-            created_at: Set(Some(store::now().into())),
+            created_at: Set(Some(store::now())),
             ..Default::default()
         };
         repo::insert_cart(&self.state.db, active).await?;
@@ -139,7 +139,7 @@ impl cartv1::cart_service_server::CartService for CartService {
             let active = carts::ActiveModel {
                 user_id: Set(Some(user_id)),
                 tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             repo::insert_cart(&self.state.db, active).await?;
@@ -157,7 +157,7 @@ impl cartv1::cart_service_server::CartService for CartService {
         if let Some(v) = req.data.and_then(|d| d.user_id) {
             active.user_id = Set(Some(v));
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_cart(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }
@@ -189,10 +189,10 @@ async fn cart_for_user(
     let active = carts::ActiveModel {
         user_id: Set(Some(user_id)),
         tenant_id: Set(Some(tenant_id)),
-        created_at: Set(Some(store::now().into())),
+        created_at: Set(Some(store::now())),
         ..Default::default()
     };
-    Ok(repo::insert_cart(&state.db, active).await?)
+    repo::insert_cart(&state.db, active).await
 }
 
 pub struct CartItemService {
@@ -251,7 +251,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
         &self,
         request: Request<cartv1::CreateCartItemRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
-        let mut req = request;
+        let req = request;
         let op = operator_of(&req);
         let req = req.into_inner();
         let data = req.data.ok_or_else(|| bad("data required"))?;
@@ -274,7 +274,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
         if let Some(row) = existing {
             let mut active: cart_items::ActiveModel = row.into();
             active.quantity = Set(active.quantity.clone().take().unwrap_or(0) + quantity);
-            active.updated_at = Set(Some(store::now().into()));
+            active.updated_at = Set(Some(store::now()));
             repo::update_item(&self.state.db, active).await?;
         } else {
             let active = cart_items::ActiveModel {
@@ -283,7 +283,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
                 sku_id: Set(sku_id),
                 quantity: Set(quantity),
                 tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             repo::insert_item(&self.state.db, active).await?;
@@ -293,7 +293,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
 
     async fn batch_create(
         &self,
-        mut request: Request<cartv1::BatchCreateCartItemsRequest>,
+        request: Request<cartv1::BatchCreateCartItemsRequest>,
     ) -> Result<Response<pbjson_types::Empty>, Status> {
         let op = operator_of(&request);
         let req = request.into_inner();
@@ -312,7 +312,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
                 sku_id: Set(sku_id),
                 quantity: Set(data.quantity.unwrap_or(1).max(1)),
                 tenant_id: Set(Some(data.tenant_id.unwrap_or(0))),
-                created_at: Set(Some(store::now().into())),
+                created_at: Set(Some(store::now())),
                 ..Default::default()
             };
             repo::insert_item(&self.state.db, active).await?;
@@ -334,7 +334,7 @@ impl cartv1::cart_item_service_server::CartItemService for CartItemService {
         if let Some(v) = data.sku_id {
             active.sku_id = Set(v);
         }
-        active.updated_at = Set(Some(store::now().into()));
+        active.updated_at = Set(Some(store::now()));
         repo::update_item(&self.state.db, active).await?;
         Ok(Response::new(pbjson_types::Empty {}))
     }

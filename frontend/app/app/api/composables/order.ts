@@ -86,7 +86,7 @@ export async function fetchGetOrderByIdempotencyKey(
     page: 1,
     pageSize: 1,
     noPaging: false,
-    query: JSON.stringify({ idempotency_key: idempotencyKey, tenant_id: tenantId }),
+    query: JSON.stringify({ idempotency_key: idempotencyKey, tenant_id: String(tenantId) }),
   } as any);
   const items = (resp?.items ?? []) as orderservicev1_Order[];
   return items[0] ?? null;

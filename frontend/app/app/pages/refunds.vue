@@ -46,7 +46,7 @@ const refundsQuery = useListPaymentRefunds(
     pageSize: PAGE_SIZE,
     noPaging: false,
     sorting: [{ field: 'id', direction: 'DESC' }],
-    query: JSON.stringify({ createdBy: currentUserId.value }),
+    query: JSON.stringify({ createdBy: String(currentUserId.value) }),
   })),
   { enabled: computed(() => isLogin.value && currentUserId.value > 0) },
 );

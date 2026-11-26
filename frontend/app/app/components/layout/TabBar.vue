@@ -26,7 +26,7 @@ const cartsQuery = useListCarts(
     page: 1,
     pageSize: 1,
     noPaging: false,
-    query: JSON.stringify({ userId: currentUserId.value }),
+    query: JSON.stringify({ userId: String(currentUserId.value) }),
   })),
   { enabled: isLogin },
 )

@@ -51,7 +51,7 @@ const cartsQuery = useListCarts(
     page: 1,
     pageSize: 1,
     noPaging: false,
-    query: JSON.stringify({ userId: currentUserId.value }),
+    query: JSON.stringify({ userId: String(currentUserId.value) }),
   })),
   { enabled: isLogin },
 );
@@ -146,7 +146,7 @@ watch(
             page: 1,
             pageSize: 10,
             noPaging: false,
-            query: JSON.stringify({ skuId }),
+            query: JSON.stringify({ skuId: String(skuId) }),
           });
           const prices = (resp?.items ?? []) as Array<{
             skuId?: number;
@@ -183,7 +183,7 @@ watch(
             page: 1,
             pageSize: 100,
             noPaging: false,
-            query: JSON.stringify({ skuId }),
+            query: JSON.stringify({ skuId: String(skuId) }),
           });
           const combos = (resp?.items ?? []) as Array<{
             skuId?: number;

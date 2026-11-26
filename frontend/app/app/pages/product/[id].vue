@@ -127,7 +127,7 @@ const skusQuery = useListSkus(
     page: 1,
     pageSize: 100,
     noPaging: false,
-    query: JSON.stringify({ productId: productId.value }),
+    query: JSON.stringify({ productId: String(productId.value) }),
   })),
   { enabled: computed(() => productId.value > 0) },
 );
@@ -144,7 +144,7 @@ const favoriteQuery = useListWishlist(
     page: 1,
     pageSize: 10,
     noPaging: false,
-    query: JSON.stringify({ productId: productId.value }),
+    query: JSON.stringify({ productId: String(productId.value) }),
   })),
   { enabled: computed(() => isLogin.value && productId.value > 0) },
 );
@@ -351,7 +351,7 @@ watch(
             page: 1,
             pageSize: 100,
             noPaging: false,
-            query: JSON.stringify({ skuId: sku.id }),
+            query: JSON.stringify({ skuId: String(sku.id) }),
           });
           const combos = (combosResp?.items ?? []) as SkuCombinationEntity[];
           const map = new Map<number, number>();
@@ -369,7 +369,7 @@ watch(
             page: 1,
             pageSize: 100,
             noPaging: false,
-            query: JSON.stringify({ skuId: sku.id }),
+            query: JSON.stringify({ skuId: String(sku.id) }),
           });
           const prices = (pricesResp?.items ?? []) as SkuPriceEntity[];
           skuPricesMap[sku.id] = prices;
@@ -607,7 +607,7 @@ const cartsQuery = useListCarts(
     page: 1,
     pageSize: 1,
     noPaging: false,
-    query: JSON.stringify({ userId: currentUserId.value }),
+    query: JSON.stringify({ userId: String(currentUserId.value) }),
   })),
   { enabled: isLogin },
 );

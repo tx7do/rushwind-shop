@@ -11,7 +11,7 @@ use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{member_tiers, points_ledgers, user_coupons};
+use store::entities::{member_tiers, points_ledgers};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::catalog::service::v1 as catalogv1;

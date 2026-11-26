@@ -13,7 +13,7 @@ use std::sync::Arc;
 
 use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, EntityTrait, QueryFilter, Set};
 use serde_json::json;
-use tonic::{Request, Response, Status, Streaming};
+use tonic::{Request, Response, Status};
 
 use crate::state::{bad, db_status, AppState};
 use store::entities::{sys_ai_conversations, sys_ai_messages, sys_ai_providers, sys_ai_usage_logs};

@@ -4,7 +4,6 @@
 //! contact faces).
 
 use crate::state::StatusError;
-use tonic::Status;
 
 use crate::state::AppState;
 

@@ -11,7 +11,7 @@ use std::sync::Arc;
 use tonic::{Request, Response, Status};
 
 use shop_proto::proto::authentication::service::v1 as authv1;
-use shop_proto::proto::authentication::service::v1 as authenticationv1;
+
 use shop_proto::proto::authentication::service::v1::user_credential::{
     CredentialType, IdentityType, Status as CredentialStatus,
 };

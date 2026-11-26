@@ -5,14 +5,13 @@
 use std::sync::Arc;
 
 use crate::service::{
-    self, access_key_service as access_key, ai_agent_service as ai_agent,
-    ai_crud_service as ai_crud, ai_knowledge_service as ai_kb, ai_runtime_service as ai_runtime,
-    api_service as api, audit_service as audit, authentication_service as authentication,
-    brand_service as brand, cart_service as cart, category_service as category,
-    comment_service as comment, config_service as config, coupon_service as coupon,
-    dict_entry_service as dict_entry, dict_type_service as dict_type, file_service as file,
-    file_transfer_service as file_transfer, groupon_service as groupon,
-    identity_service as identity, interaction_service as interaction,
+    access_key_service as access_key, ai_agent_service as ai_agent, ai_crud_service as ai_crud,
+    ai_knowledge_service as ai_kb, ai_runtime_service as ai_runtime, api_service as api,
+    audit_service as audit, authentication_service as authentication, brand_service as brand,
+    cart_service as cart, category_service as category, comment_service as comment,
+    config_service as config, coupon_service as coupon, dict_entry_service as dict_entry,
+    dict_type_service as dict_type, file_service as file, file_transfer_service as file_transfer,
+    groupon_service as groupon, identity_service as identity, interaction_service as interaction,
     internal_message_service as internal_message, invoice_service as invoice,
     language_service as language, login_policy_service as login_policy,
     member_tier_service as member_tier, menu_service as menu, mfa_service as mfa,

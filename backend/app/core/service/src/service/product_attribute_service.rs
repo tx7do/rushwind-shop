@@ -6,14 +6,12 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::attr_repo as repo;
 use crate::state::{bad, db_status, ts_to_proto, AppState};
-use store::entities::{
-    product_attribute_translations, product_attribute_values, product_attributes,
-};
+use store::entities::{product_attribute_translations, product_attributes};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::catalog::service::v1 as catalogv1;

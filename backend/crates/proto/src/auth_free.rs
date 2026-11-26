@@ -9,7 +9,6 @@
 /// renewal chain. The storefront's browse surface (catalog, active
 /// promotions/seckills/groupons, comment ratings, AI search rewrite) is
 /// anonymous by design.
-
 pub const AUTH_FREE: &[(&str, &str)] = &[
     // ---- admin gateway: the login chain ----
     ("admin.service.v1.AuthenticationService", "Login"),

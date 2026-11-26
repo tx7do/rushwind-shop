@@ -10,17 +10,16 @@ use std::sync::Arc;
 use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
-use crate::state::{bad, db_status, AppState, StatusResult};
+use crate::state::{bad, db_status, AppState};
 use store::entities::sys_users;
 
 use shop_proto::proto::authentication::service::v1 as authv1;
 use shop_proto::proto::authentication::service::v1::{
-    login_request, BlockTokenRequest, BlockTokenResponse, GenerateCaptchaResponse,
-    ChangePasswordRequest, GetAccessTokensRequest, GetAccessTokensResponse, GrantType,
+    login_request, BlockTokenRequest, BlockTokenResponse, ChangePasswordRequest,
+    GenerateCaptchaResponse, GetAccessTokensRequest, GetAccessTokensResponse, GrantType,
     LoginRequest, LoginResponse, LogoutRequest, RegisterUserRequest, RegisterUserResponse,
-    RevokeTokenByIdRequest, TokenType, UnblockTokenRequest, UserTokenPayload,
-    ValidateTokenRequest, ValidateTokenResponse, VerifyCaptchaRequest, VerifyCaptchaResponse,
-    WhoAmIResponse,
+    RevokeTokenByIdRequest, TokenType, UnblockTokenRequest, UserTokenPayload, ValidateTokenRequest,
+    ValidateTokenResponse, VerifyCaptchaRequest, VerifyCaptchaResponse, WhoAmIResponse,
 };
 
 type ResponseResult<T> = Result<Response<T>, Status>;

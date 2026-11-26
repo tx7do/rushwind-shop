@@ -4,7 +4,6 @@
 //! the redirect/QR channels) and the mock confirm pass-through.
 
 use crate::state::StatusError;
-use tonic::Status;
 
 use crate::state::AppState;
 use shop_proto::proto::ai::service::v1 as ai_v1;

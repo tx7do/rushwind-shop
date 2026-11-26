@@ -4,12 +4,12 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TransactionTrait};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::tenant_repo;
 use crate::state::{bad, db_status, not_found, ts_to_proto, AppState};
-use store::entities::{sys_tenants, sys_users};
+use store::entities::sys_tenants;
 use store::paging::fetch_paged;
 
 use shop_proto::proto::identity::service::v1 as identityv1;

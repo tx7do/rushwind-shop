@@ -4,11 +4,11 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, EntityTrait, Set};
 use tonic::{Request, Response, Status};
 
 use crate::data::attr_repo as repo;
-use crate::state::{bad, db_status, ts_to_proto, AppState};
+use crate::state::{bad, db_status, AppState};
 use store::entities::{product_attribute_value_translations, product_attribute_values};
 use store::paging::fetch_paged;
 

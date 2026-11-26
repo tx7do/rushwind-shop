@@ -100,7 +100,7 @@ async fn seed_menus(db: &DatabaseConnection) -> Result<(), sea_orm::DbErr> {
             name: sea_orm::Set(Some(name.to_string())),
             meta: sea_orm::Set(Some(meta)),
             status: sea_orm::Set("ON".to_string()),
-            created_at: sea_orm::Set(Some(crate::now().into())),
+            created_at: sea_orm::Set(Some(crate::now())),
             ..Default::default()
         };
         active.insert(db).await?;

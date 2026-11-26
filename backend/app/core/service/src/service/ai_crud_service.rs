@@ -8,10 +8,10 @@
 
 use std::sync::Arc;
 
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, QueryOrder, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use tonic::{Request, Response, Status};
 
-use crate::state::{bad, db_status, ts_from_proto, ts_to_proto, AppState};
+use crate::state::{bad, db_status, ts_to_proto, AppState};
 use store::entities::{sys_ai_conversations, sys_ai_messages, sys_ai_providers, sys_ai_usage_logs};
 use store::paging::fetch_paged;
 

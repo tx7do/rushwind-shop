@@ -11,7 +11,7 @@ use crate::state::AppState;
 use shop_proto::proto::admin::service::v1::{
     InitialContextResponse, ListPermissionCodeResponse, ListRouteResponse,
 };
-use shop_proto::proto::permission::service::v1::{MenuMeta, MenuRouteItem};
+use shop_proto::proto::permission::service::v1::MenuRouteItem;
 
 /// The caller's operator id off the forwarded claims (the BFF's auth
 /// gate stamps it before this face runs).

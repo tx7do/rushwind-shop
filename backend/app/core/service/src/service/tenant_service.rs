@@ -9,7 +9,7 @@ use tonic::{Request, Response, Status};
 
 use crate::data::tenant_repo;
 use crate::state::{bad, db_status, not_found, ts_to_proto, AppState};
-use store::entities::sys_tenants;
+use store::entities::{sys_tenants, sys_users};
 use store::paging::fetch_paged;
 
 use shop_proto::proto::identity::service::v1 as identityv1;
@@ -35,6 +35,29 @@ pub(crate) fn tenant_proto(r: sys_tenants::Model) -> identityv1::Tenant {
 
 // ── Tenant writes ────────────────────────────────────────────────────
 
+/// 管理员名回填（参照 enrichRelations 的 AdminUserName 面，username
+/// 形态；best-effort）。
+async fn bind_admin_user_names(state: &AppState, items: &mut [identityv1::Tenant]) {
+    let ids: std::collections::BTreeSet<i64> =
+        items.iter().filter_map(|t| t.admin_user_id).collect();
+    if ids.is_empty() {
+        return;
+    }
+    let users: std::collections::HashMap<i64, String> = sys_users::Entity::find()
+        .filter(sys_users::Column::Id.is_in(ids))
+        .all(&state.db)
+        .await
+        .unwrap_or_default()
+        .into_iter()
+        .map(|u| (u.id, u.username))
+        .collect();
+    for t in items {
+        if let Some(uid) = t.admin_user_id {
+            t.admin_user_name = users.get(&uid).cloned();
+        }
+    }
+}
+
 pub struct TenantService {
     pub state: Arc<AppState>,
 }
@@ -52,8 +75,10 @@ impl identityv1::tenant_service_server::TenantService for TenantService {
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
+        let mut items: Vec<identityv1::Tenant> = rows.into_iter().map(tenant_proto).collect();
+        bind_admin_user_names(&self.state, &mut items).await;
         Ok(Response::new(identityv1::ListTenantResponse {
-            items: rows.into_iter().map(tenant_proto).collect(),
+            items,
             total: total as i64,
         }))
     }
@@ -100,7 +125,9 @@ impl identityv1::tenant_service_server::TenantService for TenantService {
         }
         .map_err(db_status)?
         .ok_or_else(|| not_found("tenant"))?;
-        Ok(Response::new(tenant_proto(row)))
+        let mut tenant = tenant_proto(row);
+        bind_admin_user_names(&self.state, std::slice::from_mut(&mut tenant)).await;
+        Ok(Response::new(tenant))
     }
 
     async fn create(

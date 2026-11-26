@@ -111,6 +111,28 @@ fn category_proto(r: internal_message_categories::Model) -> imv1::InternalMessag
 
 // ── InternalMessageService (the broadcast authoring face) ───────────
 
+/// 分类名回填（参照 enrichRelations 的 CategoryName 面；best-effort）。
+async fn bind_category_names(state: &AppState, items: &mut [imv1::InternalMessage]) {
+    let ids: std::collections::BTreeSet<i64> = items.iter().filter_map(|m| m.category_id).collect();
+    if ids.is_empty() {
+        return;
+    }
+    let categories: std::collections::HashMap<i64, String> =
+        internal_message_categories::Entity::find()
+            .filter(internal_message_categories::Column::Id.is_in(ids))
+            .all(&state.db)
+            .await
+            .unwrap_or_default()
+            .into_iter()
+            .map(|c| (c.id, c.name))
+            .collect();
+    for m in items {
+        if let Some(cid) = m.category_id {
+            m.category_name = categories.get(&cid).cloned();
+        }
+    }
+}
+
 pub struct InternalMessageService {
     pub state: Arc<AppState>,
 }
@@ -128,8 +150,10 @@ impl imv1::internal_message_service_server::InternalMessageService for InternalM
         )
         .await
         .map_err(|e| Status::internal(e.message))?;
+        let mut items: Vec<imv1::InternalMessage> = rows.into_iter().map(message_proto).collect();
+        bind_category_names(&self.state, &mut items).await;
         Ok(Response::new(imv1::ListInternalMessageResponse {
-            items: rows.into_iter().map(message_proto).collect(),
+            items,
             total: total as i64,
         }))
     }
@@ -147,7 +171,9 @@ impl imv1::internal_message_service_server::InternalMessageService for InternalM
             .await
             .map_err(db_status)?
             .ok_or_else(|| Status::not_found("message not found"))?;
-        Ok(Response::new(message_proto(row)))
+        let mut message = message_proto(row);
+        bind_category_names(&self.state, std::slice::from_mut(&mut message)).await;
+        Ok(Response::new(message))
     }
 
     async fn create_message(

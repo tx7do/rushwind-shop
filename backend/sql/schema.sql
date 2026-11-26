@@ -1033,6 +1033,47 @@ CREATE TABLE IF NOT EXISTS public.sys_user_roles (
   status character varying NOT NULL DEFAULT 'ACTIVE'::character varying
 );
 
+CREATE TABLE IF NOT EXISTS public.sys_user_org_units (
+  id bigserial,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone,
+  deleted_at timestamp with time zone,
+  created_by bigint,
+  updated_by bigint,
+  deleted_by bigint,
+  tenant_id bigint DEFAULT 0,
+  remark character varying NULL,
+  user_id bigint NOT NULL,
+  org_unit_id bigint NOT NULL,
+  position_id bigint NULL,
+  start_at timestamp with time zone,
+  end_at timestamp with time zone,
+  assigned_at timestamp with time zone,
+  assigned_by bigint,
+  is_primary boolean NOT NULL DEFAULT false,
+  status character varying NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.sys_user_positions (
+  id bigserial,
+  created_at timestamp with time zone,
+  updated_at timestamp with time zone,
+  deleted_at timestamp with time zone,
+  created_by bigint,
+  updated_by bigint,
+  deleted_by bigint,
+  tenant_id bigint DEFAULT 0,
+  remark character varying NULL,
+  user_id bigint NOT NULL,
+  position_id bigint NOT NULL,
+  is_primary boolean NULL,
+  start_at timestamp with time zone,
+  end_at timestamp with time zone,
+  assigned_at timestamp with time zone,
+  assigned_by bigint,
+  status character varying NOT NULL DEFAULT 'ACTIVE'::character varying
+);
+
 CREATE TABLE IF NOT EXISTS public.sys_permission_apis (
   id bigserial,
   created_at timestamp with time zone,

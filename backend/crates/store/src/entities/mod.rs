@@ -84,6 +84,8 @@ pub mod sys_scripts;
 pub mod sys_tenants;
 pub mod sys_user_credentials;
 pub mod sys_user_mfa_factors;
+pub mod sys_user_org_units;
+pub mod sys_user_positions;
 pub mod sys_user_roles;
 pub mod sys_users;
 pub mod tasks;

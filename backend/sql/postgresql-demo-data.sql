@@ -27,15 +27,14 @@ SET LOCAL search_path = public, pg_catalog;
 TRUNCATE TABLE public.sys_languages,
                public.sys_users,
                public.sys_user_credentials,
-               public.internal_message_recipients,
-               public.internal_messages,
+               public.mall_internal_message_recipients,
+               public.mall_internal_messages,
                public.mall_brand_translations,
                public.mall_brands,
                public.mall_cart_items,
                public.mall_carts,
                public.mall_categories,
                public.mall_category_translations,
-               public.mall_comment_likes,
                public.mall_comments,
                public.mall_coupon_templates,
                public.mall_groupon_activities,
@@ -69,85 +68,57 @@ TRUNCATE TABLE public.sys_languages,
 RESTART IDENTITY CASCADE;
 
 -- ── 二、内网数据快照 ────────────────────────────────────────────────
---
--- PostgreSQL database dump
---
-
-
--- Dumped from database version 16.15 (Debian 16.15-1.pgdg12+2)
--- Dumped by pg_dump version 16.15 (Debian 16.15-1.pgdg12+2)
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- Data for Name: internal_message_recipients; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (4, '2026-10-27 04:56:26.551016+00', '2026-10-27 04:56:26.551016+00', NULL, 1, 10, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (5, '2026-10-28 00:56:26.5571+00', '2026-10-28 00:56:26.5571+00', NULL, 1, 11, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (8, '2026-10-29 01:35:18.449787+00', NULL, NULL, 0, 14, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (9, '2026-10-29 02:04:04.478118+00', NULL, NULL, 0, 15, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (10, '2026-10-29 02:14:56.322189+00', NULL, NULL, 0, 16, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (11, '2026-10-29 02:26:34.912287+00', NULL, NULL, 0, 17, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (12, '2026-10-29 02:26:35.916859+00', NULL, NULL, 0, 18, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (13, '2026-10-29 02:39:41.242088+00', NULL, NULL, 0, 19, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (14, '2026-10-29 02:39:45.82795+00', NULL, NULL, 0, 20, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (15, '2026-10-29 02:40:14.590483+00', NULL, NULL, 0, 21, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (16, '2026-10-29 03:03:26.519041+00', NULL, NULL, 0, 22, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (17, '2026-10-29 03:15:55.313084+00', NULL, NULL, 0, 23, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (18, '2026-10-29 03:17:36.444804+00', NULL, NULL, 0, 24, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (19, '2026-10-29 03:39:18.686408+00', NULL, NULL, 0, 25, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (20, '2026-10-29 06:22:41.562947+00', NULL, NULL, 0, 26, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (21, '2026-10-29 06:25:18.578498+00', NULL, NULL, 0, 27, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (22, '2026-10-29 06:28:34.020818+00', NULL, NULL, 0, 28, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (23, '2026-10-29 06:28:35.056086+00', NULL, NULL, 0, 29, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (24, '2026-10-29 06:29:44.26476+00', NULL, NULL, 0, 30, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (25, '2026-10-29 07:55:32.40661+00', NULL, NULL, 0, 31, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (27, '2026-10-30 23:15:01.294306+00', NULL, NULL, 0, 33, 1, 'SENT', NULL, NULL);
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (28, '2026-10-30 23:15:01.32874+00', NULL, NULL, 0, 34, 1, 'SENT', NULL, NULL);
-
-
---
--- Data for Name: internal_messages; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (10, '2026-10-27 04:56:26.551016+00', '2026-10-27 04:56:26.551016+00', NULL, NULL, NULL, NULL, 0, '订单已发货', '您的订单 #2 已发货，请注意查收物流信息。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (11, '2026-10-28 00:56:26.5571+00', '2026-10-28 00:56:26.5571+00', NULL, NULL, NULL, NULL, 0, '店铺满减活动上线', '全店满 ¥300 减 ¥40，活动截至 2027-01-01，先到先得！', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (14, '2026-10-29 01:35:18.443719+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #4 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (15, '2026-10-29 02:04:04.471225+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #5 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (16, '2026-10-29 02:14:56.315714+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #6 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (17, '2026-10-29 02:26:34.907958+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #7 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (18, '2026-10-29 02:26:35.913268+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #7 的退款已处理成功，退款金额 0.00 元，请注意查收。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (19, '2026-10-29 02:39:41.231799+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #15 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (20, '2026-10-29 02:39:45.823744+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #15 的退款已处理成功，退款金额 198.00 元，请注意查收。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (21, '2026-10-29 02:40:14.587131+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #17 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (22, '2026-10-29 03:03:26.511613+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #11 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (23, '2026-10-29 03:15:55.307153+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #19 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (24, '2026-10-29 03:17:36.437994+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #8 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (25, '2026-10-29 03:39:18.679684+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #18 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (26, '2026-10-29 06:22:41.553749+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #24 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (27, '2026-10-29 06:25:18.571286+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #24 的退款已处理成功，退款金额 297.00 元，请注意查收。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (28, '2026-10-29 06:28:34.015836+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #25 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (29, '2026-10-29 06:28:35.053045+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #25 的退款已处理成功，退款金额 99.00 元，请注意查收。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (30, '2026-10-29 06:29:44.26061+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #20 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (31, '2026-10-29 07:55:32.396308+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #29 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (32, '2026-10-30 23:15:01.241948+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #100 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (33, '2026-10-30 23:15:01.290393+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #105 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status, type) VALUES (34, '2026-10-30 23:15:01.324956+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #111 已取消。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
-
-
---
--- Data for Name: mall_brand_translations; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (4, '2026-10-27 04:56:26.551016+00', '2026-10-27 04:56:26.551016+00', NULL, 1, 10, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (5, '2026-10-28 00:56:26.5571+00', '2026-10-28 00:56:26.5571+00', NULL, 1, 11, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (8, '2026-10-29 01:35:18.449787+00', NULL, NULL, 0, 14, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (9, '2026-10-29 02:04:04.478118+00', NULL, NULL, 0, 15, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (10, '2026-10-29 02:14:56.322189+00', NULL, NULL, 0, 16, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (11, '2026-10-29 02:26:34.912287+00', NULL, NULL, 0, 17, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (12, '2026-10-29 02:26:35.916859+00', NULL, NULL, 0, 18, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (13, '2026-10-29 02:39:41.242088+00', NULL, NULL, 0, 19, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (14, '2026-10-29 02:39:45.82795+00', NULL, NULL, 0, 20, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (15, '2026-10-29 02:40:14.590483+00', NULL, NULL, 0, 21, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (16, '2026-10-29 03:03:26.519041+00', NULL, NULL, 0, 22, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (17, '2026-10-29 03:15:55.313084+00', NULL, NULL, 0, 23, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (18, '2026-10-29 03:17:36.444804+00', NULL, NULL, 0, 24, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (19, '2026-10-29 03:39:18.686408+00', NULL, NULL, 0, 25, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (20, '2026-10-29 06:22:41.562947+00', NULL, NULL, 0, 26, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (21, '2026-10-29 06:25:18.578498+00', NULL, NULL, 0, 27, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (22, '2026-10-29 06:28:34.020818+00', NULL, NULL, 0, 28, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (23, '2026-10-29 06:28:35.056086+00', NULL, NULL, 0, 29, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (24, '2026-10-29 06:29:44.26476+00', NULL, NULL, 0, 30, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (25, '2026-10-29 07:55:32.40661+00', NULL, NULL, 0, 31, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (27, '2026-10-30 23:15:01.294306+00', NULL, NULL, 0, 33, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at) VALUES (28, '2026-10-30 23:15:01.32874+00', NULL, NULL, 0, 34, 1, 'SENT', NULL, NULL);
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (10, '2026-10-27 04:56:26.551016+00', '2026-10-27 04:56:26.551016+00', NULL, NULL, NULL, NULL, 0, '订单已发货', '您的订单 #2 已发货，请注意查收物流信息。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (11, '2026-10-28 00:56:26.5571+00', '2026-10-28 00:56:26.5571+00', NULL, NULL, NULL, NULL, 0, '店铺满减活动上线', '全店满 ¥300 减 ¥40，活动截至 2027-01-01，先到先得！', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (14, '2026-10-29 01:35:18.443719+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #4 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (15, '2026-10-29 02:04:04.471225+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #5 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (16, '2026-10-29 02:14:56.315714+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #6 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (17, '2026-10-29 02:26:34.907958+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #7 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (18, '2026-10-29 02:26:35.913268+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #7 的退款已处理成功，退款金额 0.00 元，请注意查收。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (19, '2026-10-29 02:39:41.231799+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #15 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (20, '2026-10-29 02:39:45.823744+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #15 的退款已处理成功，退款金额 198.00 元，请注意查收。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (21, '2026-10-29 02:40:14.587131+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #17 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (22, '2026-10-29 03:03:26.511613+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #11 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (23, '2026-10-29 03:15:55.307153+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #19 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (24, '2026-10-29 03:17:36.437994+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #8 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (25, '2026-10-29 03:39:18.679684+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #18 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (26, '2026-10-29 06:22:41.553749+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #24 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (27, '2026-10-29 06:25:18.571286+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #24 的退款已处理成功，退款金额 297.00 元，请注意查收。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (28, '2026-10-29 06:28:34.015836+00', NULL, NULL, 0, NULL, NULL, 0, '订单支付成功', '您的订单 #25 已支付成功，我们将尽快为您安排发货。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (29, '2026-10-29 06:28:35.053045+00', NULL, NULL, 0, NULL, NULL, 0, '退款成功通知', '您的订单 #25 的退款已处理成功，退款金额 99.00 元，请注意查收。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (30, '2026-10-29 06:29:44.26061+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #20 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (31, '2026-10-29 07:55:32.396308+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #29 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (32, '2026-10-30 23:15:01.241948+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #100 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (33, '2026-10-30 23:15:01.290393+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #105 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, title, content, sender_id, category_id, status) VALUES (34, '2026-10-30 23:15:01.324956+00', NULL, NULL, 0, NULL, NULL, 0, '订单已取消', '您的订单 #111 已取消。', 0, NULL, 'PUBLISHED');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (100, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 0, '/demo-images/brand-100.webp');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (101, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 1, '/demo-images/brand-101.webp');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (102, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 2, '/demo-images/brand-102.webp');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (103, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 3, '/demo-images/brand-103.webp');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (104, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 4, '/demo-images/brand-104.webp');
+INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (105, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 5, '/demo-images/brand-105.webp');
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (300, NULL, NULL, NULL, NULL, NULL, NULL, 100, 'zh-CN', '风铃', 'windbell', '居家智能生态');
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (301, NULL, NULL, NULL, NULL, NULL, NULL, 100, 'en-US', 'Windbell', 'windbell', '居家智能生态');
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (302, NULL, NULL, NULL, NULL, NULL, NULL, 101, 'zh-CN', '曜石', 'obsidian', '高端手机与配件');
@@ -160,42 +131,12 @@ INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (309, NULL, NULL, NULL, NULL, NULL, NULL, 104, 'en-US', 'Lumen', 'lumen', '照明与传感');
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (310, NULL, NULL, NULL, NULL, NULL, NULL, 105, 'zh-CN', '川行', 'rivero', '出行与运动装备');
 INSERT INTO public.mall_brand_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, brand_id, language_code, name, slug, description) VALUES (311, NULL, NULL, NULL, NULL, NULL, NULL, 105, 'en-US', 'Rivero', 'rivero', '出行与运动装备');
-
-
---
--- Data for Name: mall_brands; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (100, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 0, '/demo-images/brand-100.webp');
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (101, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 1, '/demo-images/brand-101.webp');
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (102, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 2, '/demo-images/brand-102.webp');
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (103, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 3, '/demo-images/brand-103.webp');
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (104, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 4, '/demo-images/brand-104.webp');
-INSERT INTO public.mall_brands (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, logo_url) VALUES (105, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 5, '/demo-images/brand-105.webp');
-
-
---
--- Data for Name: mall_cart_items; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_carts (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id) VALUES (1, '2026-10-28 04:16:30.783667+00', NULL, NULL, 1, NULL, NULL, 0, 1);
 INSERT INTO public.mall_cart_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, cart_id, user_id, sku_id, quantity) VALUES (100, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 1012, 1);
 INSERT INTO public.mall_cart_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, cart_id, user_id, sku_id, quantity) VALUES (101, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 1026, 2);
 INSERT INTO public.mall_cart_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, cart_id, user_id, sku_id, quantity) VALUES (102, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 1030, 1);
 INSERT INTO public.mall_cart_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, cart_id, user_id, sku_id, quantity) VALUES (103, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 1046, 3);
 INSERT INTO public.mall_cart_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, cart_id, user_id, sku_id, quantity) VALUES (104, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 1090, 1);
-
-
---
--- Data for Name: mall_carts; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_carts (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id) VALUES (1, '2026-10-28 04:16:30.783667+00', NULL, NULL, 1, NULL, NULL, 0, 1);
-
-
---
--- Data for Name: mall_categories; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (3, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 1, '/1', 0, '/demo-images/cat-home.webp', NULL);
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (4, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 2, '/2', 0, '/demo-images/cat-accessory.webp', NULL);
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (5, '2026-10-08 00:00:00+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 3, '/3', 0, '/demo-images/cat-phone.webp', NULL);
@@ -208,12 +149,6 @@ INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, crea
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (105, '2026-10-15 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 6, '/5/105', 1, '/demo-images/cat-foldable.webp', 5);
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (106, '2026-10-16 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 7, '/6/106', 1, '/demo-images/cat-watch.webp', 6);
 INSERT INTO public.mall_categories (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, path, depth, image_url, parent_id) VALUES (107, '2026-10-17 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 8, '/6/107', 1, '/demo-images/cat-band.webp', 6);
-
-
---
--- Data for Name: mall_category_translations; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (16, NULL, NULL, NULL, NULL, NULL, NULL, 3, 'zh-CN', '智能家居', NULL, NULL, NULL);
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (17, NULL, NULL, NULL, NULL, NULL, NULL, 4, 'zh-CN', '配件', NULL, NULL, NULL);
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (18, NULL, NULL, NULL, NULL, NULL, NULL, 5, 'zh-CN', '智能手机', NULL, NULL, NULL);
@@ -238,43 +173,6 @@ INSERT INTO public.mall_category_translations (id, created_at, updated_at, delet
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (223, NULL, NULL, NULL, NULL, NULL, NULL, 106, 'en-US', 'Watches', '', '', '');
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (224, NULL, NULL, NULL, NULL, NULL, NULL, 107, 'zh-CN', '运动手环', '', '', '');
 INSERT INTO public.mall_category_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, category_id, language_code, name, slug, description, full_path) VALUES (225, NULL, NULL, NULL, NULL, NULL, NULL, 107, 'en-US', 'Bands', '', '', '');
-
-
---
--- Data for Name: mall_comment_likes; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (100, NULL, NULL, NULL, 0, 1, 100);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (101, NULL, NULL, NULL, 0, 1, 101);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (102, NULL, NULL, NULL, 0, 1, 106);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (103, NULL, NULL, NULL, 0, 1, 108);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (104, NULL, NULL, NULL, 0, 1, 110);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (105, NULL, NULL, NULL, 0, 1, 114);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (106, NULL, NULL, NULL, 0, 1, 117);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (107, NULL, NULL, NULL, 0, 1, 118);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (108, NULL, NULL, NULL, 0, 1, 126);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (109, NULL, NULL, NULL, 0, 1, 130);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (110, NULL, NULL, NULL, 0, 1, 131);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (111, NULL, NULL, NULL, 0, 1, 132);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (112, NULL, NULL, NULL, 0, 1, 134);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (113, NULL, NULL, NULL, 0, 1, 135);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (114, NULL, NULL, NULL, 0, 1, 139);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (115, NULL, NULL, NULL, 0, 1, 141);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (116, NULL, NULL, NULL, 0, 1, 143);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (117, NULL, NULL, NULL, 0, 1, 145);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (118, NULL, NULL, NULL, 0, 1, 146);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (119, NULL, NULL, NULL, 0, 1, 150);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (120, NULL, NULL, NULL, 0, 1, 152);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (121, NULL, NULL, NULL, 0, 1, 153);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (122, NULL, NULL, NULL, 0, 1, 154);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (123, NULL, NULL, NULL, 0, 1, 156);
-INSERT INTO public.mall_comment_likes (id, created_at, updated_at, deleted_at, tenant_id, user_id, comment_id) VALUES (124, NULL, NULL, NULL, 0, 1, 157);
-
-
---
--- Data for Name: mall_comments; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (100, '2026-10-26 23:03:27.011658+00', '2026-10-31 13:23:11.840173+00', NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 100, '客厅换了四只，暖光和冷光切换很自然，App 调色也顺手。', 'STATUS_APPROVED', 5, NULL);
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (101, '2026-10-29 23:03:27.011658+00', '2026-10-31 13:23:11.840173+00', NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 100, '定时开灯很实用，早上起床不再摸黑找开关。', 'STATUS_APPROVED', 5, NULL);
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (102, '2026-10-28 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 100, '感谢您的支持，使用中有任何问题随时联系我们。', 'STATUS_APPROVED', NULL, 101);
@@ -337,12 +235,6 @@ INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, create
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (159, '2026-10-26 23:03:27.011658+00', '2026-10-31 13:23:11.840173+00', NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 118, '功能比想象中丰富，但表带偏硬。', 'STATUS_APPROVED', 3, NULL);
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (160, '2026-10-26 23:03:27.011658+00', '2026-10-31 13:23:11.840173+00', NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 119, '屏幕通透，户外亮度够用，但镜腿夹得有点紧。', 'STATUS_APPROVED', 3, NULL);
 INSERT INTO public.mall_comments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, content_type, object_id, content, status, rating, parent_id) VALUES (161, '2026-10-27 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CONTENT_TYPE_PRODUCT', 119, '感谢认可，欢迎参加会员日活动。', 'STATUS_APPROVED', NULL, 160);
-
-
---
--- Data for Name: mall_coupon_templates; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (2, '2026-10-29 11:02:45.134922+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 1000, 0, '2026-10-29 11:02:45+00', '2026-11-28 11:02:45+00', 50, 1, 2, 'ACTIVE', false, 50);
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (100, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 3000, 0, '2026-10-25 23:03:27.011658+00', '2026-11-29 23:03:27.011658+00', 1000, 5, 189, 'ACTIVE', true, 0);
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (101, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 5000, 0, '2026-10-25 23:03:27.011658+00', '2026-11-29 23:03:27.011658+00', 1000, 5, 172, 'ACTIVE', true, 0);
@@ -352,57 +244,39 @@ INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (105, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 2000, 0, '2026-10-25 23:03:27.011658+00', '2026-11-29 23:03:27.011658+00', 1000, 5, 53, 'ACTIVE', true, 500);
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (106, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 8800, 0, '2026-10-25 23:03:27.011658+00', '2026-11-29 23:03:27.011658+00', 1000, 5, 98, 'ACTIVE', true, 1200);
 INSERT INTO public.mall_coupon_templates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, discount_type, discount_value, discount_percentage, valid_from, valid_until, max_redemptions, max_redemptions_per_user, redeemed_count, status, claimable, points_price) VALUES (107, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'FIXED_AMOUNT', 6600, 0, '2026-10-25 23:03:27.011658+00', '2026-11-29 23:03:27.011658+00', 1000, 5, 64, 'EXPIRED', true, 0);
-
-
---
--- Data for Name: mall_groupon_activities; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_groupon_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, group_price, group_size, group_valid_hours, per_user_limit, valid_from, valid_until, currency, status) VALUES (100, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '温湿度传感器三人团', 1026, 14900, 3, 48, 1, '2026-10-27 23:03:27.011658+00', '2026-11-13 23:03:27.011658+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_groupon_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, group_price, group_size, group_valid_hours, per_user_limit, valid_from, valid_until, currency, status) VALUES (101, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'Nova 12 Ultra 两人团', 1090, 499900, 2, 48, 1, '2026-10-27 23:03:27.011658+00', '2026-11-13 23:03:27.011658+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_groupon_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, group_price, group_size, group_valid_hours, per_user_limit, valid_from, valid_until, currency, status) VALUES (102, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '充电器五人团', 1030, 9900, 5, 48, 1, '2026-10-27 23:03:27.011658+00', '2026-11-13 23:03:27.011658+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_groupon_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, group_price, group_size, group_valid_hours, per_user_limit, valid_from, valid_until, currency, status) VALUES (103, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '智能门锁拼团', 1006, 109900, 3, 48, 1, '2026-10-27 23:03:27.011658+00', '2026-11-13 23:03:27.011658+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_groupon_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, group_price, group_size, group_valid_hours, per_user_limit, valid_from, valid_until, currency, status) VALUES (104, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '音箱新人团', 1039, 32900, 2, 48, 1, '2026-10-27 23:03:27.011658+00', '2026-11-13 23:03:27.011658+00', 'CNY', 'ACTIVE');
-
-
---
--- Data for Name: mall_groupon_groups; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_groupon_groups (id, created_at, updated_at, deleted_at, tenant_id, activity_id, leader_order_id, member_count, paid_count, target_size, expire_at, status) VALUES (100, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 100, 101, 2, 2, 3, '2026-11-05 23:59:59+00', 'OPENING');
 INSERT INTO public.mall_groupon_groups (id, created_at, updated_at, deleted_at, tenant_id, activity_id, leader_order_id, member_count, paid_count, target_size, expire_at, status) VALUES (101, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 101, 102, 2, 2, 2, '2026-10-31 23:03:27.011658+00', 'SUCCEEDED');
 INSERT INTO public.mall_groupon_groups (id, created_at, updated_at, deleted_at, tenant_id, activity_id, leader_order_id, member_count, paid_count, target_size, expire_at, status) VALUES (102, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 102, 103, 1, 1, 5, '2026-11-05 23:59:59+00', 'OPENING');
 INSERT INTO public.mall_groupon_groups (id, created_at, updated_at, deleted_at, tenant_id, activity_id, leader_order_id, member_count, paid_count, target_size, expire_at, status) VALUES (103, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 103, 104, 3, 3, 3, '2026-10-31 23:03:27.011658+00', 'SUCCEEDED');
 INSERT INTO public.mall_groupon_groups (id, created_at, updated_at, deleted_at, tenant_id, activity_id, leader_order_id, member_count, paid_count, target_size, expire_at, status) VALUES (104, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 104, 105, 1, 0, 2, '2026-10-31 23:03:27.011658+00', 'EXPIRED');
-
-
---
--- Data for Name: mall_invoices; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (100, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 101, 1, 'INV-2026-10000', 'PERSONAL', 'ISSUED', '张三', '', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', '13800001234', 407500);
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (101, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 102, 1, 'INV-2026-10001', 'COMPANY', 'PENDING', '李四', '91330100MA27XXXX01', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', '13900002345', 427500);
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (102, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 106, 1, 'INV-2026-10002', 'PERSONAL', 'ISSUED', '王五', '', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', '13700003456', 25800);
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (103, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 107, 1, 'INV-2026-10003', 'COMPANY', 'CANCELLED', '张三', '91330100MA27XXXX03', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', '13800001234', 721800);
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (104, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 110, 1, 'INV-2026-10004', 'PERSONAL', 'ISSUED', '李四', '', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', '13900002345', 283600);
 INSERT INTO public.mall_invoices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, order_id, user_id, invoice_number, invoice_type, status, buyer_name, buyer_tax_id, buyer_address, buyer_phone, amount) VALUES (105, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 104, 1, 'INV-2026-10005', 'COMPANY', 'PENDING', '王五', '91330100MA27XXXX05', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', '13700003456', 809700);
-
-
---
--- Data for Name: mall_member_tiers; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_member_tiers (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, level, min_spend, points_multiplier, badge_icon, currency, status) VALUES (100, '2026-09-30 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '普通会员', 1, 0, 1, 'carbon:user', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_member_tiers (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, level, min_spend, points_multiplier, badge_icon, currency, status) VALUES (101, '2026-09-30 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '青铜会员', 2, 50000, 1, 'carbon:star', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_member_tiers (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, level, min_spend, points_multiplier, badge_icon, currency, status) VALUES (102, '2026-09-30 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '白银会员', 3, 200000, 2, 'carbon:star', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_member_tiers (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, level, min_spend, points_multiplier, badge_icon, currency, status) VALUES (103, '2026-09-30 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '黄金会员', 4, 500000, 3, 'carbon:trophy', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_member_tiers (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, level, min_spend, points_multiplier, badge_icon, currency, status) VALUES (104, '2026-09-30 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '铂金会员', 5, 1200000, 5, 'carbon:award', 'CNY', 'ACTIVE');
-
-
---
--- Data for Name: mall_order_items; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (100, '2026-10-15 23:03:27.011658+00', '2026-10-30 23:15:01.22969+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-100', 'idem-seed-100', 1, 1454500, 1459500, 5000, 0, 0, '浙江省 杭州市 西湖区', 'CANCELLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (101, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-101', 'idem-seed-101', 1, 407500, 407500, 0, 0, 0, '广东省 深圳市 南山区', 'PAID', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (102, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-102', 'idem-seed-102', 1, 427500, 427500, 0, 0, 0, '北京市 朝阳区', 'FULFILLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (103, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-103', 'idem-seed-103', 1, 1911400, 1911400, 0, 0, 0, '浙江省 杭州市 西湖区', 'CANCELLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (104, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-104', 'idem-seed-104', 1, 809700, 809700, 0, 0, 0, '广东省 深圳市 南山区', 'CLOSED', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (105, '2026-10-20 23:03:27.011658+00', '2026-10-30 23:15:01.283739+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-105', 'idem-seed-105', 1, 168900, 171900, 3000, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (106, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-106', 'idem-seed-106', 1, 25800, 25800, 0, 0, 0, '浙江省 杭州市 西湖区', 'FULFILLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (107, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-107', 'idem-seed-107', 1, 721800, 721800, 0, 0, 0, '广东省 深圳市 南山区', 'FULFILLED', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (108, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-108', 'idem-seed-108', 1, 171900, 171900, 0, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (109, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-109', 'idem-seed-109', 1, 378600, 381600, 3000, 0, 0, '浙江省 杭州市 西湖区', 'CLOSED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (110, '2026-10-25 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-110', 'idem-seed-110', 1, 283600, 283600, 0, 0, 0, '广东省 深圳市 南山区', 'PAID', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
+INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (111, '2026-10-26 23:03:27.011658+00', '2026-10-30 23:15:01.317919+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-111', 'idem-seed-111', 1, 603600, 603600, 0, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1000, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 100, 1, 1100, '{"sku_id" : 1100, "quantity" : 2, "currency" : "CNY", "unit_price" : 171900}', 2, 171900, 343800);
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1001, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 100, 1, 1090, '{"sku_id" : 1090, "quantity" : 2, "currency" : "CNY", "unit_price" : 549900}', 2, 549900, 1099800);
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1002, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 100, 1, 1060, '{"sku_id" : 1060, "quantity" : 1, "currency" : "CNY", "unit_price" : 15900}', 1, 15900, 15900);
@@ -429,45 +303,9 @@ INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, cre
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1023, '2026-10-25 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 110, 1, 1006, '{"sku_id" : 1006, "quantity" : 2, "currency" : "CNY", "unit_price" : 129900}', 2, 129900, 259800);
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1024, '2026-10-26 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 111, 1, 1006, '{"sku_id" : 1006, "quantity" : 2, "currency" : "CNY", "unit_price" : 129900}', 2, 129900, 259800);
 INSERT INTO public.mall_order_items (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, sku_id, sku_snapshot, quantity, unit_price, subtotal) VALUES (1025, '2026-10-26 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 111, 1, 1100, '{"sku_id" : 1100, "quantity" : 2, "currency" : "CNY", "unit_price" : 171900}', 2, 171900, 343800);
-
-
---
--- Data for Name: mall_orders; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (100, '2026-10-15 23:03:27.011658+00', '2026-10-30 23:15:01.22969+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-100', 'idem-seed-100', 1, 1454500, 1459500, 5000, 0, 0, '浙江省 杭州市 西湖区', 'CANCELLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (101, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-101', 'idem-seed-101', 1, 407500, 407500, 0, 0, 0, '广东省 深圳市 南山区', 'PAID', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (102, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-102', 'idem-seed-102', 1, 427500, 427500, 0, 0, 0, '北京市 朝阳区', 'FULFILLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (103, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-103', 'idem-seed-103', 1, 1911400, 1911400, 0, 0, 0, '浙江省 杭州市 西湖区', 'CANCELLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (104, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-104', 'idem-seed-104', 1, 809700, 809700, 0, 0, 0, '广东省 深圳市 南山区', 'CLOSED', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (105, '2026-10-20 23:03:27.011658+00', '2026-10-30 23:15:01.283739+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-105', 'idem-seed-105', 1, 168900, 171900, 3000, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (106, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-106', 'idem-seed-106', 1, 25800, 25800, 0, 0, 0, '浙江省 杭州市 西湖区', 'FULFILLED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (107, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-107', 'idem-seed-107', 1, 721800, 721800, 0, 0, 0, '广东省 深圳市 南山区', 'FULFILLED', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (108, '2026-10-23 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-108', 'idem-seed-108', 1, 171900, 171900, 0, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (109, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-109', 'idem-seed-109', 1, 378600, 381600, 3000, 0, 0, '浙江省 杭州市 西湖区', 'CLOSED', '张三', '13800001234', '浙江省 杭州市 西湖区 文三路 100 号 3 幢 501 室', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (110, '2026-10-25 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'CNY', 'seed-110', 'idem-seed-110', 1, 283600, 283600, 0, 0, 0, '广东省 深圳市 南山区', 'PAID', '李四', '13900002345', '广东省 深圳市 南山区 科技园南区 A8 栋 12 层', NULL, NULL);
-INSERT INTO public.mall_orders (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, user_id, total_amount, original_amount, discount_amount, shipping_fee, tax_amount, shipping_region, status, recipient_name, recipient_phone, shipping_address, groupon_activity_id, groupon_group_id) VALUES (111, '2026-10-26 23:03:27.011658+00', '2026-10-30 23:15:01.317919+00', NULL, 1, NULL, NULL, 0, 'CNY', 'seed-111', 'idem-seed-111', 1, 603600, 603600, 0, 0, 0, '北京市 朝阳区', 'CANCELLED', '王五', '13700003456', '北京市 朝阳区 望京街道阜通东大街 6 号院 2 号楼', NULL, NULL);
-
-
---
--- Data for Name: mall_payment_channel_configs; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_payment_channel_configs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, channel, app_id, mch_id, sandbox, enabled, credentials, remark) VALUES (1, '2026-10-29 01:22:34.963477+00', '2026-10-29 01:33:53.992148+00', NULL, NULL, NULL, NULL, 0, '模拟支付（演示）', 'PAYMENT_CHANNEL_MOCK', NULL, NULL, true, true, NULL, 'smoke');
-
-
---
--- Data for Name: mall_payment_refunds; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status, reason) VALUES (8, '2026-10-25 23:03:27.011658+00', '2026-10-25 23:03:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-refund-ref-109', 'demo-refund-109', 16, 1, 378600, 'SUCCEEDED', '商品与描述不符，协商退款');
-INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status, reason) VALUES (9, '2026-10-30 23:03:27.011658+00', '2026-10-30 23:03:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-refund-ref-106', 'demo-refund-106', 14, 1, 25800, 'PENDING', '外包装破损，申请仅退款');
-
-
---
--- Data for Name: mall_payment_transactions; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status) VALUES (8, '2026-10-25 23:03:27.011658+00', '2026-10-25 23:03:27.011658+00', NULL, 1, NULL, NULL, 'CNY', 'demo-refund-ref-109', 'demo-refund-109', 16, 1, 378600, 'SUCCEEDED');
+INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status) VALUES (9, '2026-10-30 23:03:27.011658+00', '2026-10-30 23:03:27.011658+00', NULL, 1, NULL, NULL, 'CNY', 'demo-refund-ref-106', 'demo-refund-106', 14, 1, 25800, 'PENDING');
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (14, '2026-10-21 23:06:27.011658+00', '2026-10-21 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-106', 'demo-pay-106', 'WECHAT', 'BUSINESS_TYPE_CONSUME', 106, 1, 25800, 'SUCCEEDED', 'DEMO-000106');
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (15, '2026-10-16 23:06:27.011658+00', '2026-10-16 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-101', 'demo-pay-101', 'BALANCE', 'BUSINESS_TYPE_CONSUME', 101, 1, 407500, 'SUCCEEDED', 'DEMO-000101');
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (16, '2026-10-24 23:06:27.011658+00', '2026-10-24 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-109', 'demo-pay-109', 'WECHAT', 'BUSINESS_TYPE_CONSUME', 109, 1, 378600, 'REFUNDED', 'DEMO-000109');
@@ -475,12 +313,6 @@ INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, delete
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (18, '2026-10-17 23:06:27.011658+00', '2026-10-17 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-102', 'demo-pay-102', 'ALIPAY', 'BUSINESS_TYPE_CONSUME', 102, 1, 427500, 'SUCCEEDED', 'DEMO-000102');
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (19, '2026-10-22 23:06:27.011658+00', '2026-10-22 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-107', 'demo-pay-107', 'BALANCE', 'BUSINESS_TYPE_CONSUME', 107, 1, 721800, 'SUCCEEDED', 'DEMO-000107');
 INSERT INTO public.mall_payment_transactions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, business_ref_id, idempotency_key, payment_method, business_type, order_id, user_id, amount, status, gateway_trade_no) VALUES (20, '2026-10-25 23:06:27.011658+00', '2026-10-25 23:06:27.011658+00', NULL, 1, NULL, NULL, 0, 'CNY', 'demo-ref-110', 'demo-pay-110', 'BALANCE', 'BUSINESS_TYPE_CONSUME', 110, 1, 283600, 'SUCCEEDED', 'DEMO-000110');
-
-
---
--- Data for Name: mall_points_ledgers; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (4, '2026-10-29 07:41:17.556284+00', NULL, NULL, 0, 1, 5, 302, 'POINTS_TYPE_CHECK_IN', '每日签到', NULL);
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (5, '2026-10-29 11:05:47.023256+00', NULL, NULL, 0, 1, -50, 252, 'POINTS_TYPE_DEDUCT', '积分兑换优惠券', NULL);
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (6, '2026-10-30 16:37:35.523714+00', NULL, NULL, 0, 1, -50, 202, 'POINTS_TYPE_DEDUCT', '积分兑换优惠券', NULL);
@@ -494,12 +326,12 @@ INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, 
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (107, '2026-10-24 23:03:27.011658+00', NULL, NULL, 0, 1, 60, 860, 'POINTS_TYPE_EARN', '生日礼包', NULL);
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (108, '2026-10-26 23:03:27.011658+00', NULL, NULL, 0, 1, -30, 830, 'POINTS_TYPE_DEDUCT', '活动扣减', NULL);
 INSERT INTO public.mall_points_ledgers (id, created_at, updated_at, deleted_at, tenant_id, user_id, delta, balance_after, type, reason, ref_order_id) VALUES (109, '2026-10-28 23:03:27.011658+00', NULL, NULL, 0, 1, 500, 1330, 'POINTS_TYPE_CHECK_IN', '连续签到第 7 天', NULL);
-
-
---
--- Data for Name: mall_product_attribute_translations; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (1, '2026-10-28 11:10:11.499362+00', NULL, NULL, 1, NULL, NULL, 0);
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (100, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (101, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (102, NULL, NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (103, NULL, NULL, NULL, NULL, NULL, NULL, 3);
+INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (104, NULL, NULL, NULL, NULL, NULL, NULL, 4);
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (1, '2026-10-28 11:10:11.510135+00', NULL, NULL, 1, NULL, NULL, 1, 'zh-CN', '颜色');
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (2, '2026-10-28 11:10:11.510135+00', NULL, NULL, 1, NULL, NULL, 1, 'en-US', 'Color');
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (400, NULL, NULL, NULL, NULL, NULL, NULL, 100, 'zh-CN', '配色');
@@ -512,12 +344,21 @@ INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (407, NULL, NULL, NULL, NULL, NULL, NULL, 103, 'en-US', 'Size');
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (408, NULL, NULL, NULL, NULL, NULL, NULL, 104, 'zh-CN', '套餐');
 INSERT INTO public.mall_product_attribute_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, attribute_id, language_code, name) VALUES (409, NULL, NULL, NULL, NULL, NULL, NULL, 104, 'en-US', 'Bundle');
-
-
---
--- Data for Name: mall_product_attribute_value_translations; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (2, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (3, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (501, NULL, NULL, NULL, NULL, NULL, NULL, 0, 100);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (502, NULL, NULL, NULL, NULL, NULL, NULL, 1, 100);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (503, NULL, NULL, NULL, NULL, NULL, NULL, 2, 100);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (504, NULL, NULL, NULL, NULL, NULL, NULL, 0, 101);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (505, NULL, NULL, NULL, NULL, NULL, NULL, 1, 101);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (506, NULL, NULL, NULL, NULL, NULL, NULL, 0, 102);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (507, NULL, NULL, NULL, NULL, NULL, NULL, 1, 102);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (508, NULL, NULL, NULL, NULL, NULL, NULL, 2, 102);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (509, NULL, NULL, NULL, NULL, NULL, NULL, 0, 103);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (510, NULL, NULL, NULL, NULL, NULL, NULL, 1, 103);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (511, NULL, NULL, NULL, NULL, NULL, NULL, 2, 103);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (512, NULL, NULL, NULL, NULL, NULL, NULL, 0, 104);
+INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (513, NULL, NULL, NULL, NULL, NULL, NULL, 1, 104);
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (9, NULL, NULL, NULL, NULL, NULL, NULL, 2, 'zh-CN', '曜石黑');
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (10, NULL, NULL, NULL, NULL, NULL, NULL, 3, 'zh-CN', '皓月白');
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (5010, NULL, NULL, NULL, NULL, NULL, NULL, 501, 'zh-CN', '星辰银');
@@ -546,45 +387,26 @@ INSERT INTO public.mall_product_attribute_value_translations (id, created_at, up
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (5121, NULL, NULL, NULL, NULL, NULL, NULL, 512, 'en-US', 'Solo');
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (5130, NULL, NULL, NULL, NULL, NULL, NULL, 513, 'zh-CN', '尊享套装');
 INSERT INTO public.mall_product_attribute_value_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, value_id, language_code, display_name) VALUES (5131, NULL, NULL, NULL, NULL, NULL, NULL, 513, 'en-US', 'Deluxe Kit');
-
-
---
--- Data for Name: mall_product_attribute_values; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (2, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (3, NULL, NULL, NULL, NULL, NULL, NULL, 2, 1);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (501, NULL, NULL, NULL, NULL, NULL, NULL, 0, 100);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (502, NULL, NULL, NULL, NULL, NULL, NULL, 1, 100);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (503, NULL, NULL, NULL, NULL, NULL, NULL, 2, 100);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (504, NULL, NULL, NULL, NULL, NULL, NULL, 0, 101);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (505, NULL, NULL, NULL, NULL, NULL, NULL, 1, 101);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (506, NULL, NULL, NULL, NULL, NULL, NULL, 0, 102);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (507, NULL, NULL, NULL, NULL, NULL, NULL, 1, 102);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (508, NULL, NULL, NULL, NULL, NULL, NULL, 2, 102);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (509, NULL, NULL, NULL, NULL, NULL, NULL, 0, 103);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (510, NULL, NULL, NULL, NULL, NULL, NULL, 1, 103);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (511, NULL, NULL, NULL, NULL, NULL, NULL, 2, 103);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (512, NULL, NULL, NULL, NULL, NULL, NULL, 0, 104);
-INSERT INTO public.mall_product_attribute_values (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, attribute_id) VALUES (513, NULL, NULL, NULL, NULL, NULL, NULL, 1, 104);
-
-
---
--- Data for Name: mall_product_attributes; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (1, '2026-10-28 11:10:11.499362+00', NULL, NULL, 1, NULL, NULL, 0);
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (100, NULL, NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (101, NULL, NULL, NULL, NULL, NULL, NULL, 1);
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (102, NULL, NULL, NULL, NULL, NULL, NULL, 2);
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (103, NULL, NULL, NULL, NULL, NULL, NULL, 3);
-INSERT INTO public.mall_product_attributes (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order) VALUES (104, NULL, NULL, NULL, NULL, NULL, NULL, 4);
-
-
---
--- Data for Name: mall_product_translations; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (100, '2026-09-30 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 1, 'PRODUCT_STATUS_ACTIVE', 100, 104, '/demo-images/prod-100.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (101, '2026-10-01 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 2, 'PRODUCT_STATUS_ACTIVE', 101, 100, '/demo-images/prod-101.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (102, '2026-10-02 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 3, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-102.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (103, '2026-10-03 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 4, 'PRODUCT_STATUS_ACTIVE', 101, 100, '/demo-images/prod-103.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (104, '2026-10-04 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 5, 'PRODUCT_STATUS_ACTIVE', 100, 104, '/demo-images/prod-104.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (105, '2026-10-05 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 6, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-105.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (106, '2026-10-06 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 7, 'PRODUCT_STATUS_ACTIVE', 103, 102, '/demo-images/prod-106.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (107, '2026-10-07 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 8, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-107.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (108, '2026-10-08 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 9, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-108.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (109, '2026-10-09 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 10, 'PRODUCT_STATUS_ACTIVE', 103, 101, '/demo-images/prod-109.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (110, '2026-10-10 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 11, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-110.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (111, '2026-10-11 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 12, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-111.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (112, '2026-10-12 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 13, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-112.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (113, '2026-10-13 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 14, 'PRODUCT_STATUS_ACTIVE', 105, 101, '/demo-images/prod-113.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (114, '2026-10-14 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 15, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-114.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (115, '2026-10-15 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 16, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-115.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (116, '2026-10-16 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 17, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-116.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (117, '2026-10-17 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 18, 'PRODUCT_STATUS_ACTIVE', 107, 105, '/demo-images/prod-117.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (118, '2026-10-18 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 19, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-118.webp');
+INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (119, '2026-10-19 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 20, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-119.webp');
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1000, NULL, NULL, NULL, NULL, NULL, NULL, 100, 'zh-CN', '智能灯泡 Lumen 二代', 'p-100', '1600 万色可调，支持分组与定时', '智能灯泡 Lumen 二代 是拾光面向日常使用场景打造的智能照明产品。1600 万色可调，支持分组与定时。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1001, NULL, NULL, NULL, NULL, NULL, NULL, 100, 'en-US', 'Lumen Bulb Gen 2', 'p-100-en', 'Lumen Bulb Gen 2', '智能灯泡 Lumen 二代 是拾光面向日常使用场景打造的智能照明产品。1600 万色可调，支持分组与定时。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1002, NULL, NULL, NULL, NULL, NULL, NULL, 101, 'zh-CN', '智能门锁 Vault Pro', 'p-101', '指纹+人脸双模，C 级锁芯', '智能门锁 Vault Pro 是风铃面向日常使用场景打造的安防监控产品。指纹+人脸双模，C 级锁芯。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
@@ -625,77 +447,141 @@ INSERT INTO public.mall_product_translations (id, created_at, updated_at, delete
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1037, NULL, NULL, NULL, NULL, NULL, NULL, 118, 'en-US', 'KidSafe Watch', 'p-118-en', 'KidSafe Watch', '儿童电话手表 KidSafe 是极目面向日常使用场景打造的智能手表产品。4G 视频通话，楼层级定位。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1038, NULL, NULL, NULL, NULL, NULL, NULL, 119, 'zh-CN', '智能眼镜 Vista AR', 'p-119', '43g 轻量，实时翻译字幕', '智能眼镜 Vista AR 是极目面向日常使用场景打造的智能手表产品。43g 轻量，实时翻译字幕。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
 INSERT INTO public.mall_product_translations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, language_code, name, slug, short_description, long_description) VALUES (1039, NULL, NULL, NULL, NULL, NULL, NULL, 119, 'en-US', 'Vista AR Glasses', 'p-119-en', 'Vista AR Glasses', '智能眼镜 Vista AR 是极目面向日常使用场景打造的智能手表产品。43g 轻量，实时翻译字幕。整机采用低功耗方案与可回收包装材料，随机附赠说明书与一年质保；支持 7 天无理由退货、全国联保与上门取件。');
-
-
---
--- Data for Name: mall_products; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (100, '2026-09-30 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 1, 'PRODUCT_STATUS_ACTIVE', 100, 104, '/demo-images/prod-100.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (101, '2026-10-01 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 2, 'PRODUCT_STATUS_ACTIVE', 101, 100, '/demo-images/prod-101.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (102, '2026-10-02 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 3, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-102.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (103, '2026-10-03 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 4, 'PRODUCT_STATUS_ACTIVE', 101, 100, '/demo-images/prod-103.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (104, '2026-10-04 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 5, 'PRODUCT_STATUS_ACTIVE', 100, 104, '/demo-images/prod-104.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (105, '2026-10-05 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 6, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-105.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (106, '2026-10-06 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 7, 'PRODUCT_STATUS_ACTIVE', 103, 102, '/demo-images/prod-106.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (107, '2026-10-07 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 8, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-107.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (108, '2026-10-08 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 9, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-108.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (109, '2026-10-09 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 10, 'PRODUCT_STATUS_ACTIVE', 103, 101, '/demo-images/prod-109.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (110, '2026-10-10 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 11, 'PRODUCT_STATUS_ACTIVE', 102, 101, '/demo-images/prod-110.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (111, '2026-10-11 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 12, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-111.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (112, '2026-10-12 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 13, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-112.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (113, '2026-10-13 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 14, 'PRODUCT_STATUS_ACTIVE', 105, 101, '/demo-images/prod-113.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (114, '2026-10-14 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 15, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-114.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (115, '2026-10-15 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 16, 'PRODUCT_STATUS_ACTIVE', 104, 101, '/demo-images/prod-115.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (116, '2026-10-16 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 17, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-116.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (117, '2026-10-17 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 18, 'PRODUCT_STATUS_ACTIVE', 107, 105, '/demo-images/prod-117.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (118, '2026-10-18 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 19, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-118.webp');
-INSERT INTO public.mall_products (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, status, category_id, brand_id, image_url) VALUES (119, '2026-10-19 23:03:27.011658+00', '2026-10-31 13:58:20.702562+00', NULL, 1, NULL, NULL, 20, 'PRODUCT_STATUS_ACTIVE', 106, 103, '/demo-images/prod-119.webp');
-
-
---
--- Data for Name: mall_promotions; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_promotions (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, name, promo_type, product_id, special_price, threshold_amount, reduction_amount, priority, valid_from, valid_until, status) VALUES (2, '2026-10-28 04:55:59.773229+00', '2026-10-28 04:55:59.773229+00', NULL, 1, NULL, NULL, 0, 'CNY', '店铺满300减40', 'FULL_REDUCTION', 0, 0, 30000, 4000, 5, '2026-10-01 00:00:00+00', '2027-01-01 00:00:00+00', 'ACTIVE');
-
-
---
--- Data for Name: mall_seckill_activities; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_seckill_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, seckill_price, total_stock, sold_count, per_user_limit, priority, valid_from, valid_until, currency, status) VALUES (100, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '三合一充电板限时抢购', 1012, 29900, 50, 18, 1, 100, '2026-10-29 23:03:27.011658+00', '2026-11-30 23:59:59+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_seckill_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, seckill_price, total_stock, sold_count, per_user_limit, priority, valid_from, valid_until, currency, status) VALUES (101, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '温湿度传感器秒杀', 1026, 14900, 60, 12, 1, 80, '2026-10-29 23:03:27.011658+00', '2026-11-30 23:59:59+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_seckill_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, seckill_price, total_stock, sold_count, per_user_limit, priority, valid_from, valid_until, currency, status) VALUES (102, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 'Nova 12 Ultra 新品首发', 1090, 499900, 30, 12, 1, 60, '2026-10-29 23:03:27.011658+00', '2026-11-30 23:59:59+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_seckill_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, seckill_price, total_stock, sold_count, per_user_limit, priority, valid_from, valid_until, currency, status) VALUES (103, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '移动电源秒杀夜场', 1061, 14900, 10, 0, 1, 40, '2026-10-31 12:00:00+00', '2026-11-02 23:59:59+00', 'CNY', 'ACTIVE');
 INSERT INTO public.mall_seckill_activities (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, name, sku_id, seckill_price, total_stock, sold_count, per_user_limit, priority, valid_from, valid_until, currency, status) VALUES (104, '2026-10-24 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, '智能门锁返场（已结束）', 1006, 99900, 100, 100, 1, 20, '2026-10-22 23:03:27.011658+00', '2026-10-24 23:03:27.011658+00', 'CNY', 'INACTIVE');
-
-
---
--- Data for Name: mall_shipments; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_shipments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, carrier, tracking_number, status, tracking_events) VALUES (1, '2026-10-25 07:33:18.231339+00', '2026-10-26 07:33:18.231339+00', NULL, 1, NULL, NULL, 0, 106, 1, '顺丰速运', 'SF2026102800001', 'DELIVERED', '[{"time":"2026-10-28 10:00","event":"包裹已签收"},{"time":"2026-10-27 21:00","event":"运输中"},{"time":"2026-10-27 09:00","event":"已发货"}]');
 INSERT INTO public.mall_shipments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, carrier, tracking_number, status, tracking_events) VALUES (2, '2026-10-27 07:33:18.231339+00', '2026-10-28 07:33:18.231339+00', NULL, 1, NULL, NULL, 0, 107, 1, '京东物流', 'JD2026102900002', 'DELIVERED', '[{"time":"2026-10-29 14:00","event":"包裹已签收"},{"time":"2026-10-28 20:00","event":"运输中"}]');
 INSERT INTO public.mall_shipments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, carrier, tracking_number, status, tracking_events) VALUES (4, '2026-10-30 07:33:18.231339+00', '2026-10-30 07:33:18.231339+00', NULL, 1, NULL, NULL, 0, 109, 1, '顺丰速运', 'SF2026103100004', 'SHIPPED', '[{"time":"2026-10-31 09:00","event":"已发货"}]');
 INSERT INTO public.mall_shipments (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, order_id, user_id, carrier, tracking_number, status, tracking_events) VALUES (5, '2026-10-31 07:33:18.231339+00', '2026-10-31 07:33:18.231339+00', NULL, 1, NULL, NULL, 0, 110, 1, '圆通速递', 'YT2026103100005', 'PENDING', '[]');
-
-
---
--- Data for Name: mall_shipping_rates; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_shipping_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, base_fee, per_unit_fee, status) VALUES (2, '2026-10-23 07:32:55.389343+00', '2026-10-23 07:32:55.389343+00', NULL, 1, NULL, NULL, 0, 'CNY', '北京', 800, 200, 'ACTIVE');
 INSERT INTO public.mall_shipping_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, base_fee, per_unit_fee, status) VALUES (3, '2026-10-23 07:32:55.389343+00', '2026-10-23 07:32:55.389343+00', NULL, 1, NULL, NULL, 0, 'CNY', '上海', 800, 200, 'ACTIVE');
 INSERT INTO public.mall_shipping_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, base_fee, per_unit_fee, status) VALUES (5, '2026-10-23 07:34:03.477116+00', '2026-10-23 07:34:03.477116+00', NULL, 1, NULL, NULL, 0, 'CNY', '广东', 1000, 300, 'ACTIVE');
 INSERT INTO public.mall_shipping_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, base_fee, per_unit_fee, status) VALUES (6, '2026-10-23 07:34:03.477116+00', '2026-10-23 07:34:03.477116+00', NULL, 1, NULL, NULL, 0, 'CNY', '浙江', 1000, 250, 'ACTIVE');
 INSERT INTO public.mall_shipping_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, base_fee, per_unit_fee, status) VALUES (7, '2026-10-23 07:34:03.477116+00', '2026-10-23 07:34:03.477116+00', NULL, 1, NULL, NULL, 0, 'CNY', '四川', 1500, 400, 'INACTIVE');
-
-
---
--- Data for Name: mall_sku_attribute_combinations; Type: TABLE DATA; Schema: public; Owner: -
---
-
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1000, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1000', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1001, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1001', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1002, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1002', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1003, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1003', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1004, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1004', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1005, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1005', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1006, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1006', 48);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1007, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1007', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1008, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1008', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1009, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1009', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1010, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1010', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1011, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1011', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1012, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1012', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1013, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1013', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1014, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1014', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1015, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1015', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1016, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1016', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1017, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1017', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1018, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1018', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1019, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1019', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1020, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1020', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1021, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1021', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1022, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1022', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1023, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1023', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1024, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1024', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1025, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1025', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1026, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1026', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1027, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1027', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1028, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1028', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1029, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1029', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1030, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1030', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1031, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1031', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1032, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1032', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1033, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1033', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1034, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1034', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1035, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1035', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1036, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1036', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1037, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1037', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1038, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1038', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1039, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1039', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1040, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1040', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1041, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1041', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1042, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1042', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1043, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1043', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1044, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1044', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1045, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1045', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1046, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1046', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1047, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1047', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1048, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1048', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1049, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1049', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1050, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1050', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1051, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1051', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1052, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1052', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1053, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1053', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1054, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1054', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1055, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1055', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1056, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1056', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1057, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1057', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1058, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1058', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1059, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1059', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1060, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1060', 1);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1061, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1061', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1062, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1062', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1063, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1063', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1064, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1064', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1065, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1065', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1066, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1066', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1067, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1067', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1068, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1068', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1069, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1069', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1070, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1070', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1071, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1071', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1072, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1072', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1073, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1073', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1074, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1074', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1075, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1075', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1076, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1076', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1077, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1077', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1078, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1078', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1079, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1079', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1080, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1080', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1081, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1081', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1082, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1082', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1083, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1083', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1084, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1084', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1085, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1085', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1086, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1086', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1087, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1087', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1088, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1088', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1089, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1089', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1090, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1090', 5);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1091, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1091', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1092, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1092', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1093, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1093', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1094, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1094', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1095, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1095', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1096, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1096', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1097, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1097', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1098, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1098', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1099, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1099', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1100, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1100', 80);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1101, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1101', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1102, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1102', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1103, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1103', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1104, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1104', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1105, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1105', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1106, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1106', 46);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1107, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1107', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1108, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1108', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1109, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1109', 28);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1110, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1110', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1111, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1111', 3);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1112, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1112', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1113, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1113', 12);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1114, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1114', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1115, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1115', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1116, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1116', 75);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1117, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1117', 130);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1118, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1118', 0);
+INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1119, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1119', 0);
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1000, NULL, NULL, NULL, NULL, NULL, NULL, 1000, 100, 501);
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1001, NULL, NULL, NULL, NULL, NULL, NULL, 1000, 104, 512);
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1002, NULL, NULL, NULL, NULL, NULL, NULL, 1001, 100, 501);
@@ -936,12 +822,6 @@ INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, 
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1237, NULL, NULL, NULL, NULL, NULL, NULL, 1118, 101, 504);
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1238, NULL, NULL, NULL, NULL, NULL, NULL, 1119, 100, 503);
 INSERT INTO public.mall_sku_attribute_combinations (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, attribute_id, attribute_value_id) VALUES (1239, NULL, NULL, NULL, NULL, NULL, NULL, 1119, 101, 505);
-
-
---
--- Data for Name: mall_sku_prices; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1000, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1000, '5900');
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1001, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1001, '8900');
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1002, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1002, '11900');
@@ -1062,169 +942,19 @@ INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, crea
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1117, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1117, '248900');
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1118, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1118, '241900');
 INSERT INTO public.mall_sku_prices (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, currency, sku_id, amount) VALUES (1119, NULL, NULL, NULL, NULL, NULL, NULL, 'CNY', 1119, '254900');
-
-
---
--- Data for Name: mall_skus; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1000, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1000', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1001, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1001', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1002, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1002', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1003, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1003', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1004, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1004', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1005, '2026-10-02 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 100, 'LUMEN-1005', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1006, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1006', 48);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1007, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1007', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1008, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1008', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1009, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1009', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1010, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1010', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1011, '2026-10-03 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 101, 'VAULT-1011', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1012, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1012', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1013, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1013', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1014, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1014', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1015, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1015', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1016, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1016', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1017, '2026-10-04 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 102, 'TRIO-1017', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1018, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1018', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1019, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1019', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1020, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1020', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1021, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1021', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1022, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1022', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1023, '2026-10-05 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 103, 'SENTINEL-1023', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1024, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1024', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1025, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1025', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1026, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1026', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1027, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1027', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1028, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1028', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1029, '2026-10-06 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 104, 'BREEZE-1029', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1030, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1030', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1031, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1031', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1032, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1032', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1033, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1033', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1034, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1034', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1035, '2026-10-07 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 105, 'GAN-1035', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1036, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1036', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1037, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1037', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1038, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1038', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1039, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1039', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1040, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1040', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1041, '2026-10-08 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 106, 'ECHO-1041', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1042, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1042', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1043, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1043', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1044, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1044', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1045, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1045', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1046, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1046', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1047, '2026-10-09 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 107, 'USB-C-1047', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1048, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1048', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1049, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1049', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1050, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1050', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1051, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1051', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1052, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1052', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1053, '2026-10-10 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 108, 'GLIDE-1053', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1054, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1054', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1055, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1055', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1056, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1056', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1057, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1057', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1058, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1058', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1059, '2026-10-11 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 109, 'AERO-1059', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1060, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1060', 1);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1061, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1061', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1062, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1062', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1063, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1063', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1064, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1064', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1065, '2026-10-12 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 110, 'PEBBLE-1065', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1066, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1066', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1067, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1067', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1068, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1068', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1069, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1069', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1070, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1070', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1071, '2026-10-13 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 111, 'NOVA-1071', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1072, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1072', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1073, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1073', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1074, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1074', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1075, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1075', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1076, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1076', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1077, '2026-10-14 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 112, 'NOVA-1077', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1078, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1078', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1079, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1079', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1080, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1080', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1081, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1081', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1082, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1082', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1083, '2026-10-15 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 113, 'FOLD-1083', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1084, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1084', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1085, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1085', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1086, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1086', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1087, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1087', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1088, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1088', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1089, '2026-10-16 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 114, 'NOVA-1089', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1090, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1090', 5);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1091, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1091', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1092, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1092', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1093, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1093', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1094, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1094', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1095, '2026-10-17 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 115, 'NOVA-1095', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1096, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1096', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1097, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1097', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1098, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1098', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1099, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1099', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1100, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1100', 80);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1101, '2026-10-18 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 116, 'WATCH-1101', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1102, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1102', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1103, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1103', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1104, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1104', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1105, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1105', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1106, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1106', 46);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1107, '2026-10-19 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 117, 'BAND-1107', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1108, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1108', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1109, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1109', 28);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1110, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1110', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1111, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1111', 3);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1112, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1112', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1113, '2026-10-20 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 118, 'KIDSAFE-1113', 12);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1114, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1114', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1115, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1115', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1116, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1116', 75);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1117, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1117', 130);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1118, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1118', 0);
-INSERT INTO public.mall_skus (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, product_id, sku_code, stock_qty) VALUES (1119, '2026-10-21 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 119, 'VISTA-1119', 0);
-
-
---
--- Data for Name: mall_stock_alerts; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_stock_alerts (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, stock_qty_at_trigger, threshold, status) VALUES (3, '2026-10-26 07:33:18.246778+00', '2026-10-27 07:33:18.246778+00', NULL, 1, NULL, NULL, 1000, 2, 8, 'RESOLVED');
 INSERT INTO public.mall_stock_alerts (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, stock_qty_at_trigger, threshold, status) VALUES (4, '2026-10-26 07:33:18.246778+00', '2026-10-27 07:33:18.246778+00', NULL, 1, NULL, NULL, 1001, 6, 8, 'RESOLVED');
-
-
---
--- Data for Name: mall_stock_op_logs; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (43, '2026-10-30 23:15:01.221742+00', NULL, NULL, 0, NULL, NULL, 1100, 116, 2, 75, 77, 'CANCEL_RESTORE', 100, NULL);
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (44, '2026-10-30 23:15:01.226856+00', NULL, NULL, 0, NULL, NULL, 1090, 115, 2, 3, 5, 'CANCEL_RESTORE', 100, NULL);
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (45, '2026-10-30 23:15:01.229065+00', NULL, NULL, 0, NULL, NULL, 1060, 110, 1, 0, 1, 'CANCEL_RESTORE', 100, NULL);
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (46, '2026-10-30 23:15:01.283085+00', NULL, NULL, 0, NULL, NULL, 1100, 116, 1, 77, 78, 'CANCEL_RESTORE', 105, NULL);
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (47, '2026-10-30 23:15:01.315203+00', NULL, NULL, 0, NULL, NULL, 1006, 101, 2, 46, 48, 'CANCEL_RESTORE', 111, NULL);
 INSERT INTO public.mall_stock_op_logs (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sku_id, product_id, delta, stock_before, stock_after, reason, ref_id, remark) VALUES (48, '2026-10-30 23:15:01.317407+00', NULL, NULL, 0, NULL, NULL, 1100, 116, 2, 78, 80, 'CANCEL_RESTORE', 111, NULL);
-
-
---
--- Data for Name: mall_tax_rates; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_tax_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, tax_rate, status) VALUES (3, '2026-10-23 07:33:18.240397+00', '2026-10-23 07:33:18.240397+00', NULL, 1, NULL, NULL, 0, 'CNY', '北京', 13, 'ACTIVE');
 INSERT INTO public.mall_tax_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, tax_rate, status) VALUES (4, '2026-10-23 07:33:18.240397+00', '2026-10-23 07:33:18.240397+00', NULL, 1, NULL, NULL, 0, 'CNY', '上海', 13, 'ACTIVE');
 INSERT INTO public.mall_tax_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, tax_rate, status) VALUES (5, '2026-10-23 07:33:18.240397+00', '2026-10-23 07:33:18.240397+00', NULL, 1, NULL, NULL, 0, 'CNY', '广东', 13, 'ACTIVE');
 INSERT INTO public.mall_tax_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, tax_rate, status) VALUES (6, '2026-10-23 07:33:18.240397+00', '2026-10-23 07:33:18.240397+00', NULL, 1, NULL, NULL, 0, 'CNY', '浙江', 9, 'ACTIVE');
 INSERT INTO public.mall_tax_rates (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, currency, region, tax_rate, status) VALUES (7, '2026-10-23 07:33:18.240397+00', '2026-10-23 07:33:18.240397+00', NULL, 1, NULL, NULL, 0, 'CNY', '四川', 9, 'ACTIVE');
-
-
---
--- Data for Name: mall_user_coupons; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (1, '2026-10-29 11:05:47.026507+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 2, 'UNUSED', NULL, NULL, 0);
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (2, '2026-10-30 16:37:35.529021+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 2, 'UNUSED', NULL, NULL, 0);
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (3, '2026-10-31 06:44:27.703489+00', NULL, NULL, 1, NULL, NULL, 0, 3, 101, 'USED', NULL, NULL, 0);
@@ -1235,12 +965,6 @@ INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, cr
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (104, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 105, 'UNUSED', NULL, NULL, 0);
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (105, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 107, 'EXPIRED', NULL, NULL, 0);
 INSERT INTO public.mall_user_coupons (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, coupon_template_id, status, redeemed_at, redeemed_order_id, applied_discount_amount) VALUES (106, '2026-10-22 23:03:27.011658+00', NULL, NULL, 1, NULL, NULL, 0, 1, 104, 'UNUSED', NULL, NULL, 0);
-
-
---
--- Data for Name: mall_wishlist; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (101, '2026-10-29 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 103);
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (102, '2026-10-28 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 106);
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (103, '2026-10-27 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 109);
@@ -1250,12 +974,6 @@ INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, create
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (107, '2026-10-23 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 101);
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (108, '2026-10-22 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 104);
 INSERT INTO public.mall_wishlist (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, tenant_id, user_id, product_id) VALUES (109, '2026-10-21 23:03:27.011658+00', NULL, NULL, NULL, NULL, NULL, 0, 1, 107);
-
-
---
--- Data for Name: sys_languages; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (1, '2026-10-27 12:23:24.730777+00', NULL, NULL, NULL, NULL, NULL, 0, true, 'zh-CN', '中文（简体）', '简体中文', true);
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (2, '2026-10-27 12:23:24.739468+00', NULL, NULL, NULL, NULL, NULL, 100, true, 'zh-TW', '中文（繁体）', '繁體中文', false);
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (3, '2026-10-27 12:23:24.749213+00', NULL, NULL, NULL, NULL, NULL, 1, true, 'en-US', '英语', 'English', false);
@@ -1263,34 +981,289 @@ INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, create
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (5, '2026-10-27 12:23:24.764927+00', NULL, NULL, NULL, NULL, NULL, 100, true, 'ko-KR', '韩语', '한국어', false);
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (6, '2026-10-27 12:23:24.770697+00', NULL, NULL, NULL, NULL, NULL, 100, true, 'es-ES', '西班牙语', 'Español', false);
 INSERT INTO public.sys_languages (id, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by, sort_order, is_enabled, language_code, language_name, native_name, is_default) VALUES (7, '2026-10-27 12:23:24.777327+00', NULL, NULL, NULL, NULL, NULL, 100, true, 'fr-FR', '法语', 'Français', false);
+INSERT INTO public.sys_user_credentials (id, created_at, updated_at, deleted_at, tenant_id, user_id, identity_type, identifier, credential_type, credential, is_primary, status, extra_info, provider, provider_account_id, activate_token_hash, activate_token_expires_at, activate_token_used_at, reset_token_hash, reset_token_expires_at, reset_token_used_at) VALUES (1, '2026-10-27 12:23:24.852763+00', NULL, NULL, 0, 1, 'USERNAME', 'admin', 'PASSWORD_HASH', '$2a$10$nEu9uNeIkDpF//oeexvfBOWv9dDIjQV/6ImiIK/JaeC61NAiQc0VG', true, 'ENABLED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.sys_users (id, created_by, updated_by, deleted_by, created_at, updated_at, deleted_at, tenant_id, username, nickname, realname, email, mobile, region, status) VALUES (1, NULL, NULL, NULL, '2026-10-27 12:23:24.788677+00', NULL, NULL, 0, 'admin', '鹳狸猿', '喵个咪', 'admin@gmail.com', '', '中国', 'NORMAL');
+--
+-- PostgreSQL database dump
+--
+
+
+-- Dumped from database version 16.15 (Debian 16.15-1.pgdg12+2)
+-- Dumped by pg_dump version 16.15 (Debian 16.15-1.pgdg12+2)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Data for Name: internal_message_recipients; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: internal_messages; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_brand_translations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_brands; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_cart_items; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_carts; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_categories; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_category_translations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+--
+
+
+
+--
+-- Data for Name: mall_comments; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_coupon_templates; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_groupon_activities; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_groupon_groups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_invoices; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_member_tiers; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_order_items; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_orders; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_payment_channel_configs; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_payment_refunds; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_payment_transactions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_points_ledgers; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_product_attribute_translations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_product_attribute_value_translations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_product_attribute_values; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_product_attributes; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_product_translations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_products; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_promotions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_seckill_activities; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_shipments; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_shipping_rates; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_sku_attribute_combinations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_sku_prices; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_skus; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_stock_alerts; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_stock_op_logs; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_tax_rates; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_user_coupons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: mall_wishlist; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: sys_languages; Type: TABLE DATA; Schema: public; Owner: -
+--
+
 
 
 --
 -- Data for Name: sys_user_credentials; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.sys_user_credentials (id, created_at, updated_at, deleted_at, tenant_id, user_id, identity_type, identifier, credential_type, credential, is_primary, status, extra_info, provider, provider_account_id, activate_token_hash, activate_token_expires_at, activate_token_used_at, reset_token_hash, reset_token_expires_at, reset_token_used_at) VALUES (1, '2026-10-27 12:23:24.852763+00', NULL, NULL, 0, 1, 'USERNAME', 'admin', 'PASSWORD_HASH', '$2a$10$nEu9uNeIkDpF//oeexvfBOWv9dDIjQV/6ImiIK/JaeC61NAiQc0VG', true, 'ENABLED', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: sys_users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.sys_users (id, created_by, updated_by, deleted_by, created_at, updated_at, deleted_at, remark, tenant_id, username, nickname, realname, email, mobile, telephone, avatar, address, region, description, gender, last_login_at, last_login_ip, locked_until, status) VALUES (1, NULL, NULL, NULL, '2026-10-27 12:23:24.788677+00', NULL, NULL, NULL, 0, 'admin', '鹳狸猿', '喵个咪', 'admin@gmail.com', '', '', NULL, '', '中国', NULL, 'SECRET', NULL, NULL, NULL, 'NORMAL');
 
 
 --
--- Name: internal_message_recipients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: mall_internal_message_recipients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.internal_message_recipients_id_seq', 28, true);
+SELECT pg_catalog.setval('public.mall_internal_message_recipients_id_seq', 28, true);
 
 
 --
--- Name: internal_messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: mall_internal_messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.internal_messages_id_seq', 34, true);
+SELECT pg_catalog.setval('public.mall_internal_messages_id_seq', 34, true);
 
 
 --
@@ -1336,10 +1309,8 @@ SELECT pg_catalog.setval('public.mall_category_translations_id_seq', 19, true);
 
 
 --
--- Name: mall_comment_likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.mall_comment_likes_id_seq', 1, false);
 
 
 --
@@ -1742,29 +1713,29 @@ SELECT setval('mall_comments_id_seq', (SELECT MAX(id) FROM public.mall_comments)
 -- ---------------------------------------------------------------
 -- 7. 站内信（C端消息中心：未读 badge 数据源）
 -- ---------------------------------------------------------------
-INSERT INTO public.internal_messages (id, title, content, status, type, sender_id, created_at, updated_at)
-SELECT 10, '订单已发货', '您的订单 #2 已发货，请注意查收物流信息。', 'PUBLISHED', 'NOTIFICATION', 0, now() - interval '1 day', now() - interval '1 day'
-WHERE NOT EXISTS (SELECT 1 FROM public.internal_messages WHERE id = 10);
+INSERT INTO public.mall_internal_messages (id, title, content, status, sender_id, created_at, updated_at)
+SELECT 10, '订单已发货', '您的订单 #2 已发货，请注意查收物流信息。', 'PUBLISHED', 0, now() - interval '1 day', now() - interval '1 day'
+WHERE NOT EXISTS (SELECT 1 FROM public.mall_internal_messages WHERE id = 10);
 
-INSERT INTO public.internal_messages (id, title, content, status, type, sender_id, created_at, updated_at)
-SELECT 11, '店铺满减活动上线', '全店满 ¥300 减 ¥40，活动截至 2027-01-01，先到先得！', 'PUBLISHED', 'NOTIFICATION', 0, now() - interval '4 hour', now() - interval '4 hour'
-WHERE NOT EXISTS (SELECT 1 FROM public.internal_messages WHERE id = 11);
+INSERT INTO public.mall_internal_messages (id, title, content, status, sender_id, created_at, updated_at)
+SELECT 11, '店铺满减活动上线', '全店满 ¥300 减 ¥40，活动截至 2027-01-01，先到先得！', 'PUBLISHED', 0, now() - interval '4 hour', now() - interval '4 hour'
+WHERE NOT EXISTS (SELECT 1 FROM public.mall_internal_messages WHERE id = 11);
 
-SELECT setval('internal_messages_id_seq', (SELECT MAX(id) FROM public.internal_messages));
+SELECT setval('mall_internal_messages_id_seq', (SELECT MAX(id) FROM public.mall_internal_messages));
 
-INSERT INTO public.internal_message_recipients (tenant_id, message_id, recipient_user_id, status, created_at, updated_at)
+INSERT INTO public.mall_internal_message_recipients (tenant_id, message_id, recipient_user_id, status, created_at, updated_at)
 SELECT 1, m.id, 1, 'SENT', m.created_at, m.created_at
-FROM public.internal_messages m
+FROM public.mall_internal_messages m
 WHERE m.id = 10
-  AND NOT EXISTS (SELECT 1 FROM public.internal_message_recipients r WHERE r.message_id = 10 AND r.recipient_user_id = 1);
+  AND NOT EXISTS (SELECT 1 FROM public.mall_internal_message_recipients r WHERE r.message_id = 10 AND r.recipient_user_id = 1);
 
-INSERT INTO public.internal_message_recipients (tenant_id, message_id, recipient_user_id, status, created_at, updated_at)
+INSERT INTO public.mall_internal_message_recipients (tenant_id, message_id, recipient_user_id, status, created_at, updated_at)
 SELECT 1, m.id, 1, 'SENT', m.created_at, m.created_at
-FROM public.internal_messages m
+FROM public.mall_internal_messages m
 WHERE m.id = 11
-  AND NOT EXISTS (SELECT 1 FROM public.internal_message_recipients r WHERE r.message_id = 11 AND r.recipient_user_id = 1);
+  AND NOT EXISTS (SELECT 1 FROM public.mall_internal_message_recipients r WHERE r.message_id = 11 AND r.recipient_user_id = 1);
 
-SELECT setval('internal_message_recipients_id_seq', (SELECT MAX(id) FROM public.internal_message_recipients));
+SELECT setval('mall_internal_message_recipients_id_seq', (SELECT MAX(id) FROM public.mall_internal_message_recipients));
 -- ── 三B、演示增补层（顾客用户/促销/订单/支付/退款/发货/评论/站内信/预警）
 --      约定沿用内网基准：tenant_id=0、user_id=1；金额单位：分；
 --      订单/库存流水金额与 SKU 现价自洽，库存流水期末值对齐 SKU 现存库存。
@@ -1772,12 +1743,12 @@ SELECT setval('internal_message_recipients_id_seq', (SELECT MAX(id) FROM public.
 --      评论162-163/库存流水49-51/收件人23-24，本段从其后起步。
 
 -- 1. 顾客用户（凭证同 admin，密码 admin）
-INSERT INTO public.sys_users (id, created_by, created_at, updated_at, tenant_id, username, nickname, realname, email, mobile, gender, status, last_login_at)
+INSERT INTO public.sys_users (id, created_by, created_at, updated_at, tenant_id, username, nickname, realname, email, mobile, status)
 VALUES
-    (2, 1, now() - interval '30 day', now() - interval '1 day',  0, 'suxiaotong', '苏晓桐', '苏晓桐', 'suxiaotong@demo.com', '13911112222', 'FEMALE', 'NORMAL', now() - interval '1 day'),
-    (3, 1, now() - interval '29 day', now() - interval '2 day',  0, 'chenyi',     '陈屹',   '陈屹',   'chenyi@demo.com',     '13733334444', 'MALE',   'NORMAL', now() - interval '2 day'),
-    (4, 1, now() - interval '26 day', now() - interval '3 hour', 0, 'heyutong',   '何雨桐', '何雨桐', 'heyutong@demo.com',   '13655556666', 'FEMALE', 'NORMAL', now() - interval '3 hour'),
-    (5, 1, now() - interval '20 day', now() - interval '6 hour',  0, 'linzhiyuan', '林知远', '林知远', 'linzhiyuan@demo.com', '13577778888', 'MALE',   'NORMAL', now() - interval '6 hour');
+    (2, 1, now() - interval '30 day', now() - interval '1 day',  0, 'suxiaotong', '苏晓桐', '苏晓桐', 'suxiaotong@demo.com', '13911112222', 'NORMAL'),
+    (3, 1, now() - interval '29 day', now() - interval '2 day',  0, 'chenyi',     '陈屹',   '陈屹',   'chenyi@demo.com',     '13733334444', 'NORMAL'),
+    (4, 1, now() - interval '26 day', now() - interval '3 hour', 0, 'heyutong',   '何雨桐', '何雨桐', 'heyutong@demo.com',   '13655556666', 'NORMAL'),
+    (5, 1, now() - interval '20 day', now() - interval '6 hour',  0, 'linzhiyuan', '林知远', '林知远', 'linzhiyuan@demo.com', '13577778888', 'NORMAL');
 
 INSERT INTO public.sys_user_credentials (id, created_at, updated_at, deleted_at, tenant_id, user_id, identity_type, identifier, credential_type, credential, is_primary, status)
 VALUES
@@ -1847,10 +1818,10 @@ VALUES
     (32, now() - interval '1 day',   now() - interval '1 day',   NULL, 1, 0, 'CNY', 'PAY-DEMO-1129', 'idem-pay-enrich-1129', 'BALANCE', 'BUSINESS_TYPE_CONSUME', 122, 1, 549900, 'SUCCEEDED', 'BAL2026101912345678');
 
 -- 退款：一笔已到账（七天无理由）、一笔处理中（部分退款补偿）
-INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, tenant_id, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status, reason)
+INSERT INTO public.mall_payment_refunds (id, created_at, updated_at, deleted_at, created_by, currency, business_ref_id, idempotency_key, transaction_id, user_id, amount, status)
 VALUES
-    (10, now() - interval '3 day',  now() - interval '2 day', NULL, 1, 0, 'CNY', 'REF-DEMO-1010', 'idem-refund-enrich-1010', 30, 1, 89900, 'SUCCEEDED', '七天无理由退货'),
-    (11, now() - interval '1 day',  now() - interval '1 day', NULL, 1, 0, 'CNY', 'REF-DEMO-1011', 'idem-refund-enrich-1011', 31, 1, 8000,  'PENDING',   '满减活动少算差价补偿');
+    (10, now() - interval '3 day',  now() - interval '2 day', NULL, 1, 'CNY', 'REF-DEMO-1010', 'idem-refund-enrich-1010', 30, 1, 89900, 'SUCCEEDED'),
+    (11, now() - interval '1 day',  now() - interval '1 day', NULL, 1, 'CNY', 'REF-DEMO-1011', 'idem-refund-enrich-1011', 31, 1, 8000,  'PENDING');
 
 -- 发货单：已签收/运输中/待发货覆盖（含给存量订单 101 补的发货）
 INSERT INTO public.mall_shipments (id, created_at, updated_at, deleted_at, created_by, tenant_id, order_id, user_id, carrier, tracking_number, status, tracking_events)
@@ -1893,14 +1864,14 @@ VALUES
     (189, now() - interval '9 day',   now() - interval '9 day',   NULL, 1, 0, 'CONTENT_TYPE_PRODUCT', 111, '感谢分享！夜景模式长按可锁定超广角，试试星空模式。', 'STATUS_APPROVED', NULL, 168);
 
 -- 站内信：新品/活动/维护/积分四类，一条已读（未读 badge 与状态列都有内容）
-INSERT INTO public.internal_messages (id, created_at, updated_at, deleted_at, tenant_id, title, content, sender_id, category_id, status, type)
+INSERT INTO public.mall_internal_messages (id, created_at, updated_at, deleted_at, tenant_id, title, content, sender_id, category_id, status)
 VALUES
-    (35, now() - interval '5 day',  now() - interval '5 day',  NULL, 0, 'Nova 12 系列新品上架', 'Nova 12 / 12 Pro / 12 Ultra 全系开售，首发期下单享专属好礼。', 0, NULL, 'PUBLISHED', 'NOTIFICATION'),
-    (36, now() - interval '3 day',  now() - interval '3 day',  NULL, 0, '双十一预热开启',       '店铺满 500 减 80，Watch S3 限时直降 300，先到先得！', 0, NULL, 'PUBLISHED', 'NOTIFICATION'),
-    (37, now() - interval '2 day',  now() - interval '2 day',  NULL, 0, '系统维护通知',         '本周日 02:00-04:00 系统升级，期间下单可能短暂受限。', 0, NULL, 'PUBLISHED', 'NOTIFICATION'),
-    (38, now() - interval '1 day',  now() - interval '1 day',  NULL, 0, '积分商城上新',         '积分兑换专区新增 Mesh 路由器与便携风扇，欢迎兑换。', 0, NULL, 'PUBLISHED', 'NOTIFICATION');
+    (35, now() - interval '5 day',  now() - interval '5 day',  NULL, 0, 'Nova 12 系列新品上架', 'Nova 12 / 12 Pro / 12 Ultra 全系开售，首发期下单享专属好礼。', 0, NULL, 'PUBLISHED'),
+    (36, now() - interval '3 day',  now() - interval '3 day',  NULL, 0, '双十一预热开启',       '店铺满 500 减 80，Watch S3 限时直降 300，先到先得！', 0, NULL, 'PUBLISHED'),
+    (37, now() - interval '2 day',  now() - interval '2 day',  NULL, 0, '系统维护通知',         '本周日 02:00-04:00 系统升级，期间下单可能短暂受限。', 0, NULL, 'PUBLISHED'),
+    (38, now() - interval '1 day',  now() - interval '1 day',  NULL, 0, '积分商城上新',         '积分兑换专区新增 Mesh 路由器与便携风扇，欢迎兑换。', 0, NULL, 'PUBLISHED');
 
-INSERT INTO public.internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at)
+INSERT INTO public.mall_internal_message_recipients (id, created_at, updated_at, deleted_at, tenant_id, message_id, recipient_user_id, status, received_at, read_at)
 VALUES
     (31, now() - interval '5 day',  now() - interval '5 day',  NULL, 0, 35, 1, 'SENT', now() - interval '5 day',  NULL),
     (32, now() - interval '3 day',  now() - interval '3 day',  NULL, 0, 36, 1, 'SENT', now() - interval '3 day',  NULL),
@@ -1942,9 +1913,8 @@ DECLARE
     t text;
 BEGIN
     FOREACH t IN ARRAY ARRAY['sys_languages', 'sys_users', 'sys_user_credentials',
-                             'internal_message_recipients', 'internal_messages',
+                             'mall_internal_message_recipients', 'mall_internal_messages',
                              'mall_brand_translations', 'mall_brands', 'mall_cart_items', 'mall_carts',
-                             'mall_categories', 'mall_category_translations', 'mall_comment_likes',
                              'mall_comments', 'mall_coupon_templates', 'mall_groupon_activities',
                              'mall_groupon_groups', 'mall_invoices', 'mall_member_tiers',
                              'mall_order_items', 'mall_orders', 'mall_payment_channel_configs',
@@ -1966,3 +1936,8 @@ BEGIN
 END $$;
 
 COMMIT;
+
+-- ── 五、演示口令（argon2id，明文 admin123：登录链读 sys_users.password）──
+UPDATE public.sys_users
+SET password = '$argon2id$v=19$m=19456,t=2,p=1$sCgFApiAqgFtRE+VSRo8Bw$gG0JUW8Wo572p2vt187hZHHEUn7HzfO6rcjMA6HxZ7E'
+WHERE username IN ('admin', 'suxiaotong', 'chenyi', 'heyutong', 'linzhiyuan');
